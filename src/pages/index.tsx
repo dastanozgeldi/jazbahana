@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import { CARD } from "../styles";
 import Page from "./layouts/Page";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import React from "react";
 
 type CardProps = { title: string; children: React.ReactNode };
 
