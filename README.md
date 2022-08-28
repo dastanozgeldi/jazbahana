@@ -12,7 +12,7 @@ We try to emphasize that these files are javascript for a reason, by explicitly 
 
 We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Google](https://t3.gg/discord) and ask for help.
 
 - [Next-Auth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
