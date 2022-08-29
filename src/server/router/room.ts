@@ -59,4 +59,32 @@ export const roomRouter = createRouter()
       }
       return room;
     },
+  })
+  .mutation("edit", {
+    input: z.object({
+      id: z.string().uuid(),
+      data: z.object({
+        title: z.string().min(1).max(64),
+        description: z.string().min(1).max(128),
+      }),
+    }),
+    async resolve({ input }) {
+      const { id, data } = input;
+      const room = await prisma?.room.update({
+        where: { id },
+        data,
+        select: defaultRoomSelect,
+      });
+      return room;
+    },
+  })
+  .mutation("delete", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input }) {
+      const { id } = input;
+      await prisma?.room.delete({ where: { id } });
+      return { id };
+    },
   });
