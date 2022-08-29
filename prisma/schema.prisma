@@ -26,6 +26,8 @@ model ParticipantsInRooms {
 }
 
 model TopicsInRooms {
+    name       String
+    image      String?
     Topic      Topic    @relation(fields: [topicId], references: [id])
     topicId    String
     Room       Room     @relation(fields: [roomId], references: [id])
@@ -39,6 +41,7 @@ model TopicsInRooms {
 model Topic {
     id        String   @id @default(uuid())
     name      String
+    image     String?
     createdAt DateTime @default(now())
 
     rooms TopicsInRooms[]
