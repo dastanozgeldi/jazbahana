@@ -9,7 +9,7 @@ type PageProps = {
 export default function Page({ children, className = "", title }: PageProps) {
   const t = `${title} | Jazbahana`;
   return (
-    <article className={className}>
+    <main className={className}>
       {title && (
         <Head>
           <title>{t}</title>
@@ -18,6 +18,6 @@ export default function Page({ children, className = "", title }: PageProps) {
         </Head>
       )}
       {children}
-    </article>
+    </main>
   );
 }

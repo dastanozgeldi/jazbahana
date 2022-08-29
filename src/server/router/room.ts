@@ -12,6 +12,7 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   createdAt: true,
   updatedAt: true,
   authorId: true,
+  topics: true,
 });
 
 export const roomRouter = createRouter()
@@ -19,7 +20,7 @@ export const roomRouter = createRouter()
     input: z.object({
       id: z.string().uuid().optional(),
       title: z.string().min(1).max(64),
-      description: z.string().min(1),
+      description: z.string().min(1).max(128),
       authorName: z.string().optional(),
       authorImage: z.string().optional(),
       authorId: z.string().cuid().optional(),
@@ -36,6 +37,7 @@ export const roomRouter = createRouter()
     async resolve() {
       return prisma?.room.findMany({
         select: defaultRoomSelect,
+        orderBy: { updatedAt: "desc" },
       });
     },
   })
