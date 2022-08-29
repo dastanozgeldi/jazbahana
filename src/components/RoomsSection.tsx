@@ -1,4 +1,4 @@
-import { Room, TopicsInRooms } from "@prisma/client";
+import { Room as RoomType, TopicsInRooms } from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
@@ -25,7 +25,11 @@ export default function RoomsSection({
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
       // refetches all rooms after successful post add
-      await utils.invalidateQueries(["room.all"]);
+      if (profilePage) {
+        await utils.invalidateQueries(["user.rooms"]);
+      } else {
+        await utils.invalidateQueries(["room.all"]);
+      }
     },
   });
 
@@ -54,40 +58,8 @@ export default function RoomsSection({
         <AddRoom adding={adding} addRoom={addRoom} session={session} />
       )}
 
-      {roomsQuery.data?.map((room: Room & { topics: TopicsInRooms[] }) => (
-        <article className={POST} key={room.id}>
-          <div className="flex items-center justify-between">
-            <Link href={`/users/${room.authorName || "ghost"}`}>
-              <a className="flex items-center gap-2 font-medium">
-                {/* eslint-disable-next-line */}
-                <img
-                  src={room.authorImage || "/default-avatar.png"}
-                  width={32}
-                  height={32}
-                  alt="avatar"
-                  className="rounded-full"
-                />
-                <span>{room.authorName || "ghost"}</span>
-              </a>
-            </Link>
-            <p className="text-gray-500">{`${room.updatedAt.toLocaleDateString()}, ${room.updatedAt.toLocaleTimeString()}`}</p>
-          </div>
-          <h3 className="text-2xl font-semibold">{room.title}</h3>
-          <p className="text-gray-400">{room.description}</p>
-          <div className="m-2">
-            {room.topics.length > 0 &&
-              room.topics.map((t) => (
-                <span className={TOPIC} key={t.topicId}>
-                  {t.name}
-                </span>
-              ))}
-          </div>
-          <Link href={`/rooms/${room.id}`}>
-            <a className="text-teal-400 hover:text-teal-500 duration-500">
-              View more
-            </a>
-          </Link>
-        </article>
+      {roomsQuery.data?.map((room: RoomType & { topics: TopicsInRooms[] }) => (
+        <Room key={room.id} data={room} />
       ))}
     </div>
   );
@@ -169,5 +141,46 @@ export const AddRoom = ({ adding, addRoom, session }: AddRoomProps) => {
         )}
       </form>
     </div>
+  );
+};
+
+export const Room = ({
+  data,
+}: {
+  data: RoomType & { topics: TopicsInRooms[] };
+}) => {
+  return (
+    <article className={POST} key={data.id}>
+      <div className="flex items-center justify-between">
+        <Link href={`/users/${data.authorId || "ghost"}`}>
+          <a className="flex items-center gap-2 font-medium">
+            <img
+              src={data.authorImage || "/default-avatar.png"}
+              width={32}
+              height={32}
+              alt="avatar"
+              className="rounded-full"
+            />
+            <span>{data.authorName || "ghost"}</span>
+          </a>
+        </Link>
+        <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
+      </div>
+      <h3 className="text-2xl font-semibold">{data.title}</h3>
+      <p className="text-gray-400">{data.description}</p>
+      <div className="m-2">
+        {data.topics.length > 0 &&
+          data.topics.map((t) => (
+            <span className={TOPIC} key={t.topicId}>
+              {t.name}
+            </span>
+          ))}
+      </div>
+      <Link href={`/rooms/${data.id}`}>
+        <a className="text-teal-400 hover:text-teal-500 duration-500">
+          View more
+        </a>
+      </Link>
+    </article>
   );
 };

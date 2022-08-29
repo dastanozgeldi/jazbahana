@@ -1,22 +1,8 @@
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
 import RoomsSection from "../components/RoomsSection";
 import { trpc } from "../utils/trpc";
 import Page from "./layouts/Page";
-
-export const Navbar = () => {
-  return (
-    <nav>
-      <Link href="/">
-        <a className="flex items-center">
-          <Image src="/logo.png" width={64} height={64} alt="logo" />
-          <span className="text-3xl font-bold">Jazbahana</span>
-        </a>
-      </Link>
-    </nav>
-  );
-};
 
 const Feed = () => {
   const { data: session } = useSession();
@@ -24,10 +10,19 @@ const Feed = () => {
 
   return (
     <Page className="m-2" title="Feed">
-      <Navbar />
       {/* Header */}
-
-      <div className="block md:grid md:grid-cols-3 md:justify-items-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold">
+          Welcome, {session?.user?.name || "Guest"}!
+        </h1>
+        <p>
+          smooth user experience made possible by{" "}
+          <a className="text-teal-400" href="https://twitter.com/dastanozgeldi">
+            @dastanozgeldi
+          </a>
+        </p>
+      </div>
+      <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
         {/* Display Topics */}
         <Topics />
         {/* Display Rooms */}
@@ -53,7 +48,6 @@ const Topics = () => {
             <Link href={`/feed/?q=${t.name}`}>
               <a className="flex items-center">
                 {t.image && (
-                  // eslint-disable-next-line
                   <img src={t.image} alt="topic image" width={24} height={24} />
                 )}
                 <span className="text-xl p-2">{t.name}</span>
@@ -70,6 +64,7 @@ const Activity = () => {
   return (
     <div className="hidden md:block">
       <h1 className="text-2xl font-semibold">Recent Activity</h1>
+      <p>yet to do</p>
     </div>
   );
 };
