@@ -7,7 +7,7 @@ import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
-import Layout from "./layouts/Layout";
+import Layout from "../components/layouts/Layout";
 
 const MyApp: AppType = ({
   Component,

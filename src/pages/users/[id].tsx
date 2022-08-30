@@ -1,7 +1,7 @@
 import { signIn, useSession } from "next-auth/react";
 import RoomsSection from "../../components/RoomsSection";
 import { trpc } from "../../utils/trpc";
-import Page from "../layouts/Page";
+import Page from "../../components/layouts/Page";
 
 const Profile = () => {
   const { data: session } = useSession();

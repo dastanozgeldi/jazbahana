@@ -3,7 +3,7 @@ import RecentActivity from "../components/RecentActivity";
 import RoomsSection from "../components/RoomsSection";
 import Topics from "../components/Topics";
 import { trpc } from "../utils/trpc";
-import Page from "./layouts/Page";
+import Page from "../components/layouts/Page";
 
 const Feed = () => {
   const { data: session } = useSession();

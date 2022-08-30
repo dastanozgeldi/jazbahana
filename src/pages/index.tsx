@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Page from "./layouts/Page";
+import Page from "../components/layouts/Page";
 import About from "../components/About";
 import Features from "../components/Features";
 import Contacts from "../components/Contacts";

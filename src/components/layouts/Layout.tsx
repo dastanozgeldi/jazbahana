@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import Navbar from "../../components/Navbar";
+import Navbar from "../Navbar";
 
 type LayoutProps = { children: React.ReactNode };
 
