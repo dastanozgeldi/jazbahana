@@ -6,7 +6,7 @@ export const DELETE_BUTTON = `${BUTTON} bg-red-400 hover:bg-red-500`;
 export const CARD =
   "my-2 flex gap-2 flex-col items-center justify-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
 
-export const TOPIC = "text-xs rounded-xl border border-teal-500 p-2 m-2";
+export const TOPIC = "text-xs rounded-xl border border-teal-500 p-2 mr-2";
 
 export const LABEL = "text-xl font-medium";
 export const INPUT_TEXT =

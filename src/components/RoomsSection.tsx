@@ -168,8 +168,8 @@ export const Room = ({
       </div>
       <h3 className="text-2xl font-semibold">{data.title}</h3>
       <p className="text-gray-400">{data.description}</p>
-      <div className="m-2">
-        {data.topics.length > 0 &&
+      <div className="my-2">
+        {data.topics?.length > 0 &&
           data.topics.map((t) => (
             <span className={TOPIC} key={t.topicId}>
               {t.name}
