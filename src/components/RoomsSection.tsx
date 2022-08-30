@@ -15,8 +15,6 @@ type RoomSectionProps = {
 export default function RoomsSection({
   session,
   roomsQuery,
-  // TODO: make use at /profile page.
-  // TODO: create user.posts router
   profilePage = false,
 }: RoomSectionProps) {
   const [adding, setAdding] = useState(false);

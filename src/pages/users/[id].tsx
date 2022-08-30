@@ -1,7 +1,8 @@
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import RoomsSection from "../../components/RoomsSection";
 import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
+import SignIn from "../../components/SignIn";
 
 const Profile = () => {
   const { data: session } = useSession();
@@ -10,14 +11,7 @@ const Profile = () => {
     { id: session?.user?.id as string },
   ]);
 
-  if (!session)
-    return (
-      <>
-        <h1 className="text-center text-3xl font-bold">Yo, u not signed in</h1>
-        <p className="text-center">get yo stuff to signin page!</p>
-        <button onClick={() => signIn()}>Sign In</button>
-      </>
-    );
+  if (!session) return <SignIn />;
   return (
     <Page title="Profile">
       {/* Header */}
