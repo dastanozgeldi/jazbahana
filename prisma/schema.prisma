@@ -28,14 +28,13 @@ model ParticipantsInRooms {
 model TopicsInRooms {
     name       String
     image      String?
-    Topic      Topic    @relation(fields: [topicId], references: [id])
+    topic      Topic    @relation(fields: [topicId], references: [id])
     topicId    String
-    Room       Room     @relation(fields: [roomId], references: [id])
+    room       Room     @relation(fields: [roomId], references: [id])
     roomId     String
     assignedAt DateTime @default(now())
-    assignedBy String
 
-    @@id([topicId, roomId])
+    @@id([roomId, topicId])
 }
 
 model Topic {
@@ -101,6 +100,8 @@ model User {
     sessions      Session[]
     rooms         ParticipantsInRooms[]
     Room          Room[]
+    mates         User[]                @relation("mates")
+    matesRelation User[]                @relation("mates")
 }
 
 model VerificationToken {
