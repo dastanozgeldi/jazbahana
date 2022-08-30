@@ -1,18 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { createRouter } from "./context";
 
-const defaultTopicSelect = Prisma.validator<Prisma.TopicsInRoomsSelect>()({
+const defaultTopicSelect = Prisma.validator<Prisma.TopicSelect>()({
+  id: true,
   name: true,
   image: true,
-  topicId: true,
-  roomId: true,
-  assignedAt: true,
-  assignedBy: true,
+  createdAt: true,
+  rooms: true,
 });
 
 export const topicRouter = createRouter().query("all", {
-  async resolve() {
-    return prisma?.topicsInRooms.findMany({
+  resolve({ ctx }) {
+    return ctx.prisma.topic.findMany({
       select: defaultTopicSelect,
     });
   },
