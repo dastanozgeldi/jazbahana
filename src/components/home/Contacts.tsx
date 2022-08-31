@@ -19,10 +19,10 @@ const Contacts = () => {
       id="contacts"
       className="min-h-screen flex-col items-center justify-center mt-10"
     >
-      <h1 className="my-8 md:text-6xl text-4xl font-extrabold text-center text-blue-500">
+      <h1 className="my-8 text-4xl md:text-5xl font-extrabold text-center text-blue-500">
         Contact Us
       </h1>
-      <div className={CARD}>
+      <div className={`${CARD} max-w-[60ch] mx-auto`}>
         <form onSubmit={onSubmit}>
           <h1 className="text-center text-3xl font-bold mb-4">Send feedback</h1>
           <div>

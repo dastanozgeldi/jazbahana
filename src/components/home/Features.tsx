@@ -7,7 +7,7 @@ const Features = () => {
       id="features"
       className="min-h-screen flex flex-col justify-center items-center"
     >
-      <h1 className="text-blue-500 md:text-6xl text-4xl font-extrabold text-center">
+      <h1 className="text-blue-500 text-4xl md:text-5xl font-extrabold text-center">
         Features
       </h1>
       <div className="flex flex-col items-center justify-between w-[90%] mt-20 gap-y-5">

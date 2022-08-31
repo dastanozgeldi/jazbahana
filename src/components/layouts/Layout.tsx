@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 type LayoutProps = { children: React.ReactNode };
 type NavbarProps = { session: Session | null };
+type HamburgerMenuProps = { session: Session | null };
 
 export default function Layout({ children }: LayoutProps) {
   const { data: session } = useSession();
@@ -88,7 +89,7 @@ const Navbar = ({ session }: NavbarProps) => {
         <button
           aria-label="Toggle Dark Mode"
           type="button"
-          className="w-9 h-9 p-0 bg-gray-200 rounded-full dark:bg-gray-600 flex items-center justify-center hover:ring-2 ring-gray-300  transition-all"
+          className="w-9 h-9 p-0 bg-gray-200 rounded-full dark:bg-gray-600 flex items-center justify-center hover:ring-2 ring-gray-300 transition-all"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >
           {mounted && (
@@ -138,25 +139,29 @@ const Navbar = ({ session }: NavbarProps) => {
             />
           </svg>
         </button>
-        {open && (
-          <div className="flex flex-col gap-2 w-[50%] absolute right-8 top-14 rounded-md bg-gray-200 dark:bg-gray-600">
-            <Link href="/feed">
-              <a className="rounded-t-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
-                Feed
-              </a>
-            </Link>
-            {session ? (
-              <Link href={`/users/${session.user?.id}`}>
-                <a className="rounded-b-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
-                  Profile
-                </a>
-              </Link>
-            ) : (
-              <button onClick={() => signIn()}>Sign in</button>
-            )}
-          </div>
-        )}
+        {open && <HamburgerMenu session={session} />}
       </div>
     </nav>
+  );
+};
+
+const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
+  return (
+    <div className="flex flex-col gap-2 w-[50%] absolute right-8 top-14 rounded-md bg-gray-200 dark:bg-gray-600">
+      <Link href="/feed">
+        <a className="rounded-t-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
+          Feed
+        </a>
+      </Link>
+      {session ? (
+        <Link href={`/users/${session.user?.id}`}>
+          <a className="rounded-b-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
+            Profile
+          </a>
+        </Link>
+      ) : (
+        <button onClick={() => signIn()}>Sign in</button>
+      )}
+    </div>
   );
 };
