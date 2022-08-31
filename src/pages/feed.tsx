@@ -18,7 +18,12 @@ const Feed = () => {
         </h1>
         <p>
           smooth user experience made possible by{" "}
-          <a className="text-teal-400" href="https://twitter.com/dastanozgeldi">
+          <a
+            className="text-teal-400"
+            href="https://twitter.com/dastanozgeldi"
+            target="blank"
+            rel="noreferrer"
+          >
             @dastanozgeldi
           </a>
         </p>

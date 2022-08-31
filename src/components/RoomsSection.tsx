@@ -173,7 +173,7 @@ export const Room = ({ data }: RoomProps) => {
       </div>
       <Link href={`/rooms/${data.id}`}>
         <a className="text-teal-400 hover:text-teal-500 duration-500">
-          View more
+          View Room
         </a>
       </Link>
     </article>

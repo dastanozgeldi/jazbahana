@@ -26,7 +26,7 @@ const Topics = () => {
                   )}
                   <span className="text-xl p-2">{t.name}</span>
                 </div>
-                <span className="text-xl px-2 rounded bg-gray-800">
+                <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
                   {t.rooms.length}
                 </span>
               </a>

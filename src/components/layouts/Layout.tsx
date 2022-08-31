@@ -59,9 +59,9 @@ const Navbar = ({ session }: NavbarProps) => {
         </a>
       </Link>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 text-xl">
         <Link href="/feed">
-          <a className="text-xl">Feed</a>
+          <a>Feed</a>
         </Link>
         {session ? (
           <>
