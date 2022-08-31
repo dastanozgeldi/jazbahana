@@ -2,7 +2,16 @@ import { Room as RoomType, TopicsInRooms } from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
-import { ACTION_BUTTON, CARD, INPUT_TEXT, LABEL, POST, TOPIC } from "../styles";
+import { useForm } from "react-hook-form";
+import {
+  ACTION_BUTTON,
+  CARD,
+  INPUT_SELECT,
+  INPUT_TEXT,
+  LABEL,
+  POST,
+  TOPIC,
+} from "../styles";
 import { trpc } from "../utils/trpc";
 
 type RoomSectionProps = {
@@ -10,7 +19,7 @@ type RoomSectionProps = {
   roomsQuery: any;
   profilePage?: boolean;
 };
-type AddRoomProps = { adding: boolean; addRoom: any; session: Session };
+type AddRoomProps = { adding: boolean; profilePage: boolean; session: Session };
 type RoomProps = { data: RoomType & { topics: TopicsInRooms[] } };
 
 export default function RoomsSection({
@@ -19,18 +28,6 @@ export default function RoomsSection({
   profilePage = false,
 }: RoomSectionProps) {
   const [adding, setAdding] = useState(false);
-
-  const utils = trpc.useContext();
-  const addRoom = trpc.useMutation("room.add", {
-    async onSuccess() {
-      // refetches all rooms after successful post add
-      if (profilePage) {
-        await utils.invalidateQueries(["user.rooms"]);
-      } else {
-        await utils.invalidateQueries(["room.all"]);
-      }
-    },
-  });
 
   return (
     <div className="w-full">
@@ -54,7 +51,7 @@ export default function RoomsSection({
         )}
       </div>
       {session && (
-        <AddRoom adding={adding} addRoom={addRoom} session={session} />
+        <AddRoom adding={adding} profilePage={profilePage} session={session} />
       )}
 
       {roomsQuery.data?.map((room: RoomType & { topics: TopicsInRooms[] }) => (
@@ -64,38 +61,44 @@ export default function RoomsSection({
   );
 }
 
-export const AddRoom = ({ adding, addRoom, session }: AddRoomProps) => {
+type FormData = {
+  title: string;
+  description: string;
+  topics: [{ name: string; image: string; topicId: string }];
+};
+
+export const AddRoom = ({ adding, profilePage, session }: AddRoomProps) => {
+  const { register, handleSubmit, reset } = useForm<FormData>();
+  const [topics, setTopics] = useState<any>([]);
+  const utils = trpc.useContext();
+  const addRoom = trpc.useMutation("room.add", {
+    async onSuccess() {
+      // refetches all rooms after successful post add
+      if (profilePage) {
+        await utils.invalidateQueries(["user.rooms"]);
+      } else {
+        await utils.invalidateQueries(["room.all"]);
+      }
+      reset();
+    },
+  });
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      data.topics;
+      await addRoom.mutateAsync({
+        ...data,
+        authorName: session.user?.name || "unknown",
+        authorImage: session.user?.image || "/default-avatar.png",
+        authorId: session.user?.id || "",
+        topics: [],
+      });
+    } catch {}
+  });
+  const { data } = trpc.useQuery(["topic.all"]);
+
   return (
     <div className={`flex items-center justify-center my-4 ${CARD}`}>
-      <form
-        hidden={!adding}
-        className="w-[90%] mx-auto"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          /**
-           * In a real app you probably don't want to use this manually
-           * Checkout React Hook Form - it works great with tRPC
-           * @link https://react-hook-form.com/
-           */
-
-          const $title: HTMLInputElement = (e as any).target.elements.title;
-          const $description: HTMLInputElement = (e as any).target.elements
-            .description;
-          const input = {
-            title: $title.value,
-            description: $description.value,
-            authorName: session.user?.name,
-            authorImage: session.user?.image,
-            authorId: session.user?.id,
-          };
-          try {
-            await addRoom.mutateAsync(input);
-
-            $title.value = "";
-            $description.value = "";
-          } catch {}
-        }}
-      >
+      <form hidden={!adding} className="w-[90%] mx-auto" onSubmit={onSubmit}>
         <h2 className="text-center text-3xl font-bold mb-2">Add Post</h2>
         {/* Title */}
         <div>
@@ -105,7 +108,7 @@ export const AddRoom = ({ adding, addRoom, session }: AddRoomProps) => {
           <br />
           <input
             id="title"
-            name="title"
+            {...register("title")}
             type="text"
             className={INPUT_TEXT}
             disabled={addRoom.isLoading}
@@ -119,24 +122,57 @@ export const AddRoom = ({ adding, addRoom, session }: AddRoomProps) => {
           <br />
           <input
             id="description"
-            name="description"
+            {...register("description")}
             type="text"
             className={INPUT_TEXT}
             disabled={addRoom.isLoading}
           />
         </div>
-
-        {/* TODO: SELECT FIELD FOR TOPICS [topic.all] */}
-
+        {/* Topics */}
+        <div>
+          <label className={LABEL} htmlFor="topics">
+            Topics
+          </label>
+          <select
+            multiple
+            {...register("topics")}
+            id="topics"
+            className={INPUT_SELECT}
+          >
+            <option selected>Choose topics</option>
+            {data &&
+              data.map((t) => (
+                <option
+                  key={t.id}
+                  value={t.id}
+                  onChange={() => {
+                    console.log(topics);
+                    setTopics([
+                      ...topics,
+                      {
+                        topicId: t.id,
+                        name: t.name,
+                        image: t.image,
+                      },
+                    ]);
+                  }}
+                >
+                  {t.name}
+                </option>
+              ))}
+          </select>
+        </div>
+        {/* Submit Form */}
         <button
-          className={ACTION_BUTTON}
+          className={`${ACTION_BUTTON} my-4`}
           type="submit"
           disabled={addRoom.isLoading}
         >
           Submit
         </button>
+        {/* Validation Error */}
         {addRoom.error && (
-          <p style={{ color: "red" }}>{addRoom.error.message}</p>
+          <p className="text-red-500">{addRoom.error.message}</p>
         )}
       </form>
     </div>
@@ -161,9 +197,11 @@ export const Room = ({ data }: RoomProps) => {
         </Link>
         <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
       </div>
-      <h3 className="text-2xl font-semibold">{data.title}</h3>
+      <Link href={`/rooms/${data.id}`}>
+        <a className="text-2xl font-semibold">{data.title}</a>
+      </Link>
       <p className="text-gray-400">{data.description}</p>
-      <div className="my-2">
+      <div className="my-2 flex justify-end">
         {data.topics?.length > 0 &&
           data.topics.map((t) => (
             <span className={TOPIC} key={t.topicId}>
@@ -171,11 +209,6 @@ export const Room = ({ data }: RoomProps) => {
             </span>
           ))}
       </div>
-      <Link href={`/rooms/${data.id}`}>
-        <a className="text-teal-400 hover:text-teal-500 duration-500">
-          View Room
-        </a>
-      </Link>
     </article>
   );
 };

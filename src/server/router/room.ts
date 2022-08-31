@@ -29,7 +29,6 @@ export const roomRouter = createRouter()
           name: z.string(),
           image: z.string(),
           topicId: z.string(),
-          assignedBy: z.string(),
         })
       ),
     }),
