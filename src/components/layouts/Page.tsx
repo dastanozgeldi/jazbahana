@@ -9,7 +9,7 @@ type PageProps = {
 export default function Page({ children, className = "", title }: PageProps) {
   const t = `${title} | Jazbahana`;
   return (
-    <main className={className}>
+    <>
       {title && (
         <Head>
           <title>{t}</title>
@@ -17,7 +17,7 @@ export default function Page({ children, className = "", title }: PageProps) {
           <meta name="og:title" content={t} />
         </Head>
       )}
-      {children}
-    </main>
+      <main className={className}>{children}</main>
+    </>
   );
 }
