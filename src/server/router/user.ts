@@ -4,9 +4,9 @@ import { createRouter } from "./context";
 
 export const userRouter = createRouter().query("rooms", {
   input: z.object({ id: z.string() }),
-  async resolve({ input }) {
+  async resolve({ ctx, input }) {
     const { id } = input;
-    const rooms = await prisma?.room.findMany({
+    const rooms = await ctx.prisma.room.findMany({
       where: { authorId: id },
       orderBy: { updatedAt: "desc" },
     });

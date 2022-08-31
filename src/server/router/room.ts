@@ -24,10 +24,19 @@ export const roomRouter = createRouter()
       authorName: z.string().optional(),
       authorImage: z.string().optional(),
       authorId: z.string().cuid().optional(),
+      topics: z.array(
+        z.object({
+          name: z.string(),
+          image: z.string(),
+          topicId: z.string(),
+          assignedBy: z.string(),
+        })
+      ),
     }),
-    async resolve({ input }) {
-      const room = await prisma?.room.create({
-        data: input,
+    async resolve({ ctx, input }) {
+      const { topics } = input;
+      const room = await ctx.prisma.room.create({
+        data: { ...input, topics: { create: topics } },
         select: defaultRoomSelect,
       });
       return room;
@@ -45,9 +54,9 @@ export const roomRouter = createRouter()
     input: z.object({
       id: z.string(),
     }),
-    async resolve({ input }) {
+    async resolve({ ctx, input }) {
       const { id } = input;
-      const room = await prisma?.room.findUnique({
+      const room = await ctx.prisma.room.findUnique({
         where: { id },
         select: defaultRoomSelect,
       });
@@ -68,9 +77,9 @@ export const roomRouter = createRouter()
         description: z.string().min(1).max(128),
       }),
     }),
-    async resolve({ input }) {
+    async resolve({ ctx, input }) {
       const { id, data } = input;
-      const room = await prisma?.room.update({
+      const room = await ctx.prisma.room.update({
         where: { id },
         data,
         select: defaultRoomSelect,
@@ -82,9 +91,9 @@ export const roomRouter = createRouter()
     input: z.object({
       id: z.string(),
     }),
-    async resolve({ input }) {
+    async resolve({ ctx, input }) {
       const { id } = input;
-      await prisma?.room.delete({ where: { id } });
+      await ctx.prisma.room.delete({ where: { id } });
       return { id };
     },
   });
