@@ -4,7 +4,7 @@ export const ACTION_BUTTON = `${BUTTON} bg-teal-400 hover:bg-teal-500`;
 export const DELETE_BUTTON = `${BUTTON} bg-red-400 hover:bg-red-500`;
 
 export const CARD =
-  "my-2 flex gap-2 flex-col items-center justify-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
+  "flex justify-around flex-col items-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
 
 export const TOPIC = "text-xs rounded-xl border border-teal-500 p-2 mr-2";
 
@@ -16,3 +16,6 @@ export const INPUT_SELECT = "my-1 w-full bg-transparent outline outline-[1px] ou
 
 export const POST =
   "my-2 flex gap-2 flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
+
+export const FEATURE =  "dark:bg-[#2d2d2d] bg-neutral-100 py-6 px-4 opacity-80 rounded-md shadow-2xl"
+

@@ -55,7 +55,7 @@ const Navbar = ({ session }: NavbarProps) => {
       <Link href="/">
         <a className="flex items-center">
           <Image src="/logo.png" width={64} height={64} alt="logo" />
-          <span className="text-3xl font-bold">Jazbahana</span>
+          <span className="md:text-3xl text-xl font-bold">Jazbahana</span>
         </a>
       </Link>
 
