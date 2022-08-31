@@ -48,6 +48,8 @@ const Navbar = ({ session }: NavbarProps) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  const [open, setOpen] = useState(false);
+
   useEffect(() => setMounted(true), []);
 
   return (
@@ -60,26 +62,28 @@ const Navbar = ({ session }: NavbarProps) => {
       </Link>
 
       <div className="flex items-center gap-4 text-xl">
-        <Link href="/feed">
-          <a>Feed</a>
-        </Link>
-        {session ? (
-          <>
-            <Link href={`/users/${session.user?.id}`}>
-              <a>
-                <img
-                  alt="user avatar"
-                  src={session.user?.image || "/default-avatar.png"}
-                  className="rounded-full border border-teal-400"
-                  width={36}
-                  height={36}
-                />
-              </a>
-            </Link>
-          </>
-        ) : (
-          <button onClick={() => signIn()}>Sign in</button>
-        )}
+        <div className="sm:flex items-center gap-4 hidden">
+          <Link href="/feed">
+            <a>Feed</a>
+          </Link>
+          {session ? (
+            <>
+              <Link href={`/users/${session.user?.id}`}>
+                <a>
+                  <img
+                    alt="user avatar"
+                    src={session.user?.image || "/default-avatar.png"}
+                    className="rounded-full border border-teal-400"
+                    width={36}
+                    height={36}
+                  />
+                </a>
+              </Link>
+            </>
+          ) : (
+            <button onClick={() => signIn()}>Sign in</button>
+          )}
+        </div>
 
         <button
           aria-label="Toggle Dark Mode"
@@ -113,6 +117,45 @@ const Navbar = ({ session }: NavbarProps) => {
             </svg>
           )}
         </button>
+        <button
+          aria-label="Hamburger Menu"
+          type="button"
+          className="w-9 h-9 p-0 bg-gray-200 rounded-full dark:bg-gray-600  items-center justify-center hover:ring-2 ring-gray-300  transition-all sm:hidden flex"
+          onClick={() => setOpen(!open)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </button>
+        {open && (
+          <div className="flex flex-col gap-2 w-[50%] absolute right-8 top-14 rounded-md bg-gray-200 dark:bg-gray-600">
+            <Link href="/feed">
+              <a className="rounded-t-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
+                Feed
+              </a>
+            </Link>
+            {session ? (
+              <Link href={`/users/${session.user?.id}`}>
+                <a className="rounded-b-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
+                  Profile
+                </a>
+              </Link>
+            ) : (
+              <button onClick={() => signIn()}>Sign in</button>
+            )}
+          </div>
+        )}
       </div>
     </nav>
   );
