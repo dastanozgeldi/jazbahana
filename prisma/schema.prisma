@@ -24,25 +24,12 @@ model ParticipantsInRooms {
     @@id([roomId, userId])
 }
 
-model TopicsInRooms {
-    name       String
-    image      String?
-    topic      Topic    @relation(fields: [topicId], references: [id])
-    topicId    String
-    room       Room     @relation(fields: [roomId], references: [id])
-    roomId     String
-    assignedAt DateTime @default(now())
-
-    @@id([roomId, topicId])
-}
-
 model Topic {
     id        String   @id @default(uuid())
     name      String
     image     String?
     createdAt DateTime @default(now())
-
-    rooms TopicsInRooms[]
+    rooms     Room[]
 }
 
 model Room {
@@ -59,7 +46,8 @@ model Room {
     participants ParticipantsInRooms[]
     Author       User?                 @relation(fields: [authorId], references: [id])
     authorId     String?
-    topics       TopicsInRooms[]
+    topic        Topic?                @relation(fields: [topicId], references: [id])
+    topicId      String?
 }
 
 // Necessary for Next auth

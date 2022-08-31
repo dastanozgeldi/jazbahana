@@ -1,4 +1,4 @@
-import { Room as RoomType, TopicsInRooms } from "@prisma/client";
+import { Room as RoomType } from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,8 +19,15 @@ type RoomSectionProps = {
   roomsQuery: any;
   profilePage?: boolean;
 };
-type AddRoomProps = { adding: boolean; profilePage: boolean; session: Session };
-type RoomProps = { data: RoomType & { topics: TopicsInRooms[] } };
+
+type AddRoomProps = {
+  adding: boolean;
+  profilePage: boolean;
+  session: Session;
+  topicsQuery: any;
+};
+
+type RoomProps = { data: RoomType; topicsQuery: any };
 
 export default function RoomsSection({
   session,
@@ -28,6 +35,7 @@ export default function RoomsSection({
   profilePage = false,
 }: RoomSectionProps) {
   const [adding, setAdding] = useState(false);
+  const topicsQuery = trpc.useQuery(["topic.all"]);
 
   return (
     <div className="w-full">
@@ -51,11 +59,16 @@ export default function RoomsSection({
         )}
       </div>
       {session && (
-        <AddRoom adding={adding} profilePage={profilePage} session={session} />
+        <AddRoom
+          topicsQuery={topicsQuery}
+          adding={adding}
+          profilePage={profilePage}
+          session={session}
+        />
       )}
 
-      {roomsQuery.data?.map((room: RoomType & { topics: TopicsInRooms[] }) => (
-        <Room key={room.id} data={room} />
+      {roomsQuery.data?.map((room: RoomType) => (
+        <Room key={room.id} topicsQuery={topicsQuery} data={room} />
       ))}
     </div>
   );
@@ -64,12 +77,18 @@ export default function RoomsSection({
 type FormData = {
   title: string;
   description: string;
-  topics: [{ name: string; image: string; topicId: string }];
+  topic: object;
 };
 
-export const AddRoom = ({ adding, profilePage, session }: AddRoomProps) => {
+export const AddRoom = ({
+  adding,
+  profilePage,
+  session,
+  topicsQuery,
+}: AddRoomProps) => {
+  const { data } = topicsQuery;
   const { register, handleSubmit, reset } = useForm<FormData>();
-  const [topics, setTopics] = useState<any>([]);
+  const [topicId, setTopicId] = useState<string>("");
   const utils = trpc.useContext();
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
@@ -84,17 +103,15 @@ export const AddRoom = ({ adding, profilePage, session }: AddRoomProps) => {
   });
   const onSubmit = handleSubmit(async (data) => {
     try {
-      data.topics;
       await addRoom.mutateAsync({
         ...data,
         authorName: session.user?.name || "unknown",
         authorImage: session.user?.image || "/default-avatar.png",
         authorId: session.user?.id || "",
-        topics: [],
+        topicId,
       });
     } catch {}
   });
-  const { data } = trpc.useQuery(["topic.all"]);
 
   return (
     <div className={`flex items-center justify-center my-4 ${CARD}`}>
@@ -130,33 +147,19 @@ export const AddRoom = ({ adding, profilePage, session }: AddRoomProps) => {
         </div>
         {/* Topics */}
         <div>
-          <label className={LABEL} htmlFor="topics">
-            Topics
+          <label className={LABEL} htmlFor="topic">
+            Topic:
           </label>
           <select
-            multiple
-            {...register("topics")}
-            id="topics"
+            {...register("topic")}
+            id="topic"
             className={INPUT_SELECT}
+            onChange={(e) => setTopicId(e.currentTarget.value)}
           >
-            <option selected>Choose topics</option>
+            <option selected>Choose a topic</option>
             {data &&
-              data.map((t) => (
-                <option
-                  key={t.id}
-                  value={t.id}
-                  onChange={() => {
-                    console.log(topics);
-                    setTopics([
-                      ...topics,
-                      {
-                        topicId: t.id,
-                        name: t.name,
-                        image: t.image,
-                      },
-                    ]);
-                  }}
-                >
+              data.map((t: any) => (
+                <option key={t.id} value={t.id}>
                   {t.name}
                 </option>
               ))}
@@ -179,7 +182,10 @@ export const AddRoom = ({ adding, profilePage, session }: AddRoomProps) => {
   );
 };
 
-export const Room = ({ data }: RoomProps) => {
+export const Room = ({ data, topicsQuery }: RoomProps) => {
+  const { data: topics } = topicsQuery;
+  const topic = topics.find((x: any) => x.id === data.topicId);
+
   return (
     <article className={POST} key={data.id}>
       <div className="flex items-center justify-between">
@@ -198,16 +204,19 @@ export const Room = ({ data }: RoomProps) => {
         <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
       </div>
       <Link href={`/rooms/${data.id}`}>
-        <a className="text-2xl font-semibold">{data.title}</a>
+        <a className="max-w-max text-2xl font-semibold">{data.title}</a>
       </Link>
       <p className="text-gray-400">{data.description}</p>
       <div className="my-2 flex justify-end">
-        {data.topics?.length > 0 &&
-          data.topics.map((t) => (
-            <span className={TOPIC} key={t.topicId}>
-              {t.name}
-            </span>
-          ))}
+        {topic && (
+          <span
+            className={`${TOPIC} flex items-center gap-2`}
+            key={data.topicId}
+          >
+            {topic.image && <img src={topic.image} className="w-4 h-4" />}
+            {topic.name}
+          </span>
+        )}
       </div>
     </article>
   );

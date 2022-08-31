@@ -12,7 +12,7 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   createdAt: true,
   updatedAt: true,
   authorId: true,
-  topics: true,
+  topicId: true,
 });
 
 export const roomRouter = createRouter()
@@ -24,18 +24,11 @@ export const roomRouter = createRouter()
       authorName: z.string().optional(),
       authorImage: z.string().optional(),
       authorId: z.string().cuid().optional(),
-      topics: z.array(
-        z.object({
-          name: z.string(),
-          image: z.string(),
-          topicId: z.string(),
-        })
-      ),
+      topicId: z.string().optional(),
     }),
     async resolve({ ctx, input }) {
-      const { topics } = input;
       const room = await ctx.prisma.room.create({
-        data: { ...input, topics: { create: topics } },
+        data: input,
         select: defaultRoomSelect,
       });
       return room;
