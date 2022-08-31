@@ -5,12 +5,13 @@ import { useState } from "react";
 import { ACTION_BUTTON, CARD, INPUT_TEXT, LABEL, POST, TOPIC } from "../styles";
 import { trpc } from "../utils/trpc";
 
-type AddRoomProps = { adding: boolean; addRoom: any; session: Session };
 type RoomSectionProps = {
   session: Session | null;
   roomsQuery: any;
   profilePage?: boolean;
 };
+type AddRoomProps = { adding: boolean; addRoom: any; session: Session };
+type RoomProps = { data: RoomType & { topics: TopicsInRooms[] } };
 
 export default function RoomsSection({
   session,
@@ -142,11 +143,7 @@ export const AddRoom = ({ adding, addRoom, session }: AddRoomProps) => {
   );
 };
 
-export const Room = ({
-  data,
-}: {
-  data: RoomType & { topics: TopicsInRooms[] };
-}) => {
+export const Room = ({ data }: RoomProps) => {
   return (
     <article className={POST} key={data.id}>
       <div className="flex items-center justify-between">

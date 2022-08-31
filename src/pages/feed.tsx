@@ -29,6 +29,7 @@ const Feed = () => {
         {/* Rooms Section */}
         <RoomsSection roomsQuery={roomsQuery} session={session} />
         {/* Right Sidebar */}
+        {/* TODO: replace activity w/ news, instead, put activity in the user profile */}
         <RecentActivity />
       </div>
     </Page>
