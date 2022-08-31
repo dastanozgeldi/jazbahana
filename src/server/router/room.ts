@@ -55,7 +55,7 @@ export const roomRouter = createRouter()
       if (!room) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: `No post with id '${id}'`,
+          message: `No room with id '${id}'`,
         });
       }
       return room;
@@ -67,6 +67,7 @@ export const roomRouter = createRouter()
       data: z.object({
         title: z.string().min(1).max(64),
         description: z.string().min(1).max(128),
+        topicId: z.string().optional(),
       }),
     }),
     async resolve({ ctx, input }) {

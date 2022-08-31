@@ -9,7 +9,6 @@ import {
   INPUT_SELECT,
   INPUT_TEXT,
   LABEL,
-  POST,
   TOPIC,
 } from "../styles";
 import { trpc } from "../utils/trpc";
@@ -53,7 +52,7 @@ export default function RoomsSection({
               className={ACTION_BUTTON}
               onClick={() => setAdding(!adding)}
             >
-              Add Post
+              Add Room
             </button>
           </>
         )}
@@ -92,7 +91,7 @@ export const AddRoom = ({
   const utils = trpc.useContext();
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
-      // refetches all rooms after successful post add
+      // refetches all rooms after successful add
       if (profilePage) {
         await utils.invalidateQueries(["user.rooms"]);
       } else {
@@ -116,13 +115,12 @@ export const AddRoom = ({
   return (
     <div className={`flex items-center justify-center my-4 ${CARD}`}>
       <form hidden={!adding} className="w-[90%] mx-auto" onSubmit={onSubmit}>
-        <h2 className="text-center text-3xl font-bold mb-2">Add Post</h2>
+        <h2 className="text-center text-3xl font-bold mb-2">Add Room</h2>
         {/* Title */}
         <div>
           <label className={LABEL} htmlFor="title">
             Title:
           </label>
-          <br />
           <input
             id="title"
             {...register("title")}
@@ -136,7 +134,6 @@ export const AddRoom = ({
           <label className={LABEL} htmlFor="description">
             Description:
           </label>
-          <br />
           <input
             id="description"
             {...register("description")}
@@ -187,7 +184,10 @@ export const Room = ({ data, topicsQuery }: RoomProps) => {
   const topic = topics.find((x: any) => x.id === data.topicId);
 
   return (
-    <article className={POST} key={data.id}>
+    <article
+      className="my-2 flex gap-2 flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl"
+      key={data.id}
+    >
       <div className="flex items-center justify-between">
         <Link href={`/users/${data.authorId || "ghost"}`}>
           <a className="flex items-center gap-2 font-medium">

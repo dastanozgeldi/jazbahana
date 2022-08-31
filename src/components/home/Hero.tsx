@@ -8,27 +8,51 @@ import {
 
 const Hero = () => {
   return (
-    <div className=" min-h-screen flex flex-col justify-center items-center">
-      <div className="md:text-6xl text-4xl font-extrabold text-center">
-        <h1 className=" text-blue-500">Jazbahana</h1>
-        <p>the way students connect</p>
+    <div className="min-h-screen flex flex-col justify-center items-center">
+      <div>
+        <h1 className="font-extrabold text-center text-4xl md:text-5xl text-blue-500">
+          Jazbahana
+        </h1>
+        <p className="font-extrabold text-center text-3xl md:text-4xl">
+          the way students connect
+        </p>
         <div className="flex items-center justify-around text-3xl md:text-4xl mt-16">
-          <a href="https://discord.gg/jgE2m4cnFj" target="_blank">
+          <a
+            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+            href="https://discord.gg/jgE2m4cnFj"
+            target="_blank"
+            rel="noreferrer"
+          >
             <IoLogoDiscord />
           </a>
-          <a href="https://github.com/jolshylar" target="_blank">
+          <a
+            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+            href="https://github.com/jolshylar"
+            target="_blank"
+            rel="noreferrer"
+          >
             <IoLogoGithub />
           </a>
-          <a href="https:///instagram.com/jolshylar" target="_blank">
+          <a
+            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+            href="https:///instagram.com/jolshylar"
+            target="_blank"
+            rel="noreferrer"
+          >
             <IoLogoInstagram />
           </a>
-          <a href="https://twitter.com/jolshylar" target="_blank">
+          <a
+            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+            href="https://twitter.com/jolshylar"
+            target="_blank"
+            rel="noreferrer"
+          >
             <IoLogoTwitter />
           </a>
         </div>
       </div>
 
-      <div className="flex flex-col items-center lg:flex-row justify-between w-[90%] mt-16 gap-y-5">
+      <div className="flex flex-col items-center xl:flex-row justify-between w-[90%] mt-16 gap-y-5">
         <Card className="" href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes to serve such an
           important audience.

@@ -23,7 +23,7 @@ async function main() {
     create: {
       id: firstPostId,
       title: "First Room",
-      description: "This is an example post generated from `prisma/seed.ts`",
+      description: "This is an example room generated from `prisma/seed.ts`",
     },
     update: {},
   });
