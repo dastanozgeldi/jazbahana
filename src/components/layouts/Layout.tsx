@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Avatar from "../Avatar";
 
 type LayoutProps = { children: React.ReactNode };
 type NavbarProps = { session: Session | null };
@@ -71,13 +72,7 @@ const Navbar = ({ session }: NavbarProps) => {
             <>
               <Link href={`/users/${session.user?.id}`}>
                 <a>
-                  <img
-                    alt="user avatar"
-                    src={session.user?.image || "/default-avatar.png"}
-                    className="rounded-full border border-teal-400"
-                    width={36}
-                    height={36}
-                  />
+                  <Avatar src={session.user?.image} size={36} />
                 </a>
               </Link>
             </>

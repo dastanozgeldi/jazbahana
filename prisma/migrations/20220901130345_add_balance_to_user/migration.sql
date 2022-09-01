@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "balance" INTEGER NOT NULL DEFAULT 300;

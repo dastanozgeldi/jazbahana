@@ -83,6 +83,7 @@ model User {
     email         String?               @unique
     emailVerified DateTime?
     image         String?
+    balance       Int                   @default(300)
     accounts      Account[]
     sessions      Session[]
     rooms         ParticipantsInRooms[]

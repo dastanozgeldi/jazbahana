@@ -11,6 +11,7 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   authorImage: true,
   createdAt: true,
   updatedAt: true,
+  participants: true,
   authorId: true,
   topicId: true,
 });
@@ -59,6 +60,22 @@ export const roomRouter = createRouter()
         });
       }
       return room;
+    },
+  })
+  .query("byTopicId", {
+    input: z.object({
+      topicId: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { topicId } = input;
+      const rooms = await ctx.prisma.room.findMany({ where: { topicId } });
+      if (!rooms) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No rooms for topic id ${topicId}`,
+        });
+      }
+      return rooms;
     },
   })
   .mutation("edit", {

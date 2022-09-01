@@ -12,6 +12,8 @@ import {
   TOPIC,
 } from "../styles";
 import { trpc } from "../utils/trpc";
+import { IoAdd, IoPeople } from "react-icons/io5";
+import Avatar from "./Avatar";
 
 type RoomSectionProps = {
   session: Session | null;
@@ -49,10 +51,10 @@ export default function RoomsSection({
         {session && (
           <>
             <button
-              className={ACTION_BUTTON}
+              className={`${ACTION_BUTTON} flex items-center gap-2`}
               onClick={() => setAdding(!adding)}
             >
-              Add Room
+              <IoAdd className="w-6 h-6" /> Add Room
             </button>
           </>
         )}
@@ -191,13 +193,7 @@ export const Room = ({ data, topicsQuery }: RoomProps) => {
       <div className="flex items-center justify-between">
         <Link href={`/users/${data.authorId || "ghost"}`}>
           <a className="flex items-center gap-2 font-medium">
-            <img
-              src={data.authorImage || "/default-avatar.png"}
-              width={32}
-              height={32}
-              alt="avatar"
-              className="rounded-full"
-            />
+            <Avatar src={data.authorImage} size={32} />
             <span>{data.authorName || "ghost"}</span>
           </a>
         </Link>
@@ -207,7 +203,10 @@ export const Room = ({ data, topicsQuery }: RoomProps) => {
         <a className="max-w-max text-2xl font-semibold">{data.title}</a>
       </Link>
       <p className="text-gray-400">{data.description}</p>
-      <div className="my-2 flex justify-end">
+      <div className="my-2 flex justify-between">
+        <span className={`${TOPIC} flex items-center gap-2`}>
+          <IoPeople className="w-5 h-5" /> 0 participants
+        </span>
         {topic && (
           <span
             className={`${TOPIC} flex items-center gap-2`}
