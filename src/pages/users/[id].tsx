@@ -1,18 +1,18 @@
+import type { User } from "@prisma/client";
+import type { Session } from "next-auth";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
-import RoomsSection from "../../components/RoomsSection";
+import ReactMarkdown from "react-markdown";
 import { trpc } from "../../utils/trpc";
+import RoomsSection from "../../components/RoomsSection";
 import Page from "../../components/layouts/Page";
 import RecentActivity from "../../components/RecentActivity";
 import Topics from "../../components/Topics";
 import Avatar from "../../components/Avatar";
-import ReactMarkdown from "react-markdown";
 import H from "../../components/Highlight";
 import { ACTION_BUTTON, CARD, LABEL, TEXTAREA } from "../../styles";
-import { useRouter } from "next/router";
-import type { Session } from "next-auth";
-import { useForm } from "react-hook-form";
-import { User } from "@prisma/client";
-import { useState } from "react";
 
 export default function Profile() {
   const { query } = useRouter();

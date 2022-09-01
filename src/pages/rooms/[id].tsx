@@ -1,7 +1,9 @@
+import type { Room, Topic } from "@prisma/client";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import NextError from "next/error";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Page from "../../components/layouts/Page";
 import {
@@ -14,60 +16,16 @@ import {
 } from "../../styles";
 import { trpc } from "../../utils/trpc";
 
-type FormData = {
-  title: string;
-  description: string;
-  topicId: string;
-};
-
 const RoomViewPage = () => {
-  // Form
-  const { register, handleSubmit, reset } = useForm<FormData>();
   // Router
-  const { push, query } = useRouter();
-  const id = query.id as string;
+  const router = useRouter();
+  const id = router.query.id as string;
   // Session
   const { data: session } = useSession();
-  // States
-  const [title, setTitle] = useState<string | undefined>("");
-  const [description, setDescription] = useState<string | undefined>("");
-  const [topicId, setTopicId] = useState<string | null | undefined>("");
-  const [editing, setEditing] = useState(false);
   // tRPC
-  const utils = trpc.useContext();
   const roomQuery = trpc.useQuery(["room.byId", { id }]);
-  const { data: topics } = trpc.useQuery(["topic.all"]);
-  const editRoom = trpc.useMutation("room.edit", {
-    async onSuccess() {
-      await utils.invalidateQueries(["room.byId", { id }]);
-    },
-  });
-  const deleteRoom = trpc.useMutation("room.delete", {
-    async onSuccess() {
-      push("/feed");
-      await utils.invalidateQueries(["room.all"]);
-    },
-  });
   const { data: room } = roomQuery;
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await editRoom.mutateAsync({
-        id: room?.id || "",
-        data: {
-          title: title || "",
-          description: description || "",
-          topicId: topicId || "",
-        },
-      });
-    } catch {}
-  });
-
-  useEffect(() => {
-    setTitle(room?.title);
-    setDescription(room?.description);
-    setTopicId(room?.topicId);
-  }, []);
+  const { data: topics } = trpc.useQuery(["topic.all"]);
 
   // room fetch fail
   if (roomQuery.error) {
@@ -91,29 +49,86 @@ const RoomViewPage = () => {
         <p className="text-gray-400">
           Created {room.createdAt.toLocaleDateString("en-us")}
         </p>
-        <div className="flex gap-2 my-2">
-          {session?.user?.id === room.authorId && (
-            <>
-              <button
-                className={ACTION_BUTTON}
-                onClick={() => setEditing(!editing)}
-              >
-                Edit
-              </button>
-              <button
-                className={DELETE_BUTTON}
-                onClick={() => deleteRoom.mutate({ id })}
-              >
-                Delete
-              </button>
-            </>
-          )}
-        </div>
       </div>
 
       {/* Message Section using WebSockets */}
 
-      {/* Edit Room */}
+      <EditRoom data={room} topics={topics} session={session} router={router} />
+    </Page>
+  );
+};
+
+type EditRoomProps = {
+  data?: Room | null;
+  topics?: Topic[] | null;
+  session?: Session | null;
+  router: any;
+};
+
+type FormData = {
+  id: string;
+  title: string;
+  description: string;
+  topicId: string;
+};
+
+const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
+  const id = router.query.id as string;
+  const topic = topics?.find((t: Topic) => t.id === data?.topicId);
+  const [editing, setEditing] = useState(false);
+  // Form
+  const { register, handleSubmit } = useForm<FormData>();
+  // tRPC
+  const utils = trpc.useContext();
+  const editRoom = trpc.useMutation("room.edit", {
+    async onSuccess() {
+      await utils.invalidateQueries(["room.byId", { id }]);
+    },
+  });
+  const deleteRoom = trpc.useMutation("room.delete", {
+    async onSuccess() {
+      router.push("/feed");
+      await utils.invalidateQueries(["room.all"]);
+    },
+  });
+  // States
+  const [title, setTitle] = useState(data?.title);
+  const [description, setDescription] = useState(data?.description);
+  const [topicId, setTopicId] = useState(data?.topicId);
+
+  const onSubmit = handleSubmit(async () => {
+    try {
+      await editRoom.mutateAsync({
+        id: data?.id || "",
+        data: {
+          title: title || "",
+          description: description || "",
+          topicId: topicId || "",
+        },
+      });
+    } catch {}
+  });
+
+  return (
+    <>
+      <div className="flex gap-2 my-2">
+        {session?.user?.id === data?.authorId && (
+          <>
+            <button
+              className={ACTION_BUTTON}
+              onClick={() => setEditing(!editing)}
+            >
+              Edit
+            </button>
+            <button
+              className={DELETE_BUTTON}
+              onClick={() => deleteRoom.mutate({ id })}
+            >
+              Delete
+            </button>
+          </>
+        )}
+      </div>
       <div className={`my-10 flex items-center justify-center ${CARD}`}>
         <form hidden={!editing} className="w-[90%]" onSubmit={onSubmit}>
           <h2 className="text-center text-3xl font-bold mb-2">Edit Room</h2>
@@ -130,10 +145,10 @@ const RoomViewPage = () => {
               disabled={editRoom.isLoading}
             />
           </div>
-
+          {/* Description */}
           <div className="my-4">
             <label className={LABEL} htmlFor="description">
-              Subtitle:
+              Description:
             </label>
             <input
               id="description"
@@ -144,9 +159,9 @@ const RoomViewPage = () => {
               disabled={editRoom.isLoading}
             />
           </div>
-          {/* Topics */}
+          {/* Topic */}
           <div className="my-4">
-            <label className={LABEL} htmlFor="topic">
+            <label className={LABEL} htmlFor="topicId">
               Topic:
             </label>
             <select
@@ -155,29 +170,34 @@ const RoomViewPage = () => {
               className={INPUT_SELECT}
               onChange={(e) => setTopicId(e.currentTarget.value)}
             >
-              <option selected>Choose a topic</option>
+              {topic ? (
+                <option value={topic.id}>{topic.name}</option>
+              ) : (
+                <option selected>Choose a topic</option>
+              )}
               {topics &&
-                topics.map((t: any) => (
+                topics.map((t: Topic) => (
                   <option key={t.id} value={t.id}>
                     {t.name}
                   </option>
                 ))}
             </select>
           </div>
-
+          {/* Save */}
           <button
             className="py-2 px-4 rounded-md text-white bg-teal-400 hover:bg-teal-500 hover:duration-500"
-            type="submit"
+            onClick={() => console.log(topic)}
             disabled={editRoom.isLoading}
           >
             Save
           </button>
+          {/* Error occurred */}
           {editRoom.error && (
             <p style={{ color: "red" }}>{editRoom.error.message}</p>
           )}
         </form>
       </div>
-    </Page>
+    </>
   );
 };
 

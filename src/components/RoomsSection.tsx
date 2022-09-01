@@ -1,4 +1,4 @@
-import { Room as RoomType } from "@prisma/client";
+import type { Room as RoomType, Topic } from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
@@ -40,7 +40,7 @@ export default function RoomsSection({
 
   return (
     <div className="w-full">
-      <div className="flex justify-between px-2">
+      <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Rooms</h1>
           <span className="text-gray-400">
@@ -102,6 +102,7 @@ export const AddRoom = ({
       reset();
     },
   });
+
   const onSubmit = handleSubmit(async (data) => {
     try {
       await addRoom.mutateAsync({
@@ -131,7 +132,7 @@ export const AddRoom = ({
             disabled={addRoom.isLoading}
           />
         </div>
-        {/* Subtitle */}
+        {/* Description */}
         <div className="my-4">
           <label className={LABEL} htmlFor="description">
             Description:
@@ -144,7 +145,7 @@ export const AddRoom = ({
             disabled={addRoom.isLoading}
           />
         </div>
-        {/* Topics */}
+        {/* Topic */}
         <div>
           <label className={LABEL} htmlFor="topic">
             Topic:
@@ -157,7 +158,7 @@ export const AddRoom = ({
           >
             <option selected>Choose a topic</option>
             {data &&
-              data.map((t: any) => (
+              data.map((t: Topic) => (
                 <option key={t.id} value={t.id}>
                   {t.name}
                 </option>
@@ -183,7 +184,7 @@ export const AddRoom = ({
 
 export const Room = ({ data, topicsQuery }: RoomProps) => {
   const { data: topics } = topicsQuery;
-  const topic = topics.find((x: any) => x.id === data.topicId);
+  const topic = topics.find((t: Topic) => t.id === data.topicId);
 
   return (
     <article
