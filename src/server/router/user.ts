@@ -28,4 +28,20 @@ export const userRouter = createRouter()
       const { id } = input;
       return await ctx.prisma.user.findUnique({ where: { id } });
     },
+  })
+  .mutation("edit", {
+    input: z.object({
+      id: z.string().cuid(),
+      data: z.object({
+        bio: z.string().max(128),
+      }),
+    }),
+    async resolve({ ctx, input }) {
+      const { id, data } = input;
+      const user = await ctx.prisma.user.update({
+        where: { id },
+        data,
+      });
+      return user;
+    },
   });
