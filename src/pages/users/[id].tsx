@@ -35,6 +35,12 @@ const Profile = () => {
             <p className="text-lg">{roomsQuery.data?.length}</p>
           </div>
         </div>
+        {data?.bio && (
+          <div className="flex flex-col justify-center items-center">
+            <h2 className="text-xl font-medium">Bio:</h2>
+            <p className="text-lg">{data.bio}</p>
+          </div>
+        )}
       </div>
       {/* User Posts */}
       <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
