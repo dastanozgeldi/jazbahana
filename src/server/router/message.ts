@@ -53,6 +53,7 @@ export const messageRouter = createRouter()
   .mutation("add", {
     input: z.object({
       id: z.string().uuid().optional(),
+      roomId: z.string().uuid(),
       content: z.string().min(1),
     }),
     async resolve({ ctx, input }) {
@@ -89,15 +90,18 @@ export const messageRouter = createRouter()
   })
   .query("infinite", {
     input: z.object({
+      roomId: z.string().uuid(),
       cursor: z.date().nullish(),
       take: z.number().min(1).max(50).nullish(),
     }),
     async resolve({ ctx, input }) {
       const take = input.take ?? 10;
       const cursor = input.cursor;
+      // `roomId` is of type `string`
       // `cursor` is of type `Date | undefined`
       // `take` is of type `number | undefined`
       const page = await ctx.prisma.message.findMany({
+        where: { roomId: input.roomId },
         orderBy: { createdAt: "desc" },
         cursor: cursor
           ? {
