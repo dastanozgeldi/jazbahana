@@ -1,5 +1,6 @@
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
+import { wsLink, createWSClient } from "@trpc/client/links/wsLink";
 import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
@@ -30,6 +31,20 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
+const getEndingLink = () => {
+  if (typeof window === "undefined") {
+    return httpBatchLink({
+      url: `${process.env.APP_URL}/api/trpc`,
+    });
+  }
+  const client = createWSClient({
+    url: process.env.WS_URL || "ws://localhost:3001",
+  });
+  return wsLink<AppRouter>({
+    client,
+  });
+};
+
 export default withTRPC<AppRouter>({
   config() {
     /**
@@ -45,7 +60,7 @@ export default withTRPC<AppRouter>({
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchLink({ url }),
+        getEndingLink(),
       ],
       url,
       transformer: superjson,

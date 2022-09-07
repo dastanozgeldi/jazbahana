@@ -17,6 +17,33 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
 });
 
 export const roomRouter = createRouter()
+  .query("infinite", {
+    input: z.object({
+      cursor: z.date().nullish(),
+      limit: z.number().min(1).max(10).default(5),
+    }),
+    async resolve({ ctx, input }) {
+      const { limit, cursor } = input;
+      const items = await ctx.prisma.room.findMany({
+        orderBy: {
+          updatedAt: "desc",
+        },
+        cursor: cursor ? { updatedAt: cursor } : undefined,
+        take: limit + 1,
+      });
+      let prevCursor: typeof cursor | undefined = undefined;
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.updatedAt;
+      }
+
+      return {
+        items,
+        nextCursor,
+      };
+    },
+  })
   .mutation("add", {
     input: z.object({
       id: z.string().uuid().optional(),
@@ -28,6 +55,10 @@ export const roomRouter = createRouter()
       topicId: z.string().optional(),
     }),
     async resolve({ ctx, input }) {
+      await ctx.prisma.user.update({
+        data: { balance: { decrement: 100 } },
+        where: { id: input.authorId },
+      });
       const room = await ctx.prisma.room.create({
         data: input,
         select: defaultRoomSelect,

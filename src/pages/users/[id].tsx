@@ -16,52 +16,58 @@ import { ACTION_BUTTON, CARD, LABEL, TEXTAREA } from "../../styles";
 
 export default function Profile() {
   const { query } = useRouter();
+  const { data } = trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
   const { data: session } = useSession();
-  const roomsQuery = trpc.useQuery([
+  const { data: rooms } = trpc.useQuery([
     "user.rooms",
-    { id: query.id as string as string },
+    { id: query.id as string },
   ]);
-  const { data } = trpc.useQuery(["user.info", { id: query.id as string }]);
+  const { data: user } = trpc.useQuery([
+    "user.info",
+    { id: query.id as string },
+  ]);
 
   return (
     <Page title="Profile">
       {/* Header */}
       <div className="flex flex-col items-center justify-center">
-        <Avatar src={data?.image} size={100} />
-        <h1 className="text-4xl font-extrabold">{data?.name}</h1>
+        <Avatar src={user?.image} size={100} />
+        <h1 className="text-4xl font-extrabold">{user?.name}</h1>
         <div className="flex items-center gap-6 my-2">
           <div className="flex flex-col justify-center items-center">
             <h2 className="text-xl font-medium">
               <H>Balance:</H>
             </h2>
-            <p className="text-lg">{data?.balance}</p>
+            <p className="text-lg">{user?.balance}</p>
           </div>
           <div className="flex flex-col justify-center items-center">
             <h2 className="text-xl font-medium">
               <H>Rooms:</H>
             </h2>
-            <p className="text-lg">{roomsQuery.data?.length}</p>
+            <p className="text-lg">{rooms?.length}</p>
           </div>
         </div>
-        {data?.bio && (
+        {user?.bio && (
           <div className="my-4 flex flex-col justify-center items-center">
             <h2 className="text-xl font-medium">
               <H>Bio:</H>
             </h2>
             <p className="text-lg">
-              <ReactMarkdown>{data.bio}</ReactMarkdown>
+              <ReactMarkdown>{user.bio}</ReactMarkdown>
             </p>
           </div>
         )}
         {query.id === session?.user?.id && (
-          <EditProfile data={data} session={session} />
+          <EditProfile data={user} session={session} />
         )}
       </div>
       {/* User Posts */}
       <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
         {/* TODO: mates list w/ clickable profiles instead of topics */}
         <Topics />
-        <RoomsSection profilePage roomsQuery={roomsQuery} session={session} />
+        <RoomsSection profilePage data={data} session={session} />
         <RecentActivity />
       </div>
     </Page>
@@ -109,7 +115,7 @@ const EditProfile = ({ data, session }: EditProfileProps) => {
       <button className={ACTION_BUTTON} onClick={() => setEditing(!editing)}>
         Edit Profile
       </button>
-      <div className="w-full" hidden={!editing}>
+      <div className="max-w-[60ch] w-full" hidden={!editing}>
         <div className={`my-10 flex items-center justify-center ${CARD}`}>
           <form className="w-[90%]" onSubmit={onSubmit}>
             <h2 className="text-center text-3xl font-bold mb-2">

@@ -16,7 +16,7 @@ const Hero = () => {
         <p className="font-extrabold text-center text-3xl md:text-4xl">
           the way students connect
         </p>
-        <div className="flex items-center justify-around text-3xl md:text-4xl mt-16">
+        <div className="flex items-center justify-around text-3xl md:text-4xl mt-8">
           <a
             className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
             href="https://discord.gg/jgE2m4cnFj"
@@ -52,7 +52,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center xl:flex-row justify-between w-[90%] mt-16 gap-y-5">
+      <div className="flex flex-col items-center xl:flex-row justify-between w-[90%] mt-8 gap-y-5">
         <Card className="" href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes to serve such an
           important audience.

@@ -7,8 +7,6 @@ import Page from "../components/layouts/Page";
 
 const Feed = () => {
   const { data: session } = useSession();
-  const roomsQuery = trpc.useQuery(["room.all"]);
-
   return (
     <Page className="m-2" title="Feed">
       {/* Header */}
@@ -32,7 +30,7 @@ const Feed = () => {
         {/* Left Sidebar */}
         <Topics />
         {/* Rooms Section */}
-        <RoomsSection roomsQuery={roomsQuery} session={session} />
+        <RoomsSection session={session} />
         {/* Right Sidebar */}
         {/* TODO: replace activity w/ news, instead, put activity in the user profile */}
         <RecentActivity />

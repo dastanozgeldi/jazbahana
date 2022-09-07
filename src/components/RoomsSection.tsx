@@ -14,10 +14,10 @@ import {
 import { trpc } from "../utils/trpc";
 import { IoAdd, IoPeople } from "react-icons/io5";
 import Avatar from "./Avatar";
+import { useRouter } from "next/router";
 
 type RoomSectionProps = {
   session: Session | null;
-  roomsQuery: any;
   profilePage?: boolean;
 };
 
@@ -32,20 +32,33 @@ type RoomProps = { data: RoomType; topicsQuery: any };
 
 export default function RoomsSection({
   session,
-  roomsQuery,
   profilePage = false,
 }: RoomSectionProps) {
   const [adding, setAdding] = useState(false);
   const topicsQuery = trpc.useQuery(["topic.all"]);
+  const { push, query } = useRouter();
+  const page = query.page ? Number(query.page) - 1 : 0;
+
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+  } = trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getPreviousPageParam: () => page - 1,
+  });
+  const rooms = data?.pages[page]?.items;
 
   return (
     <div className="w-full">
       <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Rooms</h1>
-          <span className="text-gray-400">
-            {roomsQuery.data?.length} available
-          </span>
+          <span className="text-gray-400">{rooms?.length} available</span>
         </div>
 
         {session && (
@@ -68,9 +81,26 @@ export default function RoomsSection({
         />
       )}
 
-      {roomsQuery.data?.map((room: RoomType) => (
+      {rooms?.map((room: RoomType) => (
         <Room key={room.id} topicsQuery={topicsQuery} data={room} />
       ))}
+      {/* Pagination */}
+      {data?.pages && data?.pages.length > 0 && (
+        <div className="flex justify-between">
+          <button
+            onClick={() => fetchPreviousPage()}
+            className={ACTION_BUTTON}
+          >
+            previous page
+          </button>
+          <button
+            onClick={() => fetchNextPage()}
+            className={ACTION_BUTTON}
+          >
+            next page
+          </button>
+        </div>
+      )}
     </div>
   );
 }

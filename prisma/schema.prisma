@@ -14,6 +14,22 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Message {
+    id          String   @id @default(uuid())
+    content     String
+    // To return `Date`s intact through the API we need to add data transformers
+    // https://trpc.io/docs/data-transformers
+    createdAt   DateTime @unique @default(now())
+    updatedAt   DateTime @unique @default(now())
+    // Foreign keys
+    author      User?    @relation(fields: [authorId], references: [id])
+    authorId    String?
+    authorName  String?
+    authorImage String?
+    room        Room?    @relation(fields: [roomId], references: [id])
+    roomId      String?
+}
+
 model ParticipantsInRooms {
     Room       Room     @relation(fields: [roomId], references: [id])
     roomId     String
@@ -28,7 +44,7 @@ model Topic {
     id        String   @id @default(uuid())
     name      String
     image     String?
-    createdAt DateTime @default(now())
+    createdAt DateTime @unique @default(now())
     rooms     Room[]
 }
 
@@ -40,14 +56,15 @@ model Room {
     authorImage  String?
     // To return `Date`s intact through the API we need to add data transformers
     // https://trpc.io/docs/data-transformers
-    createdAt    DateTime              @default(now())
-    updatedAt    DateTime              @default(now()) @updatedAt
+    createdAt    DateTime              @unique @default(now())
+    updatedAt    DateTime              @unique @default(now()) @updatedAt
     // Foreign keys
     participants ParticipantsInRooms[]
     Author       User?                 @relation(fields: [authorId], references: [id])
     authorId     String?
     topic        Topic?                @relation(fields: [topicId], references: [id])
     topicId      String?
+    messages     Message[]
 }
 
 // Necessary for Next auth
@@ -91,6 +108,7 @@ model User {
     Room          Room[]
     mates         User[]                @relation("mates")
     matesRelation User[]                @relation("mates")
+    messages      Message[]
 }
 
 model VerificationToken {
