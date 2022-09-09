@@ -1,9 +1,8 @@
 import { useSession } from "next-auth/react";
-import RecentActivity from "../components/RecentActivity";
 import RoomsSection from "../components/RoomsSection";
 import Topics from "../components/Topics";
-import { trpc } from "../utils/trpc";
 import Page from "../components/layouts/Page";
+import News from "components/News";
 
 const Feed = () => {
   const { data: session } = useSession();
@@ -32,8 +31,7 @@ const Feed = () => {
         {/* Rooms Section */}
         <RoomsSection session={session} />
         {/* Right Sidebar */}
-        {/* TODO: replace activity w/ news, instead, put activity in the user profile */}
-        <RecentActivity />
+        <News />
       </div>
     </Page>
   );
