@@ -44,7 +44,6 @@ export default function RoomViewPage() {
     return msgs;
   });
   type Message = NonNullable<typeof messages>[number];
-  const userName = session?.user?.name;
   const scrollTargetRef = useRef<HTMLDivElement>(null);
 
   // fn to add and dedupe new messages onto state

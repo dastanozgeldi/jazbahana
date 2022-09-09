@@ -1,23 +1,16 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createRouter } from "./context";
 
 export const userRouter = createRouter()
-  .query("rooms", {
+  .query("recentRoom", {
     input: z.object({ id: z.string() }),
     async resolve({ ctx, input }) {
       const { id } = input;
-      const rooms = await ctx.prisma.room.findMany({
+      const room = await ctx.prisma.room.findFirst({
         where: { authorId: id },
-        orderBy: { updatedAt: "desc" },
+        include: { topic: true },
       });
-      if (!rooms) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User has no posts",
-        });
-      }
-      return rooms;
+      return room;
     },
   })
   .query("info", {
@@ -26,7 +19,10 @@ export const userRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { id } = input;
-      return await ctx.prisma.user.findUnique({ where: { id } });
+      return await ctx.prisma.user.findUnique({
+        where: { id },
+        include: { rooms: true },
+      });
     },
   })
   .mutation("edit", {
