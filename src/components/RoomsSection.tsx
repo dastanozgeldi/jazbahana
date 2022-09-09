@@ -116,11 +116,7 @@ export const AddRoom = ({
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
       // refetches all rooms after successful add
-      if (profilePage) {
-        await utils.invalidateQueries(["user.rooms"]);
-      } else {
-        await utils.invalidateQueries(["room.all"]);
-      }
+      await utils.invalidateQueries(["room.infinite"]);
       reset();
     },
   });

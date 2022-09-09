@@ -6,68 +6,100 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
 import { trpc } from "../../utils/trpc";
-import RoomsSection from "../../components/RoomsSection";
 import Page from "../../components/layouts/Page";
 import RecentActivity from "../../components/RecentActivity";
 import Topics from "../../components/Topics";
 import Avatar from "../../components/Avatar";
 import H from "../../components/Highlight";
-import { ACTION_BUTTON, CARD, LABEL, TEXTAREA } from "../../styles";
+import { ACTION_BUTTON, CARD, LABEL, TEXTAREA, TOPIC } from "../../styles";
+import Link from "next/link";
+import { IoPeople } from "react-icons/io5";
 
 export default function Profile() {
   const { query } = useRouter();
-  const { data } = trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
+  const id = query.id as string;
   const { data: session } = useSession();
-  const { data: rooms } = trpc.useQuery([
-    "user.rooms",
-    { id: query.id as string },
-  ]);
-  const { data: user } = trpc.useQuery([
-    "user.info",
-    { id: query.id as string },
-  ]);
+  // tRPC
+  const { data, status } = trpc.useQuery(["user.recentRoom", { id }]);
+  const { data: user } = trpc.useQuery(["user.info", { id }]);
 
+  if (!data || status !== "success") {
+    return <>Loading...</>;
+  }
   return (
     <Page title="Profile">
-      {/* Header */}
-      <div className="flex flex-col items-center justify-center">
-        <Avatar src={user?.image} size={100} />
-        <h1 className="text-4xl font-extrabold">{user?.name}</h1>
-        <div className="flex items-center gap-6 my-2">
-          <div className="flex flex-col justify-center items-center">
-            <h2 className="text-xl font-medium">
-              <H>Balance:</H>
-            </h2>
-            <p className="text-lg">{user?.balance}</p>
-          </div>
-          <div className="flex flex-col justify-center items-center">
-            <h2 className="text-xl font-medium">
-              <H>Rooms:</H>
-            </h2>
-            <p className="text-lg">{rooms?.length}</p>
-          </div>
-        </div>
-        {user?.bio && (
-          <div className="my-4 flex flex-col justify-center items-center">
-            <h2 className="text-xl font-medium">
-              <H>Bio:</H>
-            </h2>
-            <p className="text-lg">
-              <ReactMarkdown>{user.bio}</ReactMarkdown>
-            </p>
-          </div>
-        )}
-        {query.id === session?.user?.id && (
-          <EditProfile data={user} session={session} />
-        )}
-      </div>
-      {/* User Posts */}
       <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
         {/* TODO: mates list w/ clickable profiles instead of topics */}
         <Topics />
-        <RoomsSection profilePage data={data} session={session} />
+        {/* Header */}
+        <div className="flex flex-col items-center justify-center">
+          <Avatar src={user?.image} size={100} />
+          <h1 className="text-4xl font-extrabold">{user?.name}</h1>
+          <div className="flex items-center gap-6 my-2">
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-xl font-medium">
+                <H>Balance:</H>
+              </h2>
+              <p className="text-lg">{user?.balance}</p>
+            </div>
+            <div className="flex flex-col justify-center items-center">
+              <h2 className="text-xl font-medium">
+                <H>Rooms:</H>
+              </h2>
+              <p className="text-lg">{user?.rooms.length}</p>
+            </div>
+          </div>
+          {user?.bio && (
+            <div className="my-4 flex flex-col justify-center items-center">
+              <h2 className="text-xl font-medium">
+                <H>Bio:</H>
+              </h2>
+              <p className="text-lg">
+                <ReactMarkdown>{user.bio}</ReactMarkdown>
+              </p>
+            </div>
+          )}
+          {query.id === session?.user?.id && (
+            <EditProfile data={user} session={session} />
+          )}
+          <h2 className="text-xl font-medium">
+            <H>Last Room:</H>
+          </h2>
+          <article
+            className="w-full my-2 flex gap-2 flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl"
+            key={data.id}
+          >
+            <div className="flex items-center justify-between">
+              <Link href={`/users/${data.authorId || "ghost"}`}>
+                <a className="flex items-center gap-2 font-medium">
+                  <Avatar src={data.authorImage} size={32} />
+                  <span>{data.authorName || "ghost"}</span>
+                </a>
+              </Link>
+              <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
+            </div>
+            <Link href={`/rooms/${data.id}`}>
+              <a className="max-w-max text-2xl font-semibold">{data.title}</a>
+            </Link>
+            <p className="text-gray-400">{data.description}</p>
+            <div className="my-2 flex justify-between">
+              <span className={`${TOPIC} flex items-center gap-2`}>
+                <IoPeople className="w-5 h-5" /> 0 participants
+              </span>
+              {data.topic && (
+                <span
+                  className={`${TOPIC} flex items-center gap-2`}
+                  key={data.topicId}
+                >
+                  {data.topic.image && (
+                    <img src={data.topic.image} className="w-4 h-4" />
+                  )}
+                  {data.topic.name}
+                </span>
+              )}
+            </div>
+          </article>
+        </div>
         <RecentActivity />
       </div>
     </Page>
