@@ -148,15 +148,15 @@ export default function RoomViewPage() {
                 : "Nothing more to load"}
             </button>
             <div className="space-y-4">
-              {messages?.map((item) => (
+              {messages?.map((item: any) => (
                 <article key={item.id} className=" text-gray-50">
                   <header className="flex items-center space-x-2 text-sm">
-                    <Avatar size={28} src={item.authorImage} />
-                    <h3 className="text-md">
-                      <Link href={`/${item.authorId || "ghost"}`}>
-                        <a>{item.authorName}</a>
-                      </Link>
-                    </h3>
+                    <Link href={`/users/${item.authorId || "ghost"}`}>
+                      <a className="flex items-center gap-1">
+                        <Avatar size={28} src={item.authorImage} />
+                        <h3 className="text-md">{item.authorName}</h3>
+                      </a>
+                    </Link>
                     <span className="text-gray-500">
                       {new Intl.DateTimeFormat("en-GB", {
                         dateStyle: "short",

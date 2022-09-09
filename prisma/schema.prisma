@@ -14,6 +14,19 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model News {
+    id          String   @id @default(uuid())
+    title       String
+    description String
+    views       Int      @default(0)
+    // Render w/ Markdown
+    content     String
+    // To return `Date`s intact through the API we need to add data transformers
+    // https://trpc.io/docs/data-transformers
+    createdAt   DateTime @unique @default(now())
+    updatedAt   DateTime @unique @default(now())
+}
+
 model Message {
     id          String   @id @default(uuid())
     content     String

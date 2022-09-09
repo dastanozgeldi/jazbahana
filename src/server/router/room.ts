@@ -25,13 +25,14 @@ export const roomRouter = createRouter()
     async resolve({ ctx, input }) {
       const { limit, cursor } = input;
       const items = await ctx.prisma.room.findMany({
+        select: defaultRoomSelect,
         orderBy: {
           updatedAt: "desc",
         },
         cursor: cursor ? { updatedAt: cursor } : undefined,
         take: limit + 1,
       });
-      let prevCursor: typeof cursor | undefined = undefined;
+      // let prevCursor: typeof cursor | undefined = undefined;
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
