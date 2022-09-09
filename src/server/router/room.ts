@@ -42,6 +42,49 @@ export const roomRouter = createRouter()
       return { items, nextCursor };
     },
   })
+  .query("infiniteByTopicId", {
+    input: z.object({
+      cursor: z.date().nullish(),
+      limit: z.number().min(1).max(10).default(5),
+      topicId: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { limit, cursor, topicId } = input;
+      const items = await ctx.prisma.room.findMany({
+        select: defaultRoomSelect,
+        orderBy: {
+          updatedAt: "desc",
+        },
+        cursor: cursor ? { updatedAt: cursor } : undefined,
+        take: limit + 1,
+        where: { topicId },
+      });
+      // let prevCursor: typeof cursor | undefined = undefined;
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop();
+        nextCursor = nextItem!.updatedAt;
+      }
+
+      return { items, nextCursor };
+    },
+  })
+  .query("byTopicId", {
+    input: z.object({
+      topicId: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { topicId } = input;
+      const rooms = await ctx.prisma.room.findMany({ where: { topicId } });
+      if (!rooms) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No rooms for topic id ${topicId}`,
+        });
+      }
+      return rooms;
+    },
+  })
   .mutation("add", {
     input: z.object({
       id: z.string().uuid().optional(),
@@ -89,22 +132,6 @@ export const roomRouter = createRouter()
         });
       }
       return room;
-    },
-  })
-  .query("byTopicId", {
-    input: z.object({
-      topicId: z.string().uuid(),
-    }),
-    async resolve({ ctx, input }) {
-      const { topicId } = input;
-      const rooms = await ctx.prisma.room.findMany({ where: { topicId } });
-      if (!rooms) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: `No rooms for topic id ${topicId}`,
-        });
-      }
-      return rooms;
     },
   })
   .mutation("edit", {

@@ -36,13 +36,23 @@ export default function RoomsSection({
 }: RoomSectionProps) {
   const [adding, setAdding] = useState(false);
   const topicsQuery = trpc.useQuery(["topic.all"]);
-  const { push, query } = useRouter();
+  const { query } = useRouter();
   const page = query.page ? Number(query.page) - 1 : 0;
 
-  const { data } = trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    getPreviousPageParam: () => page - 1,
-  });
+  const topicId = query.topicId as string;
+
+  const { data } = topicId
+    ? trpc.useInfiniteQuery(
+        ["room.infiniteByTopicId", { limit: 10, topicId }],
+        {
+          getNextPageParam: (lastPage) => lastPage.nextCursor,
+          getPreviousPageParam: () => page - 1,
+        }
+      )
+    : trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        getPreviousPageParam: () => page - 1,
+      });
   const rooms = data?.pages[page]?.items;
 
   return (
