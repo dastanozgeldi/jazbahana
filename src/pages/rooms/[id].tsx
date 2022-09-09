@@ -148,7 +148,7 @@ export default function RoomViewPage() {
                 : "Nothing more to load"}
             </button>
             <div className="space-y-4">
-              {messages?.map((item: any) => (
+              {messages?.map((item) => (
                 <article key={item.id} className=" text-gray-50">
                   <header className="flex items-center space-x-2 text-sm">
                     <Link href={`/users/${item.authorId || "ghost"}`}>

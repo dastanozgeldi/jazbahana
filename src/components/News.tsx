@@ -14,7 +14,7 @@ const News = () => {
         data.map((item) => (
           <div key={item.id} className={CARD}>
             <h2 className="text-xl">{item.title}</h2>
-            <p>{item.description}</p>
+            <p className="text-gray-400">{item.description}</p>
             <div className="w-full flex items-center justify-between">
               <p className="font-semibold">{item.views} views</p>
               <Link href={`/news/${item.id}`}>

@@ -24,7 +24,7 @@ export const roomRouter = createRouter()
     }),
     async resolve({ ctx, input }) {
       const { limit, cursor } = input;
-      const items: any = await ctx.prisma.room.findMany({
+      const items = await ctx.prisma.room.findMany({
         select: defaultRoomSelect,
         orderBy: {
           updatedAt: "desc",
@@ -39,10 +39,7 @@ export const roomRouter = createRouter()
         nextCursor = nextItem!.updatedAt;
       }
 
-      return {
-        items,
-        nextCursor,
-      };
+      return { items, nextCursor };
     },
   })
   .mutation("add", {
