@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Avatar from "../Avatar";
+import SocialLinks from '../SocialLinks'
 
 type LayoutProps = { children: React.ReactNode };
 type NavbarProps = { session: Session | null };
@@ -42,6 +43,7 @@ export default function Layout({ children }: LayoutProps) {
       </Head>
       <Navbar session={session} />
       <main className="p-4">{children}</main>
+      <Footer />
     </>
   );
 }
@@ -107,6 +109,16 @@ const Navbar = ({ session }: NavbarProps) => {
         {open && <HamburgerMenu session={session} />}
       </div>
     </nav>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="flex flex-col justify-center items-center text-gray-500 p-10">
+      <div><Link href="/feed">Feed</Link></div>
+      <div><SocialLinks size="text-xl md:text-2xl gap-6"/></div>
+      <div><h1>&copy; 2022 Jolshylar, Inc. All rights reserved</h1></div>
+    </footer>
   );
 };
 
