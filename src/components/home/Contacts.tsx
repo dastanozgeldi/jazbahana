@@ -24,7 +24,6 @@ const Contacts = () => {
           Contact Us
         </h1>
         <div className={`${CARD} max-w-[60ch] mx-auto`}>
-          {/* TODO: add more ways to contact */}
           <form onSubmit={onSubmit}>
             <h1 className="text-center text-3xl font-bold mb-4">
               Send feedback

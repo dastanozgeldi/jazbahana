@@ -9,7 +9,7 @@ const News = () => {
 
   return (
     <div className="hidden md:block">
-      <h1 className="text-2xl font-semibold">News</h1>
+      <h1 className="text-2xl font-semibold text-center">News</h1>
       {data &&
         data.map((item) => (
           <div key={item.id} className={CARD}>

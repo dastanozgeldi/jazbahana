@@ -46,7 +46,7 @@ export default function Profile() {
               <h2 className="text-xl font-medium">
                 <H>Rooms:</H>
               </h2>
-              <p className="text-lg">{user?.rooms.length}</p>
+              <p className="text-lg">{user?.Room.length}</p>
             </div>
           </div>
           {user?.bio && (
@@ -62,7 +62,7 @@ export default function Profile() {
           {query.id === session?.user?.id && (
             <EditProfile data={user} session={session} />
           )}
-          <h2 className="text-xl font-medium">
+          <h2 className="text-xl font-medium mt-4">
             <H>Last Room:</H>
           </h2>
           <article
@@ -176,7 +176,7 @@ const EditProfile = ({ data, session }: EditProfileProps) => {
             </button>
 
             {editProfile.error && (
-              <p style={{ color: "red" }}>{editProfile.error.message}</p>
+              <p className="text-red-500">{editProfile.error.message}</p>
             )}
           </form>
         </div>

@@ -21,7 +21,7 @@ export const userRouter = createRouter()
       const { id } = input;
       return await ctx.prisma.user.findUnique({
         where: { id },
-        include: { rooms: true },
+        include: { rooms: true, Room: true },
       });
     },
   })
