@@ -125,7 +125,7 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
           </a>
         </Link>
       ) : (
-        <button onClick={() => signIn()}>Sign in</button>
+        <a className="p-4 rounded-b-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500" onClick={() => signIn()}>Sign in</a>
       )}
     </div>
   );
