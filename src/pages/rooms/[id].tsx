@@ -31,30 +31,27 @@ export default function RoomViewPage() {
   if (!room || roomQuery.status !== "success") return <>Loading...</>;
   return (
     <Page title={room.title} className="max-w-[60ch] mx-auto">
-      <div className="my-8 md:grid md:grid-cols-3 md:justify-items-center">
-        {/* Left Side */}
-        <Participants roomId={id} />
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-extrabold">{room.title}</h1>
-          <p className="my-2">{room.description}</p>
-          <div className="flex items-center justify-between my-2">
-            <p className="text-gray-400">
-              Created {room.createdAt.toLocaleDateString("en-us")}
-            </p>
-          </div>
-          <EditRoom
-            data={room}
-            topics={topics}
-            session={session}
-            router={router}
-          />
-          <Messages roomId={id} session={session} />
+      {/* Header */}
+      <div>
+        <h1 className="text-4xl font-extrabold">{room.title}</h1>
+        <p className="my-2">{room.description}</p>
+        <div className="flex items-center justify-between my-2">
+          <p className="text-gray-400">
+            Created {room.createdAt.toLocaleDateString("en-us")}
+          </p>
         </div>
-        {/* TODO: find something to put on the right side */}
-        {/* I'm thinking of a separate notes chat */}
-        {/* where we upload files to storage, I hope */}
+        <Participants roomId={id} />
+        <EditRoom
+          data={room}
+          topics={topics}
+          session={session}
+          router={router}
+        />
+        <Messages roomId={id} session={session} />
       </div>
+      {/* TODO: find something to put on the right side */}
+      {/* I'm thinking of a separate notes chat */}
+      {/* where we upload files to storage, I hope */}
     </Page>
   );
 }

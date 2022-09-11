@@ -25,12 +25,10 @@ const Feed = () => {
           </a>
         </p>
       </div>
+      {/* Main Feed */}
       <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
-        {/* Left Sidebar */}
         <Topics />
-        {/* Rooms Section */}
         <RoomsSection session={session} />
-        {/* Right Sidebar */}
         <News />
       </div>
     </Page>

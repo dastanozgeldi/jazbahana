@@ -99,7 +99,7 @@ export default function EditRoom({
           </>
         )}
       </div>
-      <div className={`my-10 flex items-center justify-center ${CARD}`}>
+      <div className={`my-4 flex items-center justify-center ${CARD}`}>
         <form hidden={!editing} className="w-[90%]" onSubmit={onSubmit}>
           <h2 className="text-center text-3xl font-bold mb-2">Edit Room</h2>
           <div>
