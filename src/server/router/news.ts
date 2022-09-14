@@ -4,7 +4,7 @@ import { createRouter } from "./context";
 export const newsRouter = createRouter()
   .query("all", {
     resolve({ ctx }) {
-      return ctx.prisma.news.findMany();
+      return ctx.prisma.news.findMany({ orderBy: { updatedAt: "desc" } });
     },
   })
   .query("byId", {

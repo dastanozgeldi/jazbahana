@@ -69,6 +69,9 @@ const Navbar = ({ session }: NavbarProps) => {
           <Link href="/feed">
             <a>Feed</a>
           </Link>
+          <a href="https://tapsyr.dosek.xyz/" target="_blank" rel="noreferrer">
+            Tasks
+          </a>
           {session ? (
             <>
               <Link href={`/users/${session.user?.id}`}>
@@ -118,6 +121,9 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
           Feed
         </a>
       </Link>
+      <a className="rounded-t-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
+        Feed
+      </a>
       {session ? (
         <Link href={`/users/${session.user?.id}`}>
           <a className="rounded-b-md p-4 hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500">
@@ -125,7 +131,12 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
           </a>
         </Link>
       ) : (
-        <a className="p-4 rounded-b-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500" onClick={() => signIn()}>Sign in</a>
+        <a
+          className="p-4 rounded-b-md hover:bg-gray-100 dark:hover:bg-gray-700 hover:duration-500"
+          onClick={() => signIn()}
+        >
+          Sign in
+        </a>
       )}
     </div>
   );
