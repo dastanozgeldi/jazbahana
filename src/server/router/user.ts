@@ -20,14 +20,6 @@ const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
 });
 
 export const userRouter = createRouter()
-  .query("recentRoom", {
-    input: z.object({ id: z.string() }),
-    async resolve({ ctx, input }) {
-      const { id } = input;
-      const room = await ctx.prisma.room.findFirst({ where: { authorId: id } });
-      return room;
-    },
-  })
   .query("info", {
     input: z.object({
       id: z.string().cuid(),
