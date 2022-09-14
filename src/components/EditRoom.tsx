@@ -50,7 +50,14 @@ export default function EditRoom({
       await utils.invalidateQueries(["room.all"]);
     },
   });
-  const joinRoom = trpc.useMutation("participant.join");
+  const joinRoom = trpc.useMutation("participant.join", {
+    async onSuccess() {
+      await utils.invalidateQueries([
+        "participant.hasJoined",
+        { roomId: id, userId: session?.user?.id || "" },
+      ]);
+    },
+  });
   // States
   const [title, setTitle] = useState(data?.title);
   const [description, setDescription] = useState(data?.description);

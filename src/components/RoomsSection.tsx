@@ -1,4 +1,8 @@
-import type { Room as RoomType, Topic } from "@prisma/client";
+import type {
+  ParticipantsInRooms,
+  Room as RoomType,
+  Topic,
+} from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { useState } from "react";
@@ -28,7 +32,10 @@ type AddRoomProps = {
   topicsQuery: any;
 };
 
-type RoomProps = { data: RoomType; topicsQuery: any };
+type RoomProps = {
+  data: RoomType & { participants: ParticipantsInRooms[] };
+  topicsQuery: any;
+};
 
 export default function RoomsSection({
   session,
@@ -83,7 +90,7 @@ export default function RoomsSection({
         />
       )}
 
-      {rooms?.map((room: RoomType) => (
+      {rooms?.map((room) => (
         <Room key={room.id} topicsQuery={topicsQuery} data={room} />
       ))}
       {/* Pagination */}
@@ -224,7 +231,8 @@ export const Room = ({ data, topicsQuery }: RoomProps) => {
       <p className="text-gray-400">{data.description}</p>
       <div className="my-2 flex justify-between">
         <span className={`${TOPIC} flex items-center gap-2`}>
-          <IoPeople className="w-5 h-5" /> 0 participants
+          <IoPeople className="w-5 h-5" />
+          {data.participants.length} participants
         </span>
         {topic && (
           <span

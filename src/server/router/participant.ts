@@ -26,4 +26,17 @@ export const participantRouter = createRouter()
       });
       return room;
     },
+  })
+  .query("hasJoined", {
+    input: z.object({
+      userId: z.string().cuid(),
+      roomId: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { userId, roomId } = input;
+      const user = await ctx.prisma.participantsInRooms.findUnique({
+        where: { roomId_userId: { roomId, userId } },
+      });
+      return user ? true : false;
+    },
   });

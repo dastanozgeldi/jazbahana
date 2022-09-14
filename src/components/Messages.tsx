@@ -102,7 +102,10 @@ export default function Messages({
           </button>
           <div className="space-y-4">
             {messages?.map((item) => (
-              <article key={item.id} className="text-gray-800 dark:text-gray-100">
+              <article
+                key={item.id}
+                className="text-gray-800 dark:text-gray-100"
+              >
                 <header className="flex items-center space-x-2 text-sm">
                   <Link href={`/users/${item.authorId || "ghost"}`}>
                     <a className="flex items-center gap-1">
@@ -151,6 +154,10 @@ export const AddMessageForm = ({
   session: Session | null;
   onMessagePost: () => void;
 }) => {
+  const { data: hasUserJoined } = trpc.useQuery([
+    "participant.hasJoined",
+    { roomId, userId: session?.user?.id || "" },
+  ]);
   const addMessage = trpc.useMutation("message.add");
   const utils = trpc.useContext();
   const [message, setMessage] = useState("");
@@ -205,6 +212,7 @@ export const AddMessageForm = ({
           <div className="flex rounded bg-gray-700 px-3 py-2 text-lg text-gray-200 w-full items-end">
             <textarea
               value={message}
+              disabled={!hasUserJoined}
               onChange={(e) => setMessage(e.target.value)}
               className="bg-transparent outline-none flex-1 outline-0"
               rows={message.split(/\r|\n/).length}
@@ -232,11 +240,12 @@ export const AddMessageForm = ({
                 });
               }}
             />
-            <div>
-              <button type="submit" className="px-4 bg-indigo-500 rounded py-1">
-                Submit
-              </button>
-            </div>
+            <button
+              disabled={!hasUserJoined}
+              className="px-4 bg-indigo-500 rounded py-1 disabled:bg-gray-500"
+            >
+              Submit
+            </button>
           </div>
         </fieldset>
         {addMessage.error && (

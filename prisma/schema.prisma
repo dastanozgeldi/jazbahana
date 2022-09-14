@@ -115,6 +115,9 @@ model User {
     image         String?
     balance       Int                   @default(300)
     bio           String?
+    school        School?               @relation(fields: [schoolId], references: [id])
+    schoolId      String?
+    grade         String?
     accounts      Account[]
     sessions      Session[]
     rooms         ParticipantsInRooms[]
@@ -122,6 +125,16 @@ model User {
     mates         User[]                @relation("mates")
     matesRelation User[]                @relation("mates")
     messages      Message[]
+}
+
+model School {
+    id        String   @id @default(uuid())
+    name      String
+    students  User[]
+    // To return `Date`s intact through the API we need to add data transformers
+    // https://trpc.io/docs/data-transformers
+    createdAt DateTime @unique @default(now())
+    updatedAt DateTime @unique @default(now()) @updatedAt
 }
 
 model VerificationToken {
