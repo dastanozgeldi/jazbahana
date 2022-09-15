@@ -43,18 +43,10 @@ const Navbar = () => {
 
       <div className="flex items-center gap-2 text-xl">
         <div className="hidden sm:flex gap-2 items-center justify-around text-3xl md:text-4xl">
-          <a
-            href="https://discord.gg/jgE2m4cnFj"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://discord.gg/jgE2m4cnFj">
             <IoLogoDiscord size={32} />
           </a>
-          <a
-            href="https://github.com/jolshylar"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a href="https://github.com/Dositan/jazbahana">
             <IoLogoGithub size={32} />
           </a>
           {session ? (
