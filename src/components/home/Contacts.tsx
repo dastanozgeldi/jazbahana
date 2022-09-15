@@ -11,7 +11,7 @@ const Contacts = () => {
 
   const onSubmit = handleSubmit((data) => {
     console.log({ ...data });
-    // send email
+    // TODO: send email
   });
 
   return (

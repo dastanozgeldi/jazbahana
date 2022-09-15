@@ -1,10 +1,27 @@
-import Card from "../Card";
-import {
-  IoLogoGithub,
-  IoLogoTwitter,
-  IoLogoInstagram,
-  IoLogoDiscord,
-} from "react-icons/io5";
+import Link from "next/link";
+import { AiOutlineArrowRight } from "react-icons/ai";
+import { CARD } from "styles";
+
+type CardProps = {
+  title: string;
+  children: React.ReactNode;
+  href: string;
+  className?: string;
+};
+
+const Card = ({ children, title, href, className = "" }: CardProps) => {
+  return (
+    <div className={`${CARD} w-[300px] h-[200px] text-center ${className}`}>
+      <h1 className="text-yellow-500 text-2xl font-semibold">{title}</h1>
+      <p>{children}</p>
+      <Link href={href}>
+        <a>
+          <AiOutlineArrowRight className="w-7 h-7" />
+        </a>
+      </Link>
+    </div>
+  );
+};
 
 const Hero = () => {
   return (
@@ -16,53 +33,19 @@ const Hero = () => {
         <p className="font-extrabold text-center text-3xl md:text-4xl">
           the way students connect
         </p>
-        <div className="flex items-center justify-around text-3xl md:text-4xl mt-8">
-          <a
-            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
-            href="https://discord.gg/jgE2m4cnFj"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <IoLogoDiscord />
-          </a>
-          <a
-            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
-            href="https://github.com/jolshylar"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <IoLogoGithub />
-          </a>
-          <a
-            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
-            href="https:///instagram.com/jolshylar"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <IoLogoInstagram />
-          </a>
-          <a
-            className="p-3 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
-            href="https://twitter.com/jolshylar"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <IoLogoTwitter />
-          </a>
-        </div>
       </div>
 
-      <div className="flex flex-col items-center xl:flex-row justify-between w-[90%] mt-8 gap-y-5">
-        <Card className="" href="#about" title="About Jazbahana">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
+        <Card href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes to serve such an
           important audience.
         </Card>
 
-        <Card className="" href="#features" title="Features">
+        <Card href="#features" title="Features">
           what Jazbahana offers, the benefits of using it and many more.
         </Card>
 
-        <Card className="" href="#contacts" title="Contacts">
+        <Card href="#contacts" title="Contacts">
           ways to connect w/ authors, leave feedback or write to support team.
         </Card>
       </div>

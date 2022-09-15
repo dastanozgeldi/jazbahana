@@ -15,9 +15,9 @@ const Features = () => {
           <div className="flex flex-col md:flex-row items-center">
             <img src="/economy.png" className="md:w-[50%]" />
             <p className={`${FEATURE} md:-ml-10`}>
-              <H>1. Economy.</H> Each person gets 300JPC aka jazbapoint currency
-              at the start. JPCs are spent on private rooms, no-trade notes and
-              donations.
+              <H>1. Economy.</H> Each person gets 300JPC (also known as
+              JazbaPoint currency) at the start. JPCs are spent on private
+              rooms, no-trade notes and donations.
             </p>
           </div>
           <div className="flex flex-col md:flex-row items-center mt-5">
