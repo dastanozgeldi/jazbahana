@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { CARD } from "styles";
 import { trpc } from "utils/trpc";
 
 const News = () => {

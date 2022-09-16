@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 
 type LayoutProps = { children: React.ReactNode };
 
@@ -31,7 +31,7 @@ export default function Layout({ children }: LayoutProps) {
         <title>Jazbahana - Get Notes Faster</title>
       </Head>
       <Navbar />
-      <main className="px-4 py-16 sm:container mx-auto">{children}</main>
+      <main className="px-4 py-20 sm:container mx-auto">{children}</main>
     </>
   );
 }

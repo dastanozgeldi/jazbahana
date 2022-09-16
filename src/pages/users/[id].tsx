@@ -19,7 +19,7 @@ export default function Profile() {
 
   return (
     <Page title="Profile">
-      <div className="my-8 block md:grid md:grid-cols-3 md:justify-items-center">
+      <div className="block md:grid md:grid-cols-3 md:justify-items-center">
         {/* People from your school */}
         <PeopleFromSchool id={user?.id || ""} schoolId={user?.schoolId || ""} />
         {/* Header */}

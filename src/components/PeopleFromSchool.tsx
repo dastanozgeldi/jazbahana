@@ -8,7 +8,7 @@ const PeopleFromSchool = ({ id, schoolId }: PeopleFromSchoolProps) => {
   const { data } = trpc.useQuery(["user.peopleFromSchool", { id, schoolId }]);
 
   return (
-    <div className="hidden md:block w-[50%]">
+    <div className="hidden md:block">
       <h1 className="text-2xl font-semibold text-center">People from School</h1>
       <ul>
         {data?.map((student) => (
@@ -19,14 +19,12 @@ const PeopleFromSchool = ({ id, schoolId }: PeopleFromSchoolProps) => {
             <Link href={`/users/${student.id}`}>
               <a className="flex items-center justify-between">
                 <div className="flex items-center">
-                  {student.image && (
-                    <Avatar src={student.image} size={32} />
-                  )}
+                  {student.image && <Avatar src={student.image} size={32} />}
                   <span className="text-xl p-2">{student.name}</span>
                 </div>
-                {/* <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
+                <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
                   {student.rooms.length}
-                </span> */}
+                </span>
               </a>
             </Link>
           </li>
