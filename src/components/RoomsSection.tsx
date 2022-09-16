@@ -5,16 +5,7 @@ import type {
 } from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import {
-  ACTION_BUTTON,
-  CARD,
-  INPUT_SELECT,
-  INPUT_TEXT,
-  LABEL,
-  TOPIC,
-} from "../styles";
+import { ACTION_BUTTON, TOPIC } from "../styles";
 import { trpc } from "../utils/trpc";
 import { IoAdd, IoPeople } from "react-icons/io5";
 import Avatar from "./Avatar";
@@ -22,14 +13,6 @@ import { useRouter } from "next/router";
 
 type RoomSectionProps = {
   session: Session | null;
-  profilePage?: boolean;
-};
-
-type AddRoomProps = {
-  adding: boolean;
-  profilePage: boolean;
-  session: Session;
-  topicsQuery: any;
 };
 
 type RoomProps = {
@@ -37,11 +20,7 @@ type RoomProps = {
   topicsQuery: any;
 };
 
-export default function RoomsSection({
-  session,
-  profilePage = false,
-}: RoomSectionProps) {
-  const [adding, setAdding] = useState(false);
+export default function RoomsSection({ session }: RoomSectionProps) {
   const topicsQuery = trpc.useQuery(["topic.all"]);
   const { query } = useRouter();
   const page = query.page ? Number(query.page) - 1 : 0;
@@ -56,7 +35,7 @@ export default function RoomsSection({
           getPreviousPageParam: () => page - 1,
         }
       )
-    : trpc.useInfiniteQuery(["room.infinite", { limit: 10 }], {
+    : trpc.useInfiniteQuery(["room.infinite", { limit: 5 }], {
         getNextPageParam: (lastPage) => lastPage.nextCursor,
         getPreviousPageParam: () => page - 1,
       });
@@ -71,24 +50,13 @@ export default function RoomsSection({
         </div>
 
         {session && (
-          <>
-            <button
-              className={`${ACTION_BUTTON} flex items-center gap-2`}
-              onClick={() => setAdding(!adding)}
-            >
+          <Link href="/new">
+            <a className={`${ACTION_BUTTON} flex items-center gap-2`}>
               <IoAdd className="w-6 h-6" /> Add Room
-            </button>
-          </>
+            </a>
+          </Link>
         )}
       </div>
-      {session && (
-        <AddRoom
-          topicsQuery={topicsQuery}
-          adding={adding}
-          profilePage={profilePage}
-          session={session}
-        />
-      )}
 
       {rooms?.map((room) => (
         <Room key={room.id} topicsQuery={topicsQuery} data={room} />
@@ -103,109 +71,6 @@ export default function RoomsSection({
     </div>
   );
 }
-
-type FormData = {
-  title: string;
-  description: string;
-  topic: object;
-};
-
-export const AddRoom = ({
-  adding,
-  profilePage,
-  session,
-  topicsQuery,
-}: AddRoomProps) => {
-  const { data } = topicsQuery;
-  const { register, handleSubmit, reset } = useForm<FormData>();
-  const [topicId, setTopicId] = useState<string>("");
-  const utils = trpc.useContext();
-  const addRoom = trpc.useMutation("room.add", {
-    async onSuccess() {
-      // refetches all rooms after successful add
-      await utils.invalidateQueries(["room.infinite"]);
-      reset();
-    },
-  });
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      await addRoom.mutateAsync({
-        ...data,
-        authorName: session.user?.name || "unknown",
-        authorImage: session.user?.image || "/default-avatar.png",
-        authorId: session.user?.id || "",
-        topicId,
-      });
-    } catch {}
-  });
-
-  return (
-    <div className={`flex items-center justify-center my-4 ${CARD}`}>
-      <form hidden={!adding} className="w-[90%] mx-auto" onSubmit={onSubmit}>
-        <h2 className="text-center text-3xl font-bold mb-2">Add Room</h2>
-        {/* Title */}
-        <div>
-          <label className={LABEL} htmlFor="title">
-            Title:
-          </label>
-          <input
-            id="title"
-            {...register("title")}
-            type="text"
-            className={INPUT_TEXT}
-            disabled={addRoom.isLoading}
-          />
-        </div>
-        {/* Description */}
-        <div className="my-4">
-          <label className={LABEL} htmlFor="description">
-            Description:
-          </label>
-          <input
-            id="description"
-            {...register("description")}
-            type="text"
-            className={INPUT_TEXT}
-            disabled={addRoom.isLoading}
-          />
-        </div>
-        {/* Topic */}
-        <div>
-          <label className={LABEL} htmlFor="topic">
-            Topic:
-          </label>
-          <select
-            {...register("topic")}
-            id="topic"
-            className={INPUT_SELECT}
-            onChange={(e) => setTopicId(e.currentTarget.value)}
-          >
-            <option selected>Choose a topic</option>
-            {data &&
-              data.map((t: Topic) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-          </select>
-        </div>
-        {/* Submit Form */}
-        <button
-          className={`${ACTION_BUTTON} my-4`}
-          type="submit"
-          disabled={addRoom.isLoading}
-        >
-          Submit
-        </button>
-        {/* Validation Error */}
-        {addRoom.error && (
-          <p className="text-red-500">{addRoom.error.message}</p>
-        )}
-      </form>
-    </div>
-  );
-};
 
 export const Room = ({ data, topicsQuery }: RoomProps) => {
   const { data: topics } = topicsQuery;

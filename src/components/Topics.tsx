@@ -2,7 +2,7 @@ import Link from "next/link";
 import { trpc } from "../utils/trpc";
 
 const Topics = () => {
-  const topicsQuery = trpc.useQuery(["topic.all"]);
+  const { data } = trpc.useQuery(["topic.all"]);
 
   return (
     <div className="hidden md:block w-[50%]">
@@ -15,7 +15,7 @@ const Topics = () => {
             </div>
           </a>
         </Link>
-        {topicsQuery.data?.map((t) => (
+        {data?.map((t) => (
           <li
             key={t.id}
             className="my-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300"
