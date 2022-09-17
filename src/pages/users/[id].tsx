@@ -5,9 +5,9 @@ import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
 import RecentActivity from "../../components/RecentActivity";
 import Avatar from "../../components/Avatar";
-import H from "../../components/Highlight";
 import PeopleFromSchool from "components/PeopleFromSchool";
 import EditProfile from "components/EditProfile";
+import { HIGHLIGHT } from "styles";
 
 export default function Profile() {
   const { query } = useRouter();
@@ -29,13 +29,13 @@ export default function Profile() {
           <div className="flex items-center gap-6 my-2">
             <div className="flex flex-col justify-center items-center">
               <h2 className="text-xl font-medium">
-                <H>Balance:</H>
+                <span className={HIGHLIGHT}>Balance:</span>
               </h2>
               <p className="text-lg">{user?.balance}</p>
             </div>
             <div className="flex flex-col justify-center items-center">
               <h2 className="text-xl font-medium">
-                <H>Rooms:</H>
+                <span className={HIGHLIGHT}>Rooms:</span>
               </h2>
               <p className="text-lg">{user?.Room.length}</p>
             </div>
@@ -44,14 +44,14 @@ export default function Profile() {
             <div className="flex items-center gap-6 my-2">
               <div className="flex flex-col justify-center items-center">
                 <h2 className="text-xl font-medium">
-                  <H>School:</H>
+                  <span className={HIGHLIGHT}>School:</span>
                 </h2>
                 <p className="text-lg">{user.school.name}</p>
               </div>
               {user.grade && (
                 <div className="flex flex-col justify-center items-center">
                   <h2 className="text-xl font-medium">
-                    <H>Grade:</H>
+                    <span className={HIGHLIGHT}>Grade:</span>
                   </h2>
                   <p className="text-lg">{user.grade}</p>
                 </div>
@@ -61,7 +61,7 @@ export default function Profile() {
           {user?.bio && (
             <div className="my-4 flex flex-col justify-center items-center">
               <h2 className="text-xl font-medium">
-                <H>Bio:</H>
+                <span className={HIGHLIGHT}>Bio:</span>
               </h2>
               <p className="text-lg">
                 <ReactMarkdown>{user.bio}</ReactMarkdown>

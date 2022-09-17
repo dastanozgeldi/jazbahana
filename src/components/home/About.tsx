@@ -1,4 +1,4 @@
-import H from "../Highlight";
+import { HIGHLIGHT } from "styles";
 
 const About = () => {
   return (
@@ -12,10 +12,11 @@ const About = () => {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 items-center my-24 md:mx-24">
           <p className="sm:text-3xl text-lg font-normal w-full">
-            it&apos;s a one-to-one note-trader platform where <H>you</H> and
-            your <H>friends</H> can share different{" "}
-            <H>notes, lectures and presentations</H> by joining an isolated
-            environment that we call <H>rooms</H>.
+            it&apos;s a one-to-one note-trader platform where you and your{" "}
+            friends can share different{" "}
+            <span className={HIGHLIGHT}>notes, lectures and presentations</span>{" "}
+            by joining an isolated environment that we call{" "}
+            <span className={HIGHLIGHT}>rooms</span>.
           </p>
           <img src="/team.svg" />
         </div>

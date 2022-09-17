@@ -1,5 +1,4 @@
-import H from "../Highlight";
-import { FEATURE } from "../../styles";
+import { FEATURE, HIGHLIGHT } from "../../styles";
 
 const Features = () => {
   return (
@@ -15,16 +14,16 @@ const Features = () => {
           <div className="flex flex-col md:flex-row items-center">
             <img src="/economy.png" className="md:w-[50%]" />
             <p className={`${FEATURE} md:-ml-10`}>
-              <H>1. Economy.</H> Each person gets 300JPC (also known as
-              JazbaPoint currency) at the start. JPCs are spent on private
-              rooms, no-trade notes and donations.
+              <span className={HIGHLIGHT}>1. Economy.</span> Each person gets
+              300JPC (also known as JazbaPoint currency) at the start. JPCs are
+              spent on private rooms, no-trade notes and donations.
             </p>
           </div>
           <div className="flex flex-col md:flex-row items-center mt-5">
             <p className={`${FEATURE} md:-mr-10`}>
-              <H>2. Rooms.</H> Can be either public or private. Rooms separate
-              one topic from the other and keep the environment clean and
-              concise
+              <span className={HIGHLIGHT}>2. Rooms.</span> Can be either public
+              or private. Rooms separate one topic from the other and keep the
+              environment clean and concise
             </p>
             <img src="/rooms.png" className="md:w-[50%]" />
           </div>
