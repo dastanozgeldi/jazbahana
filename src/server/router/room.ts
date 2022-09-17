@@ -14,6 +14,7 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   participants: true,
   authorId: true,
   topicId: true,
+  topic: true,
 });
 
 export const roomRouter = createRouter()

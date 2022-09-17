@@ -1,27 +1,16 @@
-import type {
-  ParticipantsInRooms,
-  Room as RoomType,
-  Topic,
-} from "@prisma/client";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import { ACTION_BUTTON, TOPIC } from "../styles";
+import { ACTION_BUTTON } from "../styles";
 import { trpc } from "../utils/trpc";
-import { IoAdd, IoPeople } from "react-icons/io5";
-import Avatar from "./Avatar";
+import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
+import Room from "./Room";
 
 type RoomSectionProps = {
   session: Session | null;
 };
 
-type RoomProps = {
-  data: RoomType & { participants: ParticipantsInRooms[] };
-  topicsQuery: any;
-};
-
 export default function RoomsSection({ session }: RoomSectionProps) {
-  const topicsQuery = trpc.useQuery(["topic.all"]);
   const { query } = useRouter();
   const page = query.page ? Number(query.page) - 1 : 0;
 
@@ -43,6 +32,7 @@ export default function RoomsSection({ session }: RoomSectionProps) {
 
   return (
     <div className="w-full">
+      {/* Header */}
       <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Rooms</h1>
@@ -57,9 +47,9 @@ export default function RoomsSection({ session }: RoomSectionProps) {
           </Link>
         )}
       </div>
-
+      {/* Displaying Rooms */}
       {rooms?.map((room) => (
-        <Room key={room.id} topicsQuery={topicsQuery} data={room} />
+        <Room key={room.id} data={room} />
       ))}
       {/* Pagination */}
       {data?.pages && data?.pages.length > 0 && (
@@ -71,44 +61,3 @@ export default function RoomsSection({ session }: RoomSectionProps) {
     </div>
   );
 }
-
-export const Room = ({ data, topicsQuery }: RoomProps) => {
-  const { data: topics } = topicsQuery;
-  const topic = topics.find((t: Topic) => t.id === data.topicId);
-
-  return (
-    <article
-      className="my-2 flex gap-2 flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl"
-      key={data.id}
-    >
-      <div className="flex items-center justify-between">
-        <Link href={`/users/${data.authorId || "ghost"}`}>
-          <a className="flex items-center gap-2 font-medium">
-            <Avatar src={data.authorImage} size={32} />
-            <span>{data.authorName || "ghost"}</span>
-          </a>
-        </Link>
-        <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
-      </div>
-      <Link href={`/rooms/${data.id}`}>
-        <a className="max-w-max text-2xl font-semibold">{data.title}</a>
-      </Link>
-      <p className="text-gray-400">{data.description}</p>
-      <div className="my-2 flex justify-between">
-        <span className={`${TOPIC} flex items-center gap-2`}>
-          <IoPeople className="w-5 h-5" />
-          {data.participants.length} participants
-        </span>
-        {topic && (
-          <span
-            className={`${TOPIC} flex items-center gap-2`}
-            key={data.topicId}
-          >
-            {topic.image && <img src={topic.image} className="w-4 h-4" />}
-            {topic.name}
-          </span>
-        )}
-      </div>
-    </article>
-  );
-};
