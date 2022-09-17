@@ -7,12 +7,13 @@ import Link from "next/link";
 
 const Feed = () => {
   const { data: session } = useSession();
+
   return (
     <Page className="m-2" title="Feed">
       {/* Header */}
       <div>
         {/* Search Bar */}
-        <form>
+        <form className="max-w-[48ch] mx-auto">
           <label
             htmlFor="default-search"
             className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
@@ -54,17 +55,13 @@ const Feed = () => {
         </form>
         <div className="sm:hidden flex items-center justify-center gap-2 my-4">
           <Link href="/topics">
-            <a>
-              <button className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
-                Browse Topics
-              </button>
+            <a className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
+              Browse Topics
             </a>
           </Link>
-          <Link href="/notes">
-            <a>
-              <button className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
-                Recent Notes
-              </button>
+          <Link href="/news">
+            <a className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
+              Read News
             </a>
           </Link>
         </div>

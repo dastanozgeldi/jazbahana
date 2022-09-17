@@ -7,6 +7,18 @@ export const newsRouter = createRouter()
       return ctx.prisma.news.findMany({ orderBy: { updatedAt: "desc" } });
     },
   })
+  .query("getSome", {
+    input: z.object({
+      limit: z.number().min(1).max(10).default(5),
+    }),
+    async resolve({ ctx, input }) {
+      const { limit } = input;
+      return ctx.prisma.news.findMany({
+        take: limit,
+        orderBy: { updatedAt: "desc" },
+      });
+    },
+  })
   .query("byId", {
     input: z.object({
       id: z.string().uuid(),
