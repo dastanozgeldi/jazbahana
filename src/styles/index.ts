@@ -8,7 +8,6 @@ export const CARD =
 
 export const TOPIC = "text-xs rounded-xl border border-blue-500 p-2 mr-2";
 
-export const LABEL = "text-xl font-medium";
 export const INPUT_TEXT =
   "my-1 w-full bg-transparent outline outline-[1px] outline-gray-500 rounded p-2";
 export const TEXTAREA = `${INPUT_TEXT} resize-none h-[128px]`;

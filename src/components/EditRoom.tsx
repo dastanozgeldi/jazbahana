@@ -8,7 +8,6 @@ import {
   DELETE_BUTTON,
   INPUT_SELECT,
   INPUT_TEXT,
-  LABEL,
 } from "styles";
 import { trpc } from "utils/trpc";
 
@@ -110,7 +109,7 @@ export default function EditRoom({
         <form hidden={!editing} className="w-[90%]" onSubmit={onSubmit}>
           <h2 className="text-center text-3xl font-bold mb-2">Edit Room</h2>
           <div>
-            <label className={LABEL} htmlFor="title">
+            <label className="text-xl" htmlFor="title">
               Title:
             </label>
             <input
@@ -124,7 +123,7 @@ export default function EditRoom({
           </div>
           {/* Description */}
           <div className="my-4">
-            <label className={LABEL} htmlFor="description">
+            <label className="text-xl" htmlFor="description">
               Description:
             </label>
             <input
@@ -138,7 +137,7 @@ export default function EditRoom({
           </div>
           {/* Topic */}
           <div className="my-4">
-            <label className={LABEL} htmlFor="topicId">
+            <label className="text-xl" htmlFor="topicId">
               Topic:
             </label>
             <select
@@ -162,7 +161,7 @@ export default function EditRoom({
           </div>
           {/* Save */}
           <button
-            className="py-2 px-4 rounded-md text-white bg-blue-400 hover:bg-blue-500 hover:duration-500"
+            className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
             onClick={() => console.log(topic)}
             disabled={editRoom.isLoading}
           >

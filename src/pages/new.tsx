@@ -1,9 +1,11 @@
 import type { Topic } from "@prisma/client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ACTION_BUTTON, CARD, INPUT_SELECT, INPUT_TEXT, LABEL } from "styles";
+import { AiOutlineArrowLeft } from "react-icons/ai";
+import { ACTION_BUTTON, CARD, INPUT_SELECT, INPUT_TEXT } from "styles";
 import { trpc } from "utils/trpc";
 
 type FormData = {
@@ -44,11 +46,18 @@ const AddRoom = () => {
       <div
         className={`justify-center my-4 container sm:w-[50%] mx-auto ${CARD}`}
       >
-        <form className="w-[90%] mx-auto" onSubmit={onSubmit}>
-          <h2 className="text-center text-3xl font-bold mb-2">Add Room</h2>
+        <form className="p-2" onSubmit={onSubmit}>
+          <div className="grid grid-cols-3 items-center mb-3">
+            <Link href="/">
+              <a className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
+                <AiOutlineArrowLeft size={24} />
+              </a>
+            </Link>
+            <h2 className="text-center text-2xl">Add Room</h2>
+          </div>
           {/* Title */}
           <div>
-            <label className={LABEL} htmlFor="title">
+            <label className="text-xl" htmlFor="title">
               Title:
             </label>
             <input
@@ -61,7 +70,7 @@ const AddRoom = () => {
           </div>
           {/* Description */}
           <div className="my-4">
-            <label className={LABEL} htmlFor="description">
+            <label className="text-xl" htmlFor="description">
               Description:
             </label>
             <input
@@ -74,7 +83,7 @@ const AddRoom = () => {
           </div>
           {/* Topic */}
           <div>
-            <label className={LABEL} htmlFor="topic">
+            <label className="text-xl" htmlFor="topic">
               Topic:
             </label>
             <select

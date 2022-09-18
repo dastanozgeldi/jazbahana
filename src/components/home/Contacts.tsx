@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { ACTION_BUTTON, CARD, INPUT_TEXT, TEXTAREA } from "../../styles";
 
-type FormData = {
-  email: string;
-  feedback: string;
-};
+type FormData = { email: string; feedback: string };
 
 const Contacts = () => {
   const { register, handleSubmit } = useForm<FormData>();
@@ -25,9 +22,7 @@ const Contacts = () => {
         </h1>
         <div className={`${CARD} max-w-[60ch] mx-auto`}>
           <form onSubmit={onSubmit}>
-            <h1 className="text-center text-3xl font-bold mb-4">
-              Send feedback
-            </h1>
+            <h1 className="text-center text-2xl mb-3">Send Feedback</h1>
             <div>
               <label htmlFor="email">Email:</label>
               <input

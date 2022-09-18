@@ -7,7 +7,6 @@ import {
   CARD,
   INPUT_SELECT,
   INPUT_TEXT,
-  LABEL,
   TEXTAREA,
 } from "styles";
 import { trpc } from "utils/trpc";
@@ -63,12 +62,10 @@ const EditProfile = ({ data, schools, session }: EditProfileProps) => {
       <div className="max-w-[60ch] w-full" hidden={!editing}>
         <div className={`my-10 flex items-center justify-center ${CARD}`}>
           <form className="w-[90%]" onSubmit={onSubmit}>
-            <h2 className="text-center text-3xl font-bold mb-2">
-              Edit Profile
-            </h2>
+            <h2 className="text-center text-2xl mb-2">Edit Profile</h2>
             {/* School */}
             <div className="my-4">
-              <label className={LABEL} htmlFor="schoolId">
+              <label className="text-xl" htmlFor="schoolId">
                 School:
               </label>
               <select
@@ -88,7 +85,7 @@ const EditProfile = ({ data, schools, session }: EditProfileProps) => {
             </div>
             {/* Grade */}
             <div>
-              <label className={LABEL} htmlFor="grade">
+              <label className="text-xl" htmlFor="grade">
                 Grade:
               </label>
               <input
@@ -103,7 +100,7 @@ const EditProfile = ({ data, schools, session }: EditProfileProps) => {
 
             {/* Bio */}
             <div className="my-4">
-              <label className={LABEL} htmlFor="bio">
+              <label className="text-xl" htmlFor="bio">
                 Bio:
               </label>
               <textarea
@@ -117,7 +114,7 @@ const EditProfile = ({ data, schools, session }: EditProfileProps) => {
             </div>
 
             <button
-              className="py-2 px-4 rounded-md text-white bg-blue-400 hover:bg-blue-500 hover:duration-500"
+              className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
               type="submit"
               disabled={editProfile.isLoading}
             >
