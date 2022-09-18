@@ -40,7 +40,7 @@ const Topics = () => {
           </li>
         ))}
         <Link href="/topics">
-          <a className="w-max flex items-center gap-2 text-teal-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-500 px-4 py-2 rounded-lg">
+          <a className="w-max flex items-center gap-2 text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-500 px-4 py-2 rounded-lg">
             More <AiOutlineDown size={16} />
           </a>
         </Link>

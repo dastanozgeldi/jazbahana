@@ -52,8 +52,8 @@ export default function RoomsSection({ session }: RoomSectionProps) {
         <Room key={room.id} data={room} />
       ))}
       {/* Pagination */}
-      {data?.pages && data?.pages.length > 0 && (
-        <div className="flex justify-between">
+      {rooms && rooms.length > 0 && (
+        <div className="flex justify-between my-2">
           <button className={ACTION_BUTTON}>previous page</button>
           <button className={ACTION_BUTTON}>next page</button>
         </div>

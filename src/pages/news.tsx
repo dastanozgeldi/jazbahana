@@ -4,7 +4,7 @@ import { trpc } from "utils/trpc";
 const News = () => {
   const { data } = trpc.useQuery(["news.all"]);
   return (
-    <>
+    <div className="max-w-[48ch] mx-auto">
       {/* TODO: put some filters like by popularity, date or something */}
       {data?.map((item) => (
         <Link href={`/news/${item.id}`}>
@@ -17,7 +17,7 @@ const News = () => {
           </a>
         </Link>
       ))}
-    </>
+    </div>
   );
 };
 

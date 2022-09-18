@@ -95,7 +95,7 @@ export const messageRouter = createRouter()
       take: z.number().min(1).max(50).nullish(),
     }),
     async resolve({ ctx, input }) {
-      const take = input.take ?? 10;
+      const take = input.take ?? 5;
       const cursor = input.cursor;
       // `roomId` is of type `string`
       // `cursor` is of type `Date | undefined`

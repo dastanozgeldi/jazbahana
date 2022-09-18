@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CARD } from "styles";
+import { ACTION_BUTTON, CARD } from "styles";
 import { trpc } from "utils/trpc";
 import Avatar from "./Avatar";
 
@@ -92,7 +92,7 @@ export default function Messages({
             data-testid="loadMore"
             onClick={() => fetchPreviousPage()}
             disabled={!hasPreviousPage || isFetchingPreviousPage}
-            className="px-4 bg-indigo-500 rounded py-2 disabled:opacity-40 text-white"
+            className={ACTION_BUTTON}
           >
             {isFetchingPreviousPage
               ? "Loading more..."
@@ -240,10 +240,7 @@ export const AddMessageForm = ({
                 });
               }}
             />
-            <button
-              disabled={!hasUserJoined}
-              className="px-4 bg-indigo-500 rounded py-1 disabled:bg-gray-500"
-            >
+            <button disabled={!hasUserJoined} className={ACTION_BUTTON}>
               Submit
             </button>
           </div>

@@ -162,7 +162,7 @@ export default function EditRoom({
           </div>
           {/* Save */}
           <button
-            className="py-2 px-4 rounded-md text-white bg-teal-400 hover:bg-teal-500 hover:duration-500"
+            className="py-2 px-4 rounded-md text-white bg-blue-400 hover:bg-blue-500 hover:duration-500"
             onClick={() => console.log(topic)}
             disabled={editRoom.isLoading}
           >

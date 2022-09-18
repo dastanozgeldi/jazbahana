@@ -47,7 +47,7 @@ const Feed = () => {
             />
             <button
               type="submit"
-              className="absolute right-2.5 bottom-2.5 text-gray-100 bg-teal-400 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
+              className="absolute right-2.5 bottom-2.5 text-gray-100 bg-blue-500 hover:bg-blue-600 hover:duration-500 focus:outline-none font-medium rounded-lg text-sm px-4 py-2"
             >
               Search
             </button>
@@ -55,12 +55,12 @@ const Feed = () => {
         </form>
         <div className="sm:hidden flex items-center justify-center gap-2 my-4">
           <Link href="/topics">
-            <a className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
+            <a className="text-sm rounded-full border border-blue-500 py-2 px-4 text-blue-500 hover:text-gray-100 hover:bg-blue-500 hover:duration-500">
               Browse Topics
             </a>
           </Link>
           <Link href="/news">
-            <a className="text-sm rounded-full border border-teal-400 py-2 px-4 text-teal-400 hover:text-gray-100 hover:bg-teal-400 hover:duration-500">
+            <a className="text-sm rounded-full border border-blue-500 py-2 px-4 text-blue-500 hover:text-gray-100 hover:bg-blue-500 hover:duration-500">
               Read News
             </a>
           </Link>
