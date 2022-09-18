@@ -20,7 +20,7 @@ const Contacts = () => {
         <h1 className="my-8 text-4xl md:text-5xl font-extrabold text-center text-blue-500">
           Contact Us
         </h1>
-        <div className={`${CARD} max-w-[60ch] mx-auto`}>
+        <div className={`${CARD} max-w-[48ch] mx-auto`}>
           <form onSubmit={onSubmit}>
             <h1 className="text-center text-2xl mb-3">Send Feedback</h1>
             <div>

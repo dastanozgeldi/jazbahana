@@ -1,36 +1,35 @@
 import ToggleTheme from "components/ToggleTheme";
 import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import Avatar from "./Avatar";
 import HamburgerMenu from "./HamburgerMenu";
+import Logo from "./Logo";
 
-const Navbar = () => {
+type NavbarProps = {
+  mounted: boolean;
+  links: { label: string; href: string }[];
+};
+
+const Navbar = ({ mounted, links }: NavbarProps) => {
   const { data: session } = useSession();
-  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   return (
     <nav className="fixed transition border-b border-gray-500 bg-opacity-80 w-full z-10 backdrop-blur flex items-center justify-between px-4 py-2">
       {/* Logo */}
-      <Link href="/">
-        <a className="flex items-center px-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 hover:duration-300">
-          <Image src="/logo.png" width={48} height={48} alt="logo" />
-          <span className="text-xl font-medium">Jazbahana</span>
-        </a>
-      </Link>
+      <Logo />
       {/* Links */}
       <div className="flex items-center gap-4 text-xl">
         <div className="hidden sm:flex items-center gap-4">
-          <Link href="/feed">
-            <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
-              Feed
-            </a>
-          </Link>
+          {links.map((l) => (
+            <Link key={l.label} href={l.href}>
+              <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
+                {l.label}
+              </a>
+            </Link>
+          ))}
         </div>
       </div>
 
