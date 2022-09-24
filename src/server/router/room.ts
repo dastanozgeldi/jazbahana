@@ -155,11 +155,12 @@ export const roomRouter = createRouter()
     },
   })
   .mutation("delete", {
-    input: z.object({
-      id: z.string(),
-    }),
+    input: z.object({ id: z.string() }),
     async resolve({ ctx, input }) {
       const { id } = input;
+      await ctx.prisma.participantsInRooms.deleteMany({
+        where: { roomId: id },
+      });
       await ctx.prisma.room.delete({
         where: { id },
         include: { messages: true, participants: true },
