@@ -14,14 +14,13 @@ type FormData = {
   topic: object;
 };
 
-const AddRoom = () => {
+const NewRoom = () => {
   const { register, handleSubmit } = useForm<FormData>();
+  const [topicId, setTopicId] = useState("");
   const { data: session } = useSession();
   const { push } = useRouter();
-  const topicsQuery = trpc.useQuery(["topic.all"]);
-  const { data } = topicsQuery;
-  const [topicId, setTopicId] = useState<string>("");
   const utils = trpc.useContext();
+  const { data } = trpc.useQuery(["topic.all"]);
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
       push("/feed");
@@ -31,7 +30,7 @@ const AddRoom = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await addRoom.mutateAsync({ 
+      await addRoom.mutateAsync({
         ...data,
         authorName: session?.user?.name || "unknown",
         authorImage: session?.user?.image || "/default-avatar.png",
@@ -41,9 +40,10 @@ const AddRoom = () => {
     } catch {}
   });
 
+  if (!session) return <>Yo u gotta sign in</>;
   return (
     <div className="min-h-screen flex items-center">
-      <div className={`justify-center my-4 max-w-[48ch] mx-auto ${CARD}`}>
+      <div className={`${CARD} justify-center my-4 max-w-[48ch] mx-auto`}>
         <form onSubmit={onSubmit}>
           <div className="grid grid-cols-3 items-center mb-3">
             <Link href="/">
@@ -51,7 +51,7 @@ const AddRoom = () => {
                 <AiOutlineArrowLeft size={24} />
               </a>
             </Link>
-            <h2 className="text-center text-2xl">Add Room</h2>
+            <h2 className="text-center text-2xl">New Room</h2>
           </div>
           {/* Title */}
           <div>
@@ -90,7 +90,7 @@ const AddRoom = () => {
               className={INPUT_SELECT}
               onChange={(e) => setTopicId(e.currentTarget.value)}
             >
-              <option selected>Choose a topic</option>
+              <option selected>Click to choose</option>
               {data &&
                 data.map((t: Topic) => (
                   <option key={t.id} value={t.id}>
@@ -105,7 +105,7 @@ const AddRoom = () => {
             type="submit"
             disabled={addRoom.isLoading}
           >
-            Submit
+            Add
           </button>
           {/* Validation Error */}
           {addRoom.error && (
@@ -117,4 +117,4 @@ const AddRoom = () => {
   );
 };
 
-export default AddRoom;
+export default NewRoom;

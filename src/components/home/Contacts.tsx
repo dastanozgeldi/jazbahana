@@ -4,10 +4,12 @@ import { ACTION_BUTTON, CARD, INPUT_TEXT, TEXTAREA } from "../../styles";
 type FormData = { email: string; feedback: string };
 
 const Contacts = () => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const { register, handleSubmit, reset } = useForm<FormData>();
 
   const onSubmit = handleSubmit((data) => {
+    reset();
     console.log({ ...data });
+    alert("Thank you for your feedback!");
     // TODO: send email
   });
 

@@ -138,9 +138,9 @@ export const roomRouter = createRouter()
     input: z.object({
       id: z.string().uuid(),
       data: z.object({
+        topicId: z.string().uuid(),
         title: z.string().min(1).max(64),
         description: z.string().min(1).max(128),
-        topicId: z.string().optional(),
       }),
     }),
     async resolve({ ctx, input }) {

@@ -1,16 +1,13 @@
 import type { School, User } from "@prisma/client";
 import type { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import { CARD, INPUT_SELECT, INPUT_TEXT, TEXTAREA } from "styles";
 import { trpc } from "utils/trpc";
-
-type EditProfileProps = {
-  data?: (User & { school: School | null }) | null;
-  schools?: School[] | null;
-  session: Session | null;
-};
 
 type FormData = {
   bio: string;
@@ -18,48 +15,54 @@ type FormData = {
   grade: string;
 };
 
-const EditProfile = ({ data }: EditProfileProps) => {
+const EditProfile = () => {
+  const { push } = useRouter();
   // States
-  const [bio, setBio] = useState(data?.bio);
-  const [schoolId, setSchoolId] = useState(data?.schoolId);
-  const [grade, setGrade] = useState(data?.grade);
+  const [bio, setBio] = useState<string | null | undefined>(null);
+  const [schoolId, setSchoolId] = useState<string | null | undefined>(null);
+  const [grade, setGrade] = useState<string | null | undefined>(null);
   // Form
   const { register, handleSubmit } = useForm<FormData>();
   // tRPC
   const { data: session } = useSession();
-  const { data: user } = trpc.useQuery([
-    "user.info",
-    { id: session?.user?.id || "" },
-  ]);
+  const id = session?.user?.id as string;
+  const { data: user } = trpc.useQuery(["user.info", { id }]);
   const { data: schools } = trpc.useQuery(["school.all"]);
 
   const utils = trpc.useContext();
   const editProfile = trpc.useMutation("user.edit", {
     async onSuccess() {
-      await utils.invalidateQueries([
-        "user.info",
-        { id: session?.user?.id || "" },
-      ]);
+      await utils.invalidateQueries(["user.info", { id }]);
+      push(`/users/${id}`);
     },
   });
 
   const onSubmit = handleSubmit(async () => {
     try {
       await editProfile.mutateAsync({
-        id: session?.user?.id || "",
-        data: {
-          bio: bio || "",
-          schoolId: schoolId || "",
-          grade: grade || "",
-        },
+        id,
+        data: { bio, schoolId, grade },
       });
     } catch {}
   });
+
+  useEffect(() => {
+    setBio(user?.bio);
+    setSchoolId(user?.schoolId);
+    setGrade(user?.grade);
+  }, []);
+
+  if (!session) return <>Yo u gotta sign in</>;
   return (
-    <div className="max-w-[60ch] w-full mx-auto">
+    <div className="min-h-screen flex items-center justify-center">
       <div className={`my-10 flex items-center justify-center ${CARD}`}>
-        <form className="w-[90%]" onSubmit={onSubmit}>
-          <h2 className="text-center text-2xl mb-2">Edit Profile</h2>
+        <form className="w-[90%] relative" onSubmit={onSubmit}>
+          <Link href="/">
+            <a className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
+              <AiOutlineArrowLeft size={24} />
+            </a>
+          </Link>
+          <h2 className="text-center text-2xl leading-normal">Settings</h2>
           {/* School */}
           <div className="my-4">
             <label className="text-xl" htmlFor="schoolId">

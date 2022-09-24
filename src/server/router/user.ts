@@ -36,9 +36,9 @@ export const userRouter = createRouter()
     input: z.object({
       id: z.string().cuid(),
       data: z.object({
-        bio: z.string().max(128),
-        schoolId: z.string().uuid(),
-        grade: z.string().min(2).max(3),
+        schoolId: z.string().uuid().nullish(),
+        bio: z.string().max(128).nullish(),
+        grade: z.string().min(2).max(3).nullish(),
       }),
     }),
     async resolve({ ctx, input }) {

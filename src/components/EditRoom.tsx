@@ -1,7 +1,9 @@
 import type { Room, Topic } from "@prisma/client";
 import type { Session } from "next-auth";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import {
   ACTION_BUTTON,
   CARD,
@@ -58,22 +60,24 @@ export default function EditRoom({
     },
   });
   // States
-  const [title, setTitle] = useState(data?.title);
-  const [description, setDescription] = useState(data?.description);
-  const [topicId, setTopicId] = useState(data?.topicId);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [topicId, setTopicId] = useState("");
 
   const onSubmit = handleSubmit(async () => {
     try {
       await editRoom.mutateAsync({
-        id: data?.id || "",
-        data: {
-          title: title || "",
-          description: description || "",
-          topicId: topicId || "",
-        },
+        id,
+        data: { title, description, topicId },
       });
     } catch {}
   });
+
+  useEffect(() => {
+    setTitle(data?.title || "");
+    setDescription(data?.description || "");
+    setTopicId(data?.topicId || "");
+  }, []);
 
   return (
     <>
@@ -107,8 +111,13 @@ export default function EditRoom({
       </div>
       <div className={`my-4 flex items-center justify-center ${CARD}`}>
         <form hidden={!editing} className="w-[90%]" onSubmit={onSubmit}>
-          <h2 className="text-center text-3xl font-bold mb-2">Edit Room</h2>
-          <div>
+          <Link href="/">
+            <a className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
+              <AiOutlineArrowLeft size={24} />
+            </a>
+          </Link>
+          <h2 className="text-center text-2xl leading-normal">Settings</h2>
+          <div className="my-4">
             <label className="text-xl" htmlFor="title">
               Title:
             </label>

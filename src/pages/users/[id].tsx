@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { trpc } from "../../utils/trpc";
@@ -6,8 +8,6 @@ import RecentActivity from "../../components/RecentActivity";
 import Avatar from "../../components/Avatar";
 import PeopleFromSchool from "components/PeopleFromSchool";
 import { ACTION_BUTTON, HIGHLIGHT, NOTIFICATION } from "styles";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 
 export default function Profile() {
   const { query } = useRouter();
@@ -18,13 +18,14 @@ export default function Profile() {
   return (
     <Page title="Profile">
       <div className="block md:grid md:grid-cols-3 md:justify-items-center">
-        {/* People from your school */}
         <PeopleFromSchool id={user?.id || ""} schoolId={user?.schoolId || ""} />
         {/* Header */}
         <div className="flex flex-col items-center justify-center">
-          <h1 className={`${NOTIFICATION} mt-0 text-center`}>
-            This is your profile. Make it look like nobody else&apos;s!
-          </h1>
+          {user?.id === session?.user?.id && (
+            <h1 className={`${NOTIFICATION} mt-0 text-center`}>
+              This is your profile. Make it look like nobody else&apos;s!
+            </h1>
+          )}
           <Avatar src={user?.image} size={100} />
           <h1 className="text-4xl font-extrabold">{user?.name}</h1>
           <div className="flex items-center gap-6 my-2">
@@ -70,8 +71,8 @@ export default function Profile() {
             </div>
           )}
           {session?.user?.id === user?.id && (
-            <Link href="/edit-profile">
-              <a className={ACTION_BUTTON}>Edit Profile</a>
+            <Link href="/settings">
+              <a className={ACTION_BUTTON}>Go to Settings</a>
             </Link>
           )}
         </div>
