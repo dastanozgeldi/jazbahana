@@ -18,19 +18,16 @@ const Navbar = ({ mounted, links }: NavbarProps) => {
 
   return (
     <nav className="fixed transition border-b border-gray-500 bg-opacity-80 w-full z-10 backdrop-blur flex items-center justify-between px-4 py-2">
-      {/* Logo */}
       <Logo />
       {/* Links */}
-      <div className="flex items-center gap-4 text-xl">
-        <div className="hidden sm:flex items-center gap-4">
-          {links.map((l) => (
-            <Link key={l.label} href={l.href}>
-              <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
-                {l.label}
-              </a>
-            </Link>
-          ))}
-        </div>
+      <div className="hidden sm:flex items-center">
+        {links.map((l) => (
+          <Link key={l.label} href={l.href}>
+            <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
+              {l.label}
+            </a>
+          </Link>
+        ))}
       </div>
 
       <div className="flex items-center gap-2 text-xl">

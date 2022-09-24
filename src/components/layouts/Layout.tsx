@@ -8,6 +8,7 @@ export default function Layout({ children }: LayoutProps) {
   const [mounted, setMounted] = useState(false);
   const links = [
     { label: "Feed", href: "/feed" },
+    { label: "News", href: "/news" },
     { label: "New Room", href: "/new" },
   ];
 
