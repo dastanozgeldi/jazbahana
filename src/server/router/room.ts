@@ -20,24 +20,23 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
 export const roomRouter = createRouter()
   .query("infinite", {
     input: z.object({
-      cursor: z.date().nullish(),
-      limit: z.number().min(1).max(10).default(5),
+      limit: z.number().min(1).max(10).nullish(),
+      cursor: z.string().nullish(),
     }),
     async resolve({ ctx, input }) {
-      const { limit, cursor } = input;
+      const limit = input.limit ?? 5;
+      const { cursor } = input;
+
       const items = await ctx.prisma.room.findMany({
         select: defaultRoomSelect,
-        orderBy: {
-          updatedAt: "desc",
-        },
-        cursor: cursor ? { updatedAt: cursor } : undefined,
         take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { createdAt: "desc" },
       });
-      // let prevCursor: typeof cursor | undefined = undefined;
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {
-        const nextItem = items.pop();
-        nextCursor = nextItem!.updatedAt;
+        const nextItem = items.pop()!;
+        nextCursor = nextItem.id;
       }
 
       return { items, nextCursor };

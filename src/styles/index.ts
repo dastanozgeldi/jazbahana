@@ -17,3 +17,6 @@ export const INPUT_SELECT =
 export const FEATURE =
   "dark:bg-[#2d2d2d] bg-neutral-100 py-6 px-4 opacity-80 rounded-md shadow-2xl";
 export const HIGHLIGHT = "text-yellow-500 font-bold";
+
+export const NOTIFICATION =
+  "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 my-4 rounded-xl px-8 py-4";

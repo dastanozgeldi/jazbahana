@@ -1,6 +1,7 @@
+import { Fragment } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import { ACTION_BUTTON } from "../styles";
+import { ACTION_BUTTON, NOTIFICATION } from "../styles";
 import { trpc } from "../utils/trpc";
 import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
@@ -10,23 +11,15 @@ type RoomSectionProps = { session: Session | null };
 
 export default function RoomsSection({ session }: RoomSectionProps) {
   const { query } = useRouter();
-  const page = query.page ? Number(query.page) - 1 : 0;
-
   const topicId = query.topicId as string;
 
-  const { data } = topicId
-    ? trpc.useInfiniteQuery(
-        ["room.infiniteByTopicId", { limit: 10, topicId }],
-        {
-          getNextPageParam: (lastPage) => lastPage.nextCursor,
-          getPreviousPageParam: () => page - 1,
-        }
-      )
+  const roomsQuery = topicId
+    ? trpc.useInfiniteQuery(["room.infiniteByTopicId", { limit: 5, topicId }], {
+        getPreviousPageParam: (lastPage) => lastPage.nextCursor,
+      })
     : trpc.useInfiniteQuery(["room.infinite", { limit: 5 }], {
-        getNextPageParam: (lastPage) => lastPage.nextCursor,
-        getPreviousPageParam: () => page - 1,
+        getPreviousPageParam: (lastPage) => lastPage.nextCursor,
       });
-  const rooms = data?.pages[page]?.items;
 
   return (
     <div className="w-full">
@@ -34,7 +27,7 @@ export default function RoomsSection({ session }: RoomSectionProps) {
       <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Rooms</h1>
-          <span className="text-gray-400">{rooms?.length} available</span>
+          <span className="text-gray-400">x available</span>
         </div>
 
         {session && (
@@ -46,16 +39,33 @@ export default function RoomsSection({ session }: RoomSectionProps) {
         )}
       </div>
       {/* Displaying Rooms */}
-      {rooms?.map((room) => (
-        <Room key={room.id} data={room} />
+      {roomsQuery.data?.pages.map((page, index) => (
+        <>
+          {page.items.length > 0 ? (
+            <Fragment key={page.items[0].id || index}>
+              {page.items.map((item) => (
+                <Room key={item.id} data={item} />
+              ))}
+            </Fragment>
+          ) : (
+            <p className={NOTIFICATION}>No rooms found for this.</p>
+          )}
+        </>
       ))}
       {/* Pagination */}
-      {rooms && rooms.length > 0 && (
-        <div className="flex justify-between my-2">
-          <button className={ACTION_BUTTON}>previous page</button>
-          <button className={ACTION_BUTTON}>next page</button>
-        </div>
-      )}
+      <button
+        className={ACTION_BUTTON}
+        onClick={() => roomsQuery.fetchPreviousPage()}
+        disabled={
+          !roomsQuery.hasPreviousPage || roomsQuery.isFetchingPreviousPage
+        }
+      >
+        {roomsQuery.isFetchingPreviousPage
+          ? "Loading more..."
+          : roomsQuery.hasPreviousPage
+          ? "Load More"
+          : "Nothing more to load"}
+      </button>
     </div>
   );
 }

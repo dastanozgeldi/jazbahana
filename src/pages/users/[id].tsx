@@ -12,9 +12,7 @@ import { useSession } from "next-auth/react";
 export default function Profile() {
   const { query } = useRouter();
   const id = query.id as string;
-  // tRPC
   const { data: user } = trpc.useQuery(["user.info", { id }]);
-
   const { data: session } = useSession();
 
   return (

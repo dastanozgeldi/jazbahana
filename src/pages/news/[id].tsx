@@ -5,12 +5,9 @@ import { trpc } from "utils/trpc";
 const NewsView = () => {
   const { query } = useRouter();
   const id = query.id as string;
-  // tRPC
   const { data, status } = trpc.useQuery(["news.byId", { id }]);
 
-  if (!data || status !== "success") {
-    return <>Loading...</>;
-  }
+  if (!data || status !== "success") return <>Loading...</>;
   return (
     <div className="max-w-[60ch] mx-auto">
       {/* Header */}
