@@ -1,4 +1,3 @@
-import Footer from "components/Footer";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Navbar from "../Navbar";
@@ -42,7 +41,6 @@ export default function Layout({ children }: LayoutProps) {
       </Head>
       <Navbar mounted={mounted} links={links} />
       <main className="px-4 py-20 sm:container mx-auto">{children}</main>
-      <Footer mounted={mounted} links={links} />
     </>
   );
 }
