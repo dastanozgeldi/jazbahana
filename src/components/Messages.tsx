@@ -174,7 +174,7 @@ export const AddMessageForm = ({
 
   if (!session?.user?.name) {
     return (
-      <div className="flex rounded bg-gray-800 px-3 py-2 text-lg text-gray-200 w-full justify-between">
+      <div className="flex items-center rounded bg-gray-200 dark:bg-gray-800 px-3 py-2 text-lg text-gray-700 dark:text-gray-200 w-full justify-between">
         <p className="font-bold">
           You have to{" "}
           <button
@@ -185,11 +185,7 @@ export const AddMessageForm = ({
           </button>{" "}
           to write.
         </p>
-        <button
-          onClick={() => signIn()}
-          data-testid="signin"
-          className="px-4 bg-indigo-500 rounded h-full"
-        >
+        <button className={ACTION_BUTTON} onClick={() => signIn()}>
           Sign In
         </button>
       </div>
