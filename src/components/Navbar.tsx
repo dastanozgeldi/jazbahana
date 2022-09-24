@@ -50,7 +50,9 @@ const Navbar = ({ mounted, links }: NavbarProps) => {
               </Link>
             </>
           ) : (
-            <button onClick={() => signIn()}>Sign in</button>
+            <button className="text-xl" onClick={() => signIn()}>
+              Sign in
+            </button>
           )}
         </div>
         <ToggleTheme mounted={mounted} />

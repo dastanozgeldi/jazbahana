@@ -2,7 +2,7 @@ import type { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { FaGithub, FaInstagram } from "react-icons/fa";
-import { IoList, IoPerson } from "react-icons/io5";
+import { IoAdd, IoList, IoLogInOutline, IoPerson } from "react-icons/io5";
 
 type HamburgerMenuProps = { session: Session | null };
 
@@ -15,18 +15,25 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
         </a>
       </Link>
       {session ? (
-        <Link href={`/users/${session.user?.id}`}>
-          <a className="flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
-            <IoPerson /> Profile
-          </a>
-        </Link>
+        <>
+          <Link href="/new">
+            <a className="flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
+              <IoAdd /> New Room
+            </a>
+          </Link>
+          <Link href={`/users/${session.user?.id}`}>
+            <a className="flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
+              <IoPerson /> Profile
+            </a>
+          </Link>
+        </>
       ) : (
-        <a
-          className="p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500"
+        <button
+          className="flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500"
           onClick={() => signIn()}
         >
-          Sign in
-        </a>
+          <IoLogInOutline /> Sign in
+        </button>
       )}
       {/* Social Links */}
       <div className="border-t-2 border-gray-400">

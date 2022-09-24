@@ -6,6 +6,7 @@ import Page from "../../components/layouts/Page";
 import EditRoom from "components/EditRoom";
 import Messages from "components/Messages";
 import { Participants } from "components/Participants";
+import { CARD } from "styles";
 
 export default function RoomViewPage() {
   // Router
@@ -30,28 +31,32 @@ export default function RoomViewPage() {
 
   if (!room || roomQuery.status !== "success") return <>Loading...</>;
   return (
-    <Page title={room.title} className="max-w-[60ch] mx-auto">
+    <Page title={room.title}>
       {/* Header */}
-      <div>
-        <h1 className="text-4xl font-extrabold">{room.title}</h1>
-        <p className="my-2">{room.description}</p>
-        <div className="flex items-center justify-between my-2">
-          <p className="text-gray-400">
-            Created {room.createdAt.toLocaleDateString("en-us")}
-          </p>
-        </div>
+      <div className="lg:grid lg:grid-cols-3 items-start">
         <Participants roomId={id} />
-        <EditRoom
-          data={room}
-          topics={topics}
-          session={session}
-          router={router}
-        />
-        <Messages roomId={id} session={session} />
+        <div>
+          <h1 className="text-4xl font-extrabold">{room.title}</h1>
+          <p className="my-2">{room.description}</p>
+          <div className="flex items-center justify-between my-2">
+            <p className="text-gray-400">
+              Created {room.createdAt.toLocaleDateString("en-us")}
+            </p>
+          </div>
+          <EditRoom
+            data={room}
+            topics={topics}
+            session={session}
+            router={router}
+          />
+          <Messages roomId={id} session={session} />
+        </div>
+        <div className={`${CARD} my-2 lg:mx-4`}>
+          <h1 className="my-2 text-2xl font-semibold text-center">
+            Notes Sent [0]
+          </h1>
+        </div>
       </div>
-      {/* TODO: find something to put on the right side */}
-      {/* I'm thinking of a separate notes chat */}
-      {/* where we upload files to storage, I hope */}
     </Page>
   );
 }

@@ -6,9 +6,7 @@ import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
 import Room from "./Room";
 
-type RoomSectionProps = {
-  session: Session | null;
-};
+type RoomSectionProps = { session: Session | null };
 
 export default function RoomsSection({ session }: RoomSectionProps) {
   const { query } = useRouter();

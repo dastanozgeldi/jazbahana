@@ -31,7 +31,7 @@ const AddRoom = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await addRoom.mutateAsync({
+      await addRoom.mutateAsync({ 
         ...data,
         authorName: session?.user?.name || "unknown",
         authorImage: session?.user?.image || "/default-avatar.png",
@@ -43,10 +43,8 @@ const AddRoom = () => {
 
   return (
     <div className="min-h-screen flex items-center">
-      <div
-        className={`justify-center my-4 container sm:w-[50%] mx-auto ${CARD}`}
-      >
-        <form className="p-2" onSubmit={onSubmit}>
+      <div className={`justify-center my-4 max-w-[48ch] mx-auto ${CARD}`}>
+        <form onSubmit={onSubmit}>
           <div className="grid grid-cols-3 items-center mb-3">
             <Link href="/">
               <a className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">

@@ -4,7 +4,7 @@ export const ACTION_BUTTON = `${BUTTON} bg-blue-500 hover:bg-blue-600`;
 export const DELETE_BUTTON = `${BUTTON} bg-red-400 hover:bg-red-500`;
 
 export const CARD =
-  "flex justify-around flex-col items-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
+  "flex flex-col items-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl";
 
 export const TOPIC = "text-xs rounded-xl border border-blue-500 p-2 mr-2";
 
