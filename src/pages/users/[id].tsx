@@ -1,21 +1,21 @@
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import ReactMarkdown from "react-markdown";
 import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
 import RecentActivity from "../../components/RecentActivity";
 import Avatar from "../../components/Avatar";
 import PeopleFromSchool from "components/PeopleFromSchool";
-import EditProfile from "components/EditProfile";
-import { HIGHLIGHT } from "styles";
+import { ACTION_BUTTON, HIGHLIGHT } from "styles";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function Profile() {
   const { query } = useRouter();
   const id = query.id as string;
-  const { data: session } = useSession();
   // tRPC
   const { data: user } = trpc.useQuery(["user.info", { id }]);
-  const { data: schools } = trpc.useQuery(["school.all"]);
+
+  const { data: session } = useSession();
 
   return (
     <Page title="Profile">
@@ -68,8 +68,10 @@ export default function Profile() {
               </p>
             </div>
           )}
-          {query.id === session?.user?.id && (
-            <EditProfile data={user} schools={schools} session={session} />
+          {session?.user?.id === user?.id && (
+            <Link href="/edit-profile">
+              <a className={ACTION_BUTTON}>Edit Profile</a>
+            </Link>
           )}
         </div>
         <RecentActivity />
