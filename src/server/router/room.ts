@@ -107,14 +107,6 @@ export const roomRouter = createRouter()
       return room;
     },
   })
-  .query("all", {
-    resolve({ ctx }) {
-      return ctx.prisma.room.findMany({
-        select: defaultRoomSelect,
-        orderBy: { updatedAt: "desc" },
-      });
-    },
-  })
   .query("byId", {
     input: z.object({
       id: z.string(),
@@ -165,5 +157,10 @@ export const roomRouter = createRouter()
         include: { messages: true, participants: true },
       });
       return { id };
+    },
+  })
+  .query("getCount", {
+    async resolve({ ctx }) {
+      return await ctx.prisma.room.count();
     },
   });

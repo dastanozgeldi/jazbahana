@@ -21,13 +21,15 @@ export default function RoomsSection({ session }: RoomSectionProps) {
         getPreviousPageParam: (lastPage) => lastPage.nextCursor,
       });
 
+  const { data: count } = trpc.useQuery(["room.getCount"]);
+
   return (
     <div className="w-full">
       {/* Header */}
       <div className="flex justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Rooms</h1>
-          <span className="text-gray-400">x available</span>
+          <span className="text-gray-400">{count} available</span>
         </div>
 
         {session && (

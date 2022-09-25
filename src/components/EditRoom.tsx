@@ -1,9 +1,8 @@
 import type { Room, Topic } from "@prisma/client";
 import type { Session } from "next-auth";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { AiOutlineArrowLeft } from "react-icons/ai";
+import { IoClose } from "react-icons/io5";
 import {
   ACTION_BUTTON,
   CARD,
@@ -34,6 +33,7 @@ export default function EditRoom({
   router,
 }: EditRoomProps) {
   const id = router.query.id as string;
+  const userId = session?.user?.id as string;
   const topic = topics?.find((t: Topic) => t.id === data?.topicId);
   const [editing, setEditing] = useState(false);
   // Form
@@ -43,20 +43,21 @@ export default function EditRoom({
   const editRoom = trpc.useMutation("room.edit", {
     async onSuccess() {
       await utils.invalidateQueries(["room.byId", { id }]);
+      setEditing(false);
     },
   });
   const deleteRoom = trpc.useMutation("room.delete", {
     async onSuccess() {
       router.push("/feed");
-      await utils.invalidateQueries(["room.all"]);
     },
   });
   const joinRoom = trpc.useMutation("participant.join", {
     async onSuccess() {
       await utils.invalidateQueries([
         "participant.hasJoined",
-        { roomId: id, userId: session?.user?.id || "" },
+        { roomId: id, userId },
       ]);
+      await utils.invalidateQueries("participant.all");
     },
   });
   // States
@@ -85,14 +86,12 @@ export default function EditRoom({
         {session && (
           <button
             className={ACTION_BUTTON}
-            onClick={() =>
-              joinRoom.mutate({ userId: session.user?.id || "", roomId: id })
-            }
+            onClick={() => joinRoom.mutate({ userId, roomId: id })}
           >
             Join
           </button>
         )}
-        {session?.user?.id === data?.authorId && (
+        {userId === data?.authorId && (
           <>
             <button
               className={ACTION_BUTTON}
@@ -111,12 +110,13 @@ export default function EditRoom({
       </div>
       <div className={`my-4 flex items-center justify-center ${CARD}`}>
         <form hidden={!editing} className="w-[90%]" onSubmit={onSubmit}>
-          <Link href="/">
-            <a className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
-              <AiOutlineArrowLeft size={24} />
-            </a>
-          </Link>
-          <h2 className="text-center text-2xl leading-normal">Settings</h2>
+          <button
+            onClick={() => setEditing(false)}
+            className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+          >
+            <IoClose size={24} />
+          </button>
+          <h2 className="text-center text-2xl leading-normal">Edit Room</h2>
           <div className="my-4">
             <label className="text-xl" htmlFor="title">
               Title:

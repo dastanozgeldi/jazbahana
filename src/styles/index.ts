@@ -19,4 +19,4 @@ export const FEATURE =
 export const HIGHLIGHT = "text-yellow-500 font-bold";
 
 export const NOTIFICATION =
-  "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 my-4 rounded-xl px-8 py-4";
+  "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 my-4 rounded-xl px-8 py-4";
