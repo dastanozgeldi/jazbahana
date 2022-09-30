@@ -33,7 +33,7 @@ export default function RoomsSection({ session }: RoomSectionProps) {
         </div>
 
         {session && (
-          <Link href="/new">
+          <Link href="/new/room">
             <a className={`${ACTION_BUTTON} flex items-center gap-2`}>
               <IoAdd className="w-6 h-6" /> Add Room
             </a>

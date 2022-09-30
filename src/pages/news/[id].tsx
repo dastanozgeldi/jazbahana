@@ -12,11 +12,9 @@ const NewsView = () => {
     <div className="max-w-[60ch] mx-auto">
       {/* Header */}
       <div className="border-b py-2 mb-4">
-        <h1 className="text-4xl font-bold">{data.title}</h1>
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl text-gray-400">{data.description}</h2>
-          <h2>{data.views} views</h2>
-        </div>
+        <h1 className="text-2xl md:text-4xl font-bold">{data.title}</h1>
+        <h2 className="text-xl text-gray-400">{data.description}</h2>
+        <h2>{data.views} views</h2>
       </div>
       <ReactMarkdown className="markdown">{data.content}</ReactMarkdown>
     </div>

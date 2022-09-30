@@ -10,7 +10,7 @@ export default function Layout({ children }: LayoutProps) {
   const links = [
     { label: "Feed", href: "/feed" },
     { label: "News", href: "/news" },
-    { label: "New Room", href: "/new" },
+    { label: "New Note", href: "/new/note" },
   ];
 
   const [parent] = useAutoAnimate<HTMLDivElement>();

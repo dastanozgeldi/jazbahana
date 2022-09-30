@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
-import RecentActivity from "../../components/RecentActivity";
+import RecentNotes from "../../components/RecentNotes";
 import Avatar from "../../components/Avatar";
 import PeopleFromSchool from "components/PeopleFromSchool";
-import { ACTION_BUTTON, HIGHLIGHT, NOTIFICATION } from "styles";
+import { ACTION_BUTTON, DELETE_BUTTON, HIGHLIGHT, NOTIFICATION } from "styles";
 
 export default function Profile() {
   const { query } = useRouter();
@@ -71,12 +71,17 @@ export default function Profile() {
             </div>
           )}
           {session?.user?.id === user?.id && (
-            <Link href="/settings">
-              <a className={ACTION_BUTTON}>Go to Settings</a>
-            </Link>
+            <div className="flex gap-2 items-center justify-center">
+              <Link href="/settings">
+                <a className={ACTION_BUTTON}>Go to Settings</a>
+              </Link>
+              <Link href="/api/auth/signout">
+                <a className={DELETE_BUTTON}>Sign Out</a>
+              </Link>
+            </div>
           )}
         </div>
-        <RecentActivity />
+        <RecentNotes />
       </div>
     </Page>
   );
