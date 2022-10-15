@@ -31,12 +31,6 @@ export default function Profile() {
           <div className="flex items-center gap-6 my-2">
             <div className="flex flex-col justify-center items-center">
               <h2 className="text-xl font-medium">
-                <span className={HIGHLIGHT}>Balance:</span>
-              </h2>
-              <p className="text-lg">{user?.balance}</p>
-            </div>
-            <div className="flex flex-col justify-center items-center">
-              <h2 className="text-xl font-medium">
                 <span className={HIGHLIGHT}>Rooms:</span>
               </h2>
               <p className="text-lg">{user?.Room.length}</p>

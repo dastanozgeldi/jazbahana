@@ -8,7 +8,6 @@ const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
   email: true,
   emailVerified: true,
   image: true,
-  balance: true,
   bio: true,
   school: true,
   schoolId: true,

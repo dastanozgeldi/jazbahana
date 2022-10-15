@@ -96,10 +96,6 @@ export const roomRouter = createRouter()
       topicId: z.string().optional(),
     }),
     async resolve({ ctx, input }) {
-      await ctx.prisma.user.update({
-        data: { balance: { decrement: 100 } },
-        where: { id: input.authorId },
-      });
       const room = await ctx.prisma.room.create({
         data: input,
         select: defaultRoomSelect,
