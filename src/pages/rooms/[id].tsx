@@ -3,8 +3,8 @@ import NextError from "next/error";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
-import EditRoom from "components/EditRoom";
-import Messages from "components/Messages";
+import EditRoom from "components/rooms/EditRoom";
+import Messages from "components/rooms/Messages";
 import { Participants } from "components/Participants";
 import { CARD } from "styles";
 

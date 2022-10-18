@@ -3,16 +3,16 @@ import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaDiscord, FaGithub } from "react-icons/fa";
-import Avatar from "./Avatar";
+import Avatar from "../Avatar";
 import HamburgerMenu from "./HamburgerMenu";
 import Logo from "./Logo";
 
-type NavbarProps = {
+type NavProps = {
   mounted: boolean;
   links: { label: string; href: string }[];
 };
 
-const Navbar = ({ mounted, links }: NavbarProps) => {
+const Nav = ({ mounted, links }: NavProps) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -80,4 +80,4 @@ const Navbar = ({ mounted, links }: NavbarProps) => {
   );
 };
 
-export default Navbar;
+export default Nav;

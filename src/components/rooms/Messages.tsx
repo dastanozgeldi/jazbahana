@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ACTION_BUTTON, CARD } from "styles";
 import { trpc } from "utils/trpc";
-import Avatar from "./Avatar";
+import Avatar from "../Avatar";
 
 export default function Messages({
   roomId,

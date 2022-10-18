@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Navbar from "../Navbar";
+import Nav from "./Nav";
 
 type LayoutProps = { children: React.ReactNode };
 
@@ -9,6 +9,7 @@ export default function Layout({ children }: LayoutProps) {
   const [mounted, setMounted] = useState(false);
   const links = [
     { label: "Feed", href: "/feed" },
+    { label: "Workspace", href: "/workspace" },
     { label: "News", href: "/news" },
     { label: "New Note", href: "/new/note" },
   ];
@@ -43,7 +44,7 @@ export default function Layout({ children }: LayoutProps) {
         />
         <title>Jazbahana - Get Notes Faster</title>
       </Head>
-      <Navbar mounted={mounted} links={links} />
+      <Nav mounted={mounted} links={links} />
       <main ref={parent} className="px-4 py-20 sm:container mx-auto">
         {children}
       </main>

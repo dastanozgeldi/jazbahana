@@ -13,4 +13,8 @@ function defineNextConfig(config) {
 module.exports = defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+  i18n: {
+    locales: ["en", "kk"],
+    defaultLocale: "kk",
+  },
 });
