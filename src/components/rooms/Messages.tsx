@@ -205,12 +205,12 @@ export const AddMessageForm = ({
         }}
       >
         <fieldset disabled={addMessage.isLoading} className="min-w-0">
-          <div className="flex rounded bg-gray-700 px-3 py-2 text-lg text-gray-200 w-full items-end">
+          <div className="flex rounded bg-gray-700 px-3 py-2 text-lg text-gray-200 w-full">
             <textarea
               value={message}
               disabled={!hasUserJoined}
               onChange={(e) => setMessage(e.target.value)}
-              className="bg-transparent outline-none flex-1 outline-0"
+              className="bg-transparent outline-none flex-1 outline-0 resize-none max-h-max overflow-y-visible"
               rows={message.split(/\r|\n/).length}
               id="content"
               name="content"

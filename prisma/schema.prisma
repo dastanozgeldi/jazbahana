@@ -14,6 +14,17 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Hometask {
+    id        String    @id @default(uuid())
+    title     String
+    topic     Topic     @relation(fields: [topicId], references: [id])
+    topicId   String
+    due       DateTime?
+    createdAt DateTime  @unique @default(now())
+    user      User?     @relation(fields: [userId], references: [id])
+    userId    String?
+}
+
 model News {
     id          String   @id @default(uuid())
     title       String
@@ -54,11 +65,12 @@ model ParticipantsInRooms {
 }
 
 model Topic {
-    id        String   @id @default(uuid())
+    id        String     @id @default(uuid())
     name      String
     image     String?
-    createdAt DateTime @unique @default(now())
+    createdAt DateTime   @unique @default(now())
     rooms     Room[]
+    Hometask  Hometask[]
 }
 
 model Room {
@@ -124,6 +136,7 @@ model User {
     mates         User[]                @relation("mates")
     matesRelation User[]                @relation("mates")
     messages      Message[]
+    hometasks     Hometask[]
 }
 
 model School {

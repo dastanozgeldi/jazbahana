@@ -1,4 +1,4 @@
-import ToggleTheme from "components/ToggleTheme";
+import { ToggleTheme } from "components/ToggleTheme";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -6,13 +6,14 @@ import { FaDiscord, FaGithub } from "react-icons/fa";
 import Avatar from "../Avatar";
 import HamburgerMenu from "./HamburgerMenu";
 import Logo from "./Logo";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 type NavProps = {
   mounted: boolean;
   links: { label: string; href: string }[];
 };
 
-const Nav = ({ mounted, links }: NavProps) => {
+export const Nav = ({ mounted, links }: NavProps) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
@@ -20,7 +21,7 @@ const Nav = ({ mounted, links }: NavProps) => {
     <nav className="fixed transition border-b border-gray-500 bg-opacity-80 w-full z-10 backdrop-blur flex items-center justify-between px-4 py-2">
       <Logo />
       {/* Links */}
-      <div className="hidden sm:flex items-center">
+      <div className="hidden md:flex items-center">
         {links.map((l) => (
           <Link key={l.label} href={l.href}>
             <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
@@ -31,7 +32,7 @@ const Nav = ({ mounted, links }: NavProps) => {
       </div>
 
       <div className="flex items-center gap-2 text-xl">
-        <div className="hidden sm:flex gap-2 items-center justify-around text-3xl md:text-4xl">
+        <div className="hidden md:flex gap-2 items-center justify-around text-3xl md:text-4xl">
           <a href="https://discord.gg/jgE2m4cnFj">
             <FaDiscord size={32} />
           </a>
@@ -48,7 +49,7 @@ const Nav = ({ mounted, links }: NavProps) => {
             </>
           ) : (
             <button className="text-xl" onClick={() => signIn()}>
-              Sign in
+              Sign In
             </button>
           )}
         </div>
@@ -57,27 +58,12 @@ const Nav = ({ mounted, links }: NavProps) => {
         <button
           aria-label="Hamburger Menu"
           type="button"
-          className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center hover:ring-2 ring-gray-300 transition-all sm:hidden flex"
+          className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 items-center justify-center hover:ring-2 ring-gray-300 transition-all md:hidden flex"
           onClick={() => setOpen(!open)}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
+          <GiHamburgerMenu />
         </button>
       </div>
     </nav>
   );
 };
-
-export default Nav;

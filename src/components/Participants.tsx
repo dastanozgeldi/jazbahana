@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CARD } from "styles";
 import { trpc } from "utils/trpc";
 import Avatar from "./Avatar";
 
@@ -6,7 +7,7 @@ export const Participants = ({ roomId }: { roomId: string }) => {
   const { data: participants } = trpc.useQuery(["participant.all", { roomId }]);
 
   return (
-    <div className="my-2 lg:mx-4 flex justify-around flex-col items-center text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-2 rounded-xl">
+    <div className={`${CARD} lg:mx-4`}>
       <h1 className="my-2 text-2xl font-semibold text-center">
         Participants [{participants?.length}]
       </h1>

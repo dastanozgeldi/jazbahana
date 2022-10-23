@@ -7,7 +7,11 @@ import Page from "../../components/layouts/Page";
 import RecentNotes from "../../components/RecentNotes";
 import Avatar from "../../components/Avatar";
 import PeopleFromSchool from "components/PeopleFromSchool";
-import { ACTION_BUTTON, DELETE_BUTTON, HIGHLIGHT, NOTIFICATION } from "styles";
+import { NOTIFICATION } from "styles";
+import { IoGlobe, IoLogoTwitter, IoPerson, IoSchool } from "react-icons/io5";
+import { MdForum } from "react-icons/md";
+import { GoSettings, GoSignOut } from "react-icons/go";
+import { PROFILE } from "styles";
 
 export default function Profile() {
   const { query } = useRouter();
@@ -21,59 +25,69 @@ export default function Profile() {
         <PeopleFromSchool id={user?.id || ""} schoolId={user?.schoolId || ""} />
         {/* Header */}
         <div className="flex flex-col items-center justify-center">
-          {user?.id === session?.user?.id && (
-            <h1 className={`${NOTIFICATION} mt-0 text-center`}>
-              This is your profile. Make it look like nobody else&apos;s!
-            </h1>
-          )}
-          <Avatar src={user?.image} size={100} />
-          <h1 className="text-4xl font-extrabold">{user?.name}</h1>
-          <div className="flex items-center gap-6 my-2">
-            <div className="flex flex-col justify-center items-center">
-              <h2 className="text-xl font-medium">
-                <span className={HIGHLIGHT}>Rooms:</span>
-              </h2>
-              <p className="text-lg">{user?.Room.length}</p>
-            </div>
-          </div>
-          {user?.school && (
-            <div className="flex items-center gap-6 my-2">
-              <div className="flex flex-col justify-center items-center">
-                <h2 className="text-xl font-medium">
-                  <span className={HIGHLIGHT}>School:</span>
-                </h2>
-                <p className="text-lg">{user.school.name}</p>
+          {/* Notification */}
+          <h1 className={`${NOTIFICATION} mt-0 text-center`}>
+            This is the profile page. Here you can see some general information
+            about a user.
+          </h1>
+          {/* User Profile Card */}
+          <div className="w-full border-[1px] rounded-[10px] border-gray-700 px-8 py-4">
+            <div className="relative flex justify-around items-center">
+              {/* Settings */}
+              {session?.user?.id === user?.id && (
+                <>
+                  <Link href="/settings">
+                    <a className="absolute top-5 left-2 hover:text-teal-400 duration-500">
+                      <GoSettings className="w-16 h-16 " />
+                    </a>
+                  </Link>
+                  <Link href="/api/auth/signout">
+                    <a className="absolute top-5 right-2 hover:text-teal-400 duration-500">
+                      <GoSignOut className="w-16 h-16 " />
+                    </a>
+                  </Link>
+                </>
+              )}
+              <div className="flex flex-col items-center justify-center">
+                <Avatar src={user?.image} size={100} />
+                <h1 className="text-3xl font-medium mt-4">{user?.name}</h1>
               </div>
-              {user.grade && (
-                <div className="flex flex-col justify-center items-center">
-                  <h2 className="text-xl font-medium">
-                    <span className={HIGHLIGHT}>Grade:</span>
-                  </h2>
-                  <p className="text-lg">{user.grade}</p>
+              {/* Sign Out */}
+            </div>
+            {/* General Info */}
+            <div className="flex items-center justify-between my-4">
+              {user?.school && (
+                <div className={PROFILE}>
+                  <IoSchool className="w-7 h-7" />
+                  NIS PhM
                 </div>
               )}
+              {user?.grade && (
+                <div className={PROFILE}>
+                  <IoPerson className="w-7 h-7" />
+                  10D
+                </div>
+              )}
+              <div className={PROFILE}>
+                <MdForum className="w-7 h-7" />
+                {user?.Room.length}
+              </div>
             </div>
-          )}
-          {user?.bio && (
-            <div className="my-4 flex flex-col justify-center items-center">
-              <h2 className="text-xl font-medium">
-                <span className={HIGHLIGHT}>Bio:</span>
-              </h2>
-              <p className="text-lg">
+
+            {user?.bio && (
+              <p className="w-full bg-[#202020] text-lg p-4 rounded-[10px]">
                 <ReactMarkdown>{user.bio}</ReactMarkdown>
               </p>
-            </div>
-          )}
-          {session?.user?.id === user?.id && (
-            <div className="flex gap-2 items-center justify-center">
-              <Link href="/settings">
-                <a className={ACTION_BUTTON}>Go to Settings</a>
-              </Link>
-              <Link href="/api/auth/signout">
-                <a className={DELETE_BUTTON}>Sign Out</a>
-              </Link>
-            </div>
-          )}
+            )}
+            {/* If user has a website */}
+            <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 my-4 flex items-center gap-2 bg-[#202020] text-lg p-4 rounded-[10px]">
+              <IoGlobe /> dosek.xyz
+            </p>
+            {/* If user has set a twitter account */}
+            <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 flex items-center gap-2 bg-[#202020] text-lg p-4 rounded-[10px]">
+              <IoLogoTwitter /> sbek22_
+            </p>
+          </div>
         </div>
         <RecentNotes />
       </div>

@@ -6,7 +6,7 @@ const Index = () => {
     <Workspace>
       <div>
         <h1 className={NOTIFICATION}>
-          This is your workspace, feel free to create!
+          This is your workspace, feel free to create and explore!
         </h1>
       </div>
     </Workspace>

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import Nav from "./Nav";
+import { Nav } from "./Nav";
 
 type LayoutProps = { children: React.ReactNode };
 

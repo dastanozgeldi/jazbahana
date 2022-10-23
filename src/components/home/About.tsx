@@ -1,6 +1,6 @@
 import { HIGHLIGHT } from "styles";
 
-const About = () => {
+export const About = () => {
   return (
     <div
       id="about"
@@ -18,11 +18,9 @@ const About = () => {
             by joining an isolated environment that we call{" "}
             <span className={HIGHLIGHT}>rooms</span>.
           </p>
-          <img src="/team.svg" />
+          <img src="/trade.svg" />
         </div>
       </div>
     </div>
   );
 };
-
-export default About;

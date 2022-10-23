@@ -3,8 +3,7 @@ services:
     name: jazbahana
     env: node
     plan: free
-    buildCommand: yarn --prod=false &&
-      yarn build
+    buildCommand: yarn --prod=false && yarn build
     startCommand: yarn start
     healthCheckPath: /api/trpc/healthz
     envVars:

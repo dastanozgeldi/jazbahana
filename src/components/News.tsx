@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AiOutlineArrowRight, AiOutlineDown } from "react-icons/ai";
+import { CARD } from "styles";
 import { trpc } from "utils/trpc";
 
 const News = () => {
@@ -11,10 +12,7 @@ const News = () => {
       <h1 className="text-2xl font-semibold text-center">Read News</h1>
       {data &&
         data.map((item) => (
-          <div
-            key={item.id}
-            className="my-4 flex flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl"
-          >
+          <div key={item.id} className={`${CARD} my-4`}>
             <div>
               <h2 className="text-xl">{item.title}</h2>
               <p className="text-gray-400">{item.description}</p>

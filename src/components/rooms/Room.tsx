@@ -15,7 +15,7 @@ type RoomProps = {
 const Room = ({ data }: RoomProps) => {
   return (
     <article
-      className="my-2 flex gap-2 flex-col text-[#202020] bg-neutral-100 dark:text-neutral-100 dark:bg-[#202020] p-4 rounded-xl"
+      className="my-2 flex gap-2 flex-col border-[1px] border-gray-700 p-4 rounded-xl"
       key={data.id}
     >
       <div className="flex items-center justify-between">

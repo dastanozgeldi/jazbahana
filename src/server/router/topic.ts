@@ -13,7 +13,10 @@ const defaultTopicSelect = Prisma.validator<Prisma.TopicSelect>()({
 export const topicRouter = createRouter()
   .query("all", {
     async resolve({ ctx }) {
-      return ctx.prisma.topic.findMany({ select: defaultTopicSelect });
+      return ctx.prisma.topic.findMany({
+        select: defaultTopicSelect,
+        orderBy: { rooms: { _count: "desc" } },
+      });
     },
   })
   .query("getSome", {
@@ -25,6 +28,7 @@ export const topicRouter = createRouter()
       return ctx.prisma.topic.findMany({
         select: defaultTopicSelect,
         take: limit - 1,
+        orderBy: { rooms: { _count: "desc" } },
       });
     },
   })

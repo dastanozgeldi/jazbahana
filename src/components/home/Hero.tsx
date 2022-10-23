@@ -9,10 +9,10 @@ type CardProps = {
   className?: string;
 };
 
-const Card = ({ children, title, href, className = "" }: CardProps) => {
+const Card = ({ children, title, href }: CardProps) => {
   return (
     <div
-      className={`${CARD} relative w-[320px] h-[180px] text-center ${className}`}
+      className={`${CARD} relative w-[320px] h-[180px] text-center shadow shadow-red-500`}
     >
       <h1 className="text-yellow-500 text-2xl font-semibold">{title}</h1>
       <p>{children}</p>
@@ -25,10 +25,10 @@ const Card = ({ children, title, href, className = "" }: CardProps) => {
   );
 };
 
-const Hero = () => {
+export const Hero = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <div>
+      <div className="my-8">
         <h1 className="font-extrabold text-center text-4xl md:text-5xl text-blue-500">
           Jazbahana
         </h1>
@@ -37,7 +37,7 @@ const Hero = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
         <Card href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes.
         </Card>
@@ -53,5 +53,3 @@ const Hero = () => {
     </div>
   );
 };
-
-export default Hero;
