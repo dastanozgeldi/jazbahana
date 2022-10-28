@@ -1,15 +1,15 @@
 import Link from "next/link";
+import Typewriter from "typewriter-effect";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { CARD } from "styles";
 
-type CardProps = {
+type HeroCardProps = {
   title: string;
   children: React.ReactNode;
   href: string;
-  className?: string;
 };
 
-const Card = ({ children, title, href }: CardProps) => {
+const HeroCard = ({ children, title, href }: HeroCardProps) => {
   return (
     <div
       className={`${CARD} relative w-[320px] h-[180px] text-center shadow shadow-red-500`}
@@ -30,25 +30,31 @@ export const Hero = () => {
     <div className="min-h-screen flex flex-col justify-center items-center">
       <div className="my-8">
         <h1 className="font-extrabold text-center text-4xl md:text-5xl text-blue-500">
-          Jazbahana
+          <Typewriter
+            options={{ loop: true }}
+            onInit={(typewriter) => {
+              typewriter
+                .typeString("Jazbahana")
+                .pauseFor(2500)
+                .deleteAll()
+                .start();
+            }}
+          />
         </h1>
         <p className="font-extrabold text-center text-3xl md:text-4xl">
           the way students connect
         </p>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
-        <Card href="#about" title="About Jazbahana">
+        <HeroCard href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes.
-        </Card>
-
-        <Card href="#features" title="Features">
+        </HeroCard>
+        <HeroCard href="#features" title="Features">
           what Jazbahana offers, the benefits of using it and many more.
-        </Card>
-
-        <Card href="#contacts" title="Contacts">
-          ways to connect with authors or just leave a feedback.
-        </Card>
+        </HeroCard>
+        <HeroCard href="#authors" title="Authors">
+          info about the authors of the project, ways to connect.
+        </HeroCard>
       </div>
     </div>
   );
