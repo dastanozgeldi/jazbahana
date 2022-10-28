@@ -40,13 +40,13 @@ export const Info = ({ user, session }: InfoProps) => {
         {user?.school && (
           <div className={PROFILE}>
             <IoSchool className="w-7 h-7" />
-            NIS PhM
+            {user.school.name}
           </div>
         )}
         {user?.grade && (
           <div className={PROFILE}>
             <IoPerson className="w-7 h-7" />
-            10D
+            {user.grade}
           </div>
         )}
         <div className={PROFILE}>

@@ -1,5 +1,4 @@
-import type { School, User } from "@prisma/client";
-import type { Session } from "next-auth";
+import type { School } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,6 +9,7 @@ import { CARD, INPUT_SELECT, INPUT_TEXT, TEXTAREA } from "styles";
 import { trpc } from "utils/trpc";
 
 type FormData = {
+  username: string;
   bio: string;
   schoolId: string;
   grade: string;
@@ -18,6 +18,7 @@ type FormData = {
 const EditProfile = () => {
   const { push } = useRouter();
   // States
+  const [username, setUsername] = useState<string | null | undefined>(null);
   const [bio, setBio] = useState<string | null | undefined>(null);
   const [schoolId, setSchoolId] = useState<string | null | undefined>(null);
   const [grade, setGrade] = useState<string | null | undefined>(null);
@@ -41,12 +42,13 @@ const EditProfile = () => {
     try {
       await editProfile.mutateAsync({
         id,
-        data: { bio, schoolId, grade },
+        data: { username, bio, schoolId, grade },
       });
     } catch {}
   });
 
   useEffect(() => {
+    setUsername(user?.username);
     setBio(user?.bio);
     setSchoolId(user?.schoolId);
     setGrade(user?.grade);
@@ -63,6 +65,20 @@ const EditProfile = () => {
             </a>
           </Link>
           <h2 className="text-center text-2xl leading-normal">Settings</h2>
+          {/* Username */}
+          <div className="my-4">
+            <label className="text-xl" htmlFor="username">
+              Username:
+            </label>
+            <input
+              {...register("username")}
+              id="username"
+              type="text"
+              className={INPUT_SELECT}
+              value={username || ""}
+              onChange={(e) => setUsername(e.currentTarget.value)}
+            />
+          </div>
           {/* School */}
           <div className="my-4">
             <label className="text-xl" htmlFor="schoolId">
