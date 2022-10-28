@@ -22,4 +22,4 @@ export const NOTIFICATION =
   "border-[1px] border-gray-700 my-4 rounded-xl px-8 py-4";
 
 export const PROFILE =
-  "bg-[#202020] gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";
+  "bg-gray-200 dark:bg-[#202020] gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";

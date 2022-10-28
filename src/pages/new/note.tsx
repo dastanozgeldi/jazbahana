@@ -1,56 +1,17 @@
-import { useTheme } from "next-themes";
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect } from "react";
 
-const NewNote = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const contextRef = useRef<any>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const { theme } = useTheme();
+export default function IndexPage() {
+  const [Comp, setComp] = useState<any>(null);
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
-
-    const context = canvas.getContext("2d");
-    if (context === null) throw new Error("Could not get context");
-    context.scale(2, 2);
-    context.lineCap = "round";
-    context.strokeStyle = theme === "dark" ? "white" : "black";
-    context.lineWidth = 5;
-    contextRef.current = context;
+    import("@excalidraw/excalidraw").then((comp) => {
+      setComp(comp.Excalidraw as any);
+    });
+    setWidth(window.innerWidth * 0.85);
+    setHeight(window.innerHeight * 0.85);
   }, []);
 
-  const startDrawing = ({ nativeEvent }: any) => {
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.beginPath();
-    contextRef.current.moveTo(offsetX, offsetY);
-    setIsDrawing(true);
-  };
-
-  const finishDrawing = () => {
-    contextRef.current.closePath();
-    setIsDrawing(false);
-  };
-
-  const draw = ({ nativeEvent }: any) => {
-    if (!isDrawing) return;
-    const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
-  };
-
-  return (
-    <canvas
-      ref={canvasRef}
-      onMouseDown={startDrawing}
-      onMouseUp={finishDrawing}
-      onMouseMove={draw}
-    />
-  );
-};
-
-export default NewNote;
+  return <div style={{ width, height }}>{Comp && <Comp />}</div>;
+}

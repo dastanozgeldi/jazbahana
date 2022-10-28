@@ -10,10 +10,7 @@ import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
 import Layout from "../components/layouts/Layout";
 
-const MyApp: AppType = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const App: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
@@ -74,4 +71,4 @@ export default withTRPC<AppRouter>({
    * @link https://trpc.io/docs/ssr
    */
   ssr: false,
-})(MyApp);
+})(App);

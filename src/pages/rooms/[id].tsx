@@ -6,7 +6,11 @@ import Page from "../../components/layouts/Page";
 import EditRoom from "components/rooms/EditRoom";
 import Messages from "components/rooms/Messages";
 import { Participants } from "components/Participants";
-import { CARD } from "styles";
+import { ACTION_BUTTON, CARD } from "styles";
+import { useState } from "react";
+import axios from "axios";
+
+const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
 
 export default function RoomViewPage() {
   // Router
@@ -18,6 +22,38 @@ export default function RoomViewPage() {
   const roomQuery = trpc.useQuery(["room.byId", { id }]);
   const { data: room } = roomQuery;
   const { data: topics } = trpc.useQuery(["topic.all"]);
+
+  const [file, setFile] = useState<any>();
+  const [uploadingStatus, setUploadingStatus] = useState<any>();
+  const [uploadedFile, setUploadedFile] = useState<any>();
+
+  const selectFile = (e: any) => {
+    setFile(e.target.files[0]);
+  };
+
+  const uploadFile = async () => {
+    setUploadingStatus("Uploading the file to AWS S3");
+
+    let { data } = await axios.post("/api/uploadFile", {
+      name: file.name,
+      type: file.type,
+    });
+
+    console.log(data);
+
+    const url = data.url;
+    await axios.put(url, file, {
+      headers: {
+        "Content-type": file.type,
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+
+    setUploadedFile(BUCKET_URL + file.name);
+    setFile(null);
+  };
+
+  const uploadedFilename = uploadedFile && uploadedFile.split(BUCKET_URL)[1];
 
   // room fetch fail
   if (roomQuery.error) {
@@ -55,6 +91,19 @@ export default function RoomViewPage() {
           <h1 className="my-2 text-2xl font-semibold text-center">
             Notes Sent [0]
           </h1>
+          {/* Display uploaded files specific to the chat */}
+          <a className={`${CARD} m-2`} href={uploadedFile}>
+            {uploadedFilename}
+          </a>
+          <div className="border-t-[1px] w-full border-gray-700 p-4">
+            <input type="file" onChange={(e) => selectFile(e)} />
+            {file && (
+              <button onClick={uploadFile} className={`${ACTION_BUTTON} my-2`}>
+                Upload a File!
+              </button>
+            )}
+            {uploadingStatus && <p>{uploadingStatus}</p>}
+          </div>
         </div>
       </div>
     </Page>

@@ -4,12 +4,12 @@ import Link from "next/link";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import {
   IoAdd,
-  IoCodeWorking,
   IoList,
   IoLogInOutline,
   IoNewspaperOutline,
   IoPerson,
 } from "react-icons/io5";
+import { MdWorkOutline } from "react-icons/md";
 
 type HamburgerMenuProps = { session: Session | null };
 
@@ -26,7 +26,7 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
       </Link>
       <Link href="/workspace">
         <a className={HAMBURGER_ITEM}>
-          <IoCodeWorking /> Workspace
+          <MdWorkOutline /> Workspace
         </a>
       </Link>
       <Link href="/news">

@@ -56,16 +56,16 @@ export const Info = ({ user, session }: InfoProps) => {
       </div>
 
       {user?.bio && (
-        <p className="w-full bg-[#202020] text-lg p-4 rounded-[10px]">
+        <p className="w-full bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
           <ReactMarkdown>{user.bio}</ReactMarkdown>
         </p>
       )}
       {/* If user has a website */}
-      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 my-4 flex items-center gap-2 bg-[#202020] text-lg p-4 rounded-[10px]">
+      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 my-4 flex items-center gap-2 bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
         <IoGlobe /> dosek.xyz
       </p>
       {/* If user has set a twitter account */}
-      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 flex items-center gap-2 bg-[#202020] text-lg p-4 rounded-[10px]">
+      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 flex items-center gap-2 bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
         <IoLogoTwitter /> sbek22_
       </p>
     </div>

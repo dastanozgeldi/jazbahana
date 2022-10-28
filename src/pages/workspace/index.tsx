@@ -1,16 +1,14 @@
 import Workspace from "components/layouts/Workspace";
 import { NOTIFICATION } from "styles";
 
-const Index = () => {
+const Notes = () => {
   return (
     <Workspace>
-      <div>
-        <h1 className={NOTIFICATION}>
-          This is your workspace, feel free to create and explore!
-        </h1>
-      </div>
+      <h1 className={NOTIFICATION}>
+        Here are your notes sorted by topics and dates created.
+      </h1>
     </Workspace>
   );
 };
 
-export default Index;
+export default Notes;

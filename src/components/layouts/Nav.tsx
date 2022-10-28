@@ -42,7 +42,7 @@ export const Nav = ({ mounted, links }: NavProps) => {
           {session ? (
             <>
               <Link href={`/users/${session.user?.id}`}>
-                <a>
+                <a className="rounded-full hover:ring-2 ring-gray-300">
                   <Avatar src={session.user?.image} size={32} />
                 </a>
               </Link>

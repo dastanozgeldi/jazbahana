@@ -17,12 +17,14 @@ datasource db {
 model Hometask {
     id        String    @id @default(uuid())
     title     String
+    content   String?
     topic     Topic     @relation(fields: [topicId], references: [id])
     topicId   String
     due       DateTime?
     createdAt DateTime  @unique @default(now())
     user      User?     @relation(fields: [userId], references: [id])
     userId    String?
+    finished  Boolean   @default(false)
 }
 
 model News {

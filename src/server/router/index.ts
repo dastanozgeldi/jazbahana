@@ -9,6 +9,7 @@ import { messageRouter } from "./message";
 import { newsRouter } from "./news";
 import { participantRouter } from "./participant";
 import { schoolRouter } from "./school";
+import { hometaskRouter } from "./hometask";
 
 export const appRouter = createRouter()
   .transformer(superjson)
@@ -18,7 +19,8 @@ export const appRouter = createRouter()
   .merge("message.", messageRouter)
   .merge("news.", newsRouter)
   .merge("participant.", participantRouter)
-  .merge("school.", schoolRouter);
+  .merge("school.", schoolRouter)
+  .merge("hometask.", hometaskRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
