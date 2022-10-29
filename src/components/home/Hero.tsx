@@ -30,20 +30,20 @@ export const Hero = () => {
     <div className="min-h-screen flex flex-col justify-center items-center">
       <div className="my-8">
         <h1 className="font-extrabold text-center text-4xl md:text-5xl text-blue-500">
-          <Typewriter
-            options={{ loop: true }}
-            onInit={(typewriter) => {
-              typewriter
-                .typeString("Jazbahana")
-                .pauseFor(2500)
-                .deleteAll()
-                .start();
-            }}
-          />
+          Jazbahana
         </h1>
-        <p className="font-extrabold text-center text-3xl md:text-4xl">
-          the way students connect
-        </p>
+        <div className="md:flex md:gap-2 font-extrabold text-center text-3xl md:text-4xl">
+          the way students{" "}
+          <span className="text-blue-500">
+            <Typewriter
+              options={{
+                autoStart: true,
+                loop: true,
+                strings: ["connect", "share", "study efficiently"],
+              }}
+            />
+          </span>
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
         <HeroCard href="#about" title="About Jazbahana">
