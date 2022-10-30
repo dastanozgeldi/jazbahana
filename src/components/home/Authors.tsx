@@ -54,7 +54,7 @@ export const Authors = () => (
           />
           <h1 className="text-3xl font-bold mt-4">Bek Slambek</h1>
           <span className="text-blue-500 text-xl">Developer</span>
-          <a className="text-lg" href="https://dosek.xyz/">
+          <a className="text-lg" href="https://sbek22.xyz/">
             https://sbek22.xyz/
           </a>
         </div>
