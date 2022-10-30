@@ -49,7 +49,7 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
         </>
       ) : (
         <button className={HAMBURGER_ITEM} onClick={() => signIn()}>
-          <IoLogInOutline /> Sign in
+          <IoLogInOutline /> Sign In
         </button>
       )}
       {/* Social Links */}
