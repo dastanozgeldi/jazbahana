@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "build:1-generate": "prisma generate",
-    "build:2-migrate": "prisma migrate deploy",
-    "build:3-next": "cross-env NODE_ENV=production next build",
-    "build:4-server": "tsc --project tsconfig.server.json",
+    "build:2-seed": "prisma db seed",
+    "build:3-migrate": "prisma migrate deploy",
+    "build:4-next": "cross-env NODE_ENV=production next build",
+    "build:5-server": "tsc --project tsconfig.server.json",
     "build": "run-s build:*",
     "dev:ws": "ts-node-dev --project tsconfig.server.json --respawn --transpile-only src/server/wssDevServer.ts",
     "dev:next": "next dev",
