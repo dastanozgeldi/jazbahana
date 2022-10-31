@@ -1,14 +1,21 @@
-import { ifError } from "assert";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { trpc } from "utils/trpc";
 
 const HometaskView = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const id = query.id as string;
   const { data, status } = trpc.useQuery(["hometask.byId", { id }]);
+  const { status: authStatus } = useSession({
+    required: true,
+    onUnauthenticated() {
+      push("/api/auth/signin");
+    },
+  });
 
-  if (!data || status !== "success") return <>Loading...</>;
+  if (!data || status !== "success" || authStatus === "loading")
+    return "Loading or not authenticated...";
   return (
     <div className="max-w-[60ch] mx-auto">
       {/* Header */}
