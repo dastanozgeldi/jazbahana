@@ -54,17 +54,16 @@ export const userRouter = createRouter()
       return user;
     },
   })
-  .query("peopleFromSchool", {
+  .query("connections", {
     input: z.object({
       id: z.string().cuid(),
       schoolId: z.string().uuid(),
     }),
     async resolve({ ctx, input }) {
       const { id, schoolId } = input;
-      const students = await ctx.prisma.user.findMany({
+      return await ctx.prisma.user.findMany({
         where: { id: { not: id }, schoolId },
         select: defaultUserSelect,
       });
-      return students;
     },
   });
