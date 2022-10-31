@@ -8,14 +8,18 @@ import { PinnedRooms } from "./PinnedRooms";
 export const UserProfile = ({ user }: { user: User & any }) => {
   const { data: session } = useSession();
 
-  return (
+  return user?.id && user.id === session?.user?.id ? (
     <Page
       title="Profile"
       className="xl:grid xl:grid-cols-3 xl:justify-items-center"
     >
       <Info user={user} session={session} />
-      <PinnedRooms id={user?.id || ""} schoolId={user?.schoolId || ""} />
+      <PinnedRooms id={user?.id} schoolId={user?.schoolId || ""} />
       <HometaskSection />
+    </Page>
+  ) : (
+    <Page title="Profile" className="max-w-[48ch] w-full mx-auto">
+      <Info user={user} session={session} />
     </Page>
   );
 };

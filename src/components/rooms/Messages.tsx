@@ -205,7 +205,7 @@ export const AddMessageForm = ({
         }}
       >
         <fieldset disabled={addMessage.isLoading} className="min-w-0">
-          <div className="flex rounded bg-gray-700 px-3 py-2 text-lg text-gray-200 w-full">
+          <div className="flex rounded bg-gray-200 dark:bg-[#202020] px-3 py-2 text-lg text-gray-200 w-full">
             <textarea
               value={message}
               disabled={!hasUserJoined}
