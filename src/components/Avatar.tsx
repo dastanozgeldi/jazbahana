@@ -5,7 +5,7 @@ const Avatar = ({ src, size }: AvatarProps) => {
     <img
       alt="avatar"
       className="rounded-full border-[1px] border-blue-400"
-      src={src || "/default-avatar.png"}
+      src={src ?? "/default-avatar.png"}
       width={size}
       height={size}
     />

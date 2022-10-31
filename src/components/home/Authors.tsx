@@ -1,15 +1,6 @@
 import Avatar from "components/Avatar";
 import { CARD } from "styles";
-
-type TextElementProps = { children: React.ReactNode };
-
-const Paragraph = ({ children }: TextElementProps) => (
-  <p className="text-xl my-2">{children}</p>
-);
-
-const H = ({ children }: TextElementProps) => (
-  <span className="text-yellow-500 font-bold">{children}</span>
-);
+import { Paragraph, H } from "components/Text";
 
 export const Authors = () => (
   <div id="authors">
@@ -18,7 +9,7 @@ export const Authors = () => (
         Authors
       </h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-around my-6">
-        <div className="max-w-[48ch]">
+        <div className="max-w-[48ch] mx-auto md:mx-0">
           <Paragraph>
             Jazbahana initially started as an idea where you can{" "}
             <H>host a temporary room</H>, send the <H>invite link</H> to a
@@ -58,7 +49,7 @@ export const Authors = () => (
             https://sbek22.xyz/
           </a>
         </div>
-        <div className="max-w-[48ch] md:text-right">
+        <div className="max-w-[48ch] mx-auto md:text-right md:mx-0">
           <Paragraph>
             These are the <H>creators</H> of Jazbahana. A lot of{" "}
             <H>design, decisions, brainstorming, reviewing, research</H> and
