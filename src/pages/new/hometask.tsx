@@ -25,7 +25,7 @@ const NewHometask = () => {
   const addHometask = trpc.useMutation("hometask.add", {
     async onSuccess() {
       push("/workspace/hometasks");
-      await utils.invalidateQueries(["hometask.all"]);
+      await utils.invalidateQueries(["hometask.infinite"]);
     },
   });
 
