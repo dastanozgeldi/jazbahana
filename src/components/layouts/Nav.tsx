@@ -7,6 +7,7 @@ import Avatar from "../Avatar";
 import HamburgerMenu from "./HamburgerMenu";
 import Logo from "./Logo";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { BiLogInCircle } from "react-icons/bi";
 
 type NavProps = {
   mounted: boolean;
@@ -49,7 +50,7 @@ export const Nav = ({ mounted, links }: NavProps) => {
             </>
           ) : (
             <button className="text-xl" onClick={() => signIn()}>
-              Sign In
+              <BiLogInCircle size={32} />
             </button>
           )}
         </div>

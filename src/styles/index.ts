@@ -15,10 +15,7 @@ export const INPUT_SELECT =
   "my-1 w-full bg-transparent outline outline-[1px] outline-gray-500 rounded p-2";
 
 export const FEATURE =
-  "dark:bg-[#2d2d2d] bg-neutral-100 py-6 px-4 opacity-80 rounded-md shadow-2xl";
+  "bg-white dark:bg-neutral-800 py-6 px-4 opacity-80 rounded-md shadow-2xl";
 
 export const NOTIFICATION =
   "border-[1px] border-gray-700 my-4 rounded-xl px-8 py-4";
-
-export const PROFILE =
-  "bg-gray-200 dark:bg-[#202020] gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";

@@ -3,16 +3,18 @@ import type { User } from "@prisma/client";
 import Avatar from "components/Avatar";
 import Link from "next/link";
 import { GoSettings, GoSignOut } from "react-icons/go";
-import { IoGlobe, IoLogoTwitter, IoPerson, IoSchool } from "react-icons/io5";
+import { IoPerson, IoSchool } from "react-icons/io5";
 import { MdForum } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
-import { PROFILE } from "styles";
 
 type InfoProps = { user?: (User & any) | null; session: Session | null };
 
+export const PROFILE =
+  "border-[1px] border-gray-700 gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";
+
 export const Info = ({ user, session }: InfoProps) => {
   return (
-    <div className="my-4 border-[1px] rounded-[10px] border-gray-700 p-4">
+    <div className="my-4 border-[1px] rounded-[10px] border-gray-700 p-4 h-max">
       <div className="relative flex justify-around items-center">
         {/* Settings */}
         {session?.user?.id === user?.id && (
@@ -56,18 +58,13 @@ export const Info = ({ user, session }: InfoProps) => {
       </div>
 
       {user?.bio && (
-        <p className="w-full bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
-          <ReactMarkdown>{user.bio}</ReactMarkdown>
-        </p>
+        <>
+          <p className="text-xl">Bio</p>
+          <p className="border-[1px] border-gray-700 p-4 rounded-[10px] text-lg">
+            <ReactMarkdown>{user.bio}</ReactMarkdown>
+          </p>
+        </>
       )}
-      {/* If user has a website */}
-      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 my-4 flex items-center gap-2 bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
-        <IoGlobe /> dosek.xyz
-      </p>
-      {/* If user has set a twitter account */}
-      <p className="hover:text-teal-400 hover:text-[18.5px] duration-500 flex items-center gap-2 bg-gray-200 dark:bg-[#202020] text-lg p-4 rounded-[10px]">
-        <IoLogoTwitter /> sbek22_
-      </p>
     </div>
   );
 };
