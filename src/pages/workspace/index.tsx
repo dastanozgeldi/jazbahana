@@ -16,12 +16,14 @@ const Notes = () => {
   if (status === "loading") return "Loading or not authenticated...";
   return (
     <Workspace>
-      <h1 className={NOTIFICATION}>
-        Here are your notes sorted by topics and dates created.
-      </h1>
-      <Link href="/new/note">
-        <button className={`${ACTION_BUTTON} w-full`}>Add Note</button>
-      </Link>
+      <div>
+        <h1 className={NOTIFICATION}>
+          Here are your notes sorted by topics and dates created.
+        </h1>
+        <Link href="/new/note">
+          <button className={`${ACTION_BUTTON} w-full`}>Add Note</button>
+        </Link>
+      </div>
     </Workspace>
   );
 };
