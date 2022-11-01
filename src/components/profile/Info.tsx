@@ -21,12 +21,12 @@ export const Info = ({ user, session }: InfoProps) => {
           <>
             <Link href="/settings">
               <a className="absolute top-5 left-2 hover:text-teal-400 duration-500">
-                <GoSettings className="w-16 h-16" />
+                <GoSettings className="w-12 h-12" />
               </a>
             </Link>
             <Link href="/api/auth/signout">
               <a className="absolute top-5 right-2 hover:text-teal-400 duration-500">
-                <GoSignOut className="w-16 h-16" />
+                <GoSignOut className="w-12 h-12" />
               </a>
             </Link>
           </>

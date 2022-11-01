@@ -15,7 +15,6 @@ const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
   grade: true,
   rooms: true,
   Room: true,
-  mates: true,
   messages: true,
 });
 

@@ -1,18 +1,14 @@
-import type {
-  ParticipantsInRooms,
-  Room as RoomType,
-  Topic,
-} from "@prisma/client";
+import type { ParticipantsInRooms, Room, Topic } from "@prisma/client";
 import Link from "next/link";
 import { IoPeople } from "react-icons/io5";
 import { TOPIC } from "styles";
 import Avatar from "../Avatar";
 
-type RoomProps = {
-  data: RoomType & { participants: ParticipantsInRooms[]; topic: Topic | null };
+type RoomItemProps = {
+  data: Room & { participants: ParticipantsInRooms[]; topic: Topic | null };
 };
 
-const Room = ({ data }: RoomProps) => {
+export const RoomItem = ({ data }: RoomItemProps) => {
   return (
     <article
       className="my-2 flex gap-2 flex-col border-[1px] border-gray-700 p-4 rounded-xl"
@@ -51,5 +47,3 @@ const Room = ({ data }: RoomProps) => {
     </article>
   );
 };
-
-export default Room;

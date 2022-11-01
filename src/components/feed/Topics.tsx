@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AiOutlineDown } from "react-icons/ai";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 
 const Topics = () => {
   const { data } = trpc.useQuery(["topic.getSome", { limit: 5 }]);

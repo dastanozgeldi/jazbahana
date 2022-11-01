@@ -5,7 +5,7 @@ import { ACTION_BUTTON, NOTIFICATION } from "../../styles";
 import { trpc } from "../../utils/trpc";
 import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
-import Room from "./Room";
+import { RoomItem } from "../rooms/RoomItem";
 
 type RoomSectionProps = { session: Session | null };
 
@@ -46,7 +46,7 @@ export default function RoomsSection({ session }: RoomSectionProps) {
           {page.items.length > 0 ? (
             <Fragment key={page.items[0].id || index}>
               {page.items.map((item) => (
-                <Room key={item.id} data={item} />
+                <RoomItem key={item.id} data={item} />
               ))}
             </Fragment>
           ) : (

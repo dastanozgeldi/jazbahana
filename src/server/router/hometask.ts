@@ -115,4 +115,16 @@ export const hometaskRouter = createRouter()
       }
       return hometask;
     },
+  })
+  .query("finish", {
+    input: z.object({
+      id: z.string().uuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { id } = input;
+      await ctx.prisma.hometask.update({
+        where: { id },
+        data: { finished: true },
+      });
+    },
   });

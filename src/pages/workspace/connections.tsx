@@ -1,4 +1,5 @@
 import type { User } from "@prisma/client";
+import Avatar from "components/Avatar";
 import Workspace from "components/layouts/Workspace";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -7,10 +8,9 @@ import { trpc } from "utils/trpc";
 
 const ConnectionItem = ({ connection }: { connection: User }) => {
   return (
-    <div>
-      <h1>
-        {connection.name} - {connection.id}
-      </h1>
+    <div className="flex items-center justify-between p-4 my-4 rounded-xl border-[1px] border-gray-700">
+      <Avatar src={connection.image} size={50} />
+      <h1>{connection.name}</h1>
     </div>
   );
 };
@@ -33,16 +33,21 @@ const Connections = () => {
       schoolId: user?.schoolId || "",
     },
   ]);
-
   if (status === "loading") {
     return "Loading or not authenticated...";
   }
   return (
     <Workspace>
-      <h1 className={NOTIFICATION}>Here are people you are connected with.</h1>
-      {connections?.map((conn) => (
-        <ConnectionItem connection={conn} />
-      ))}
+      <div>
+        <h1 className={NOTIFICATION}>
+          Here are people you are connected with.
+        </h1>
+        <div className="w-full">
+          {connections?.map((conn) => (
+            <ConnectionItem connection={conn} />
+          ))}
+        </div>
+      </div>
     </Workspace>
   );
 };

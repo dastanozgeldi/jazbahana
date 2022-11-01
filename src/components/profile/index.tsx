@@ -13,7 +13,9 @@ export const UserProfile = ({ user }: { user: User & any }) => {
       title="Profile"
       className="xl:grid xl:grid-cols-3 xl:justify-items-center"
     >
-      <Info user={user} session={session} />
+      <div className="w-full px-4">
+        <Info user={user} session={session} />
+      </div>
       <PinnedRooms id={user?.id} schoolId={user?.schoolId || ""} />
       <HometaskSection />
     </Page>

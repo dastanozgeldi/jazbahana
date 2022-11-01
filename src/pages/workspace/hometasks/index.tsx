@@ -12,9 +12,7 @@ const Hometasks = () => {
     },
   });
 
-  if (status === "loading") {
-    return "Loading or not authenticated...";
-  }
+  if (status === "loading") return "Loading or not authenticated...";
   return (
     <Workspace>
       <HometaskSection />

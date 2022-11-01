@@ -1,10 +1,14 @@
 import type { Hometask } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
 import { ACTION_BUTTON, CARD, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 
 const HometaskItem = ({ item }: { item: Hometask & any }) => {
+  const [isFinished, setIsFinished] = useState(item.finished);
+  const finishHometask = trpc.useQuery(["hometask.finish", { id: item.id }]);
+
   return (
     <>
       <div className="w-full">

@@ -1,4 +1,4 @@
-import Room from "components/rooms/Room";
+import { RoomItem } from "components/rooms/RoomItem";
 import { Fragment } from "react";
 import { NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
@@ -24,7 +24,7 @@ export const PinnedRooms = ({ id, schoolId }: PinnedRoomsProps) => {
             {page.items.length > 0 ? (
               <Fragment key={page.items[0].id || index}>
                 {page.items.map((item) => (
-                  <Room key={item.id} data={item} />
+                  <RoomItem key={item.id} data={item} />
                 ))}
               </Fragment>
             ) : (
