@@ -60,10 +60,13 @@ const RoomInfo = ({ room, topics, router }: RoomInfoProps) => {
 
 const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
 
-const SentNotes = () => {
+const SentNotes = ({ roomId }: { roomId: string }) => {
   const [file, setFile] = useState<any>();
   const [uploadingStatus, setUploadingStatus] = useState<any>();
   const [uploadedFile, setUploadedFile] = useState<any>();
+
+  const addNote = trpc.useMutation("note.add");
+  const notesQuery = trpc.useQuery(["note.getNotesForRoom", { roomId }]);
 
   const selectFile = (e: any) => {
     setFile(e.target.files[0]);
@@ -87,21 +90,23 @@ const SentNotes = () => {
       },
     });
 
+    await addNote.mutateAsync({ roomId, filename: file.name });
+
     setUploadedFile(BUCKET_URL + file.name);
     setFile(null);
+    notesQuery.refetch();
   };
-
-  const uploadedFilename = uploadedFile && uploadedFile.split(BUCKET_URL)[1];
 
   return (
     <div className={`${CARD} my-2 lg:mx-4`}>
       <h1 className="my-2 text-2xl font-semibold text-center">
-        Notes Sent - 0
+        Notes Sent - {notesQuery.data?.length}
       </h1>
-      {/* Display uploaded files specific to the chat */}
-      <a className={`${CARD} m-2`} href={uploadedFile}>
-        {uploadedFilename}
-      </a>
+      {notesQuery.data?.map((note) => (
+        <a className={`${CARD} m-2 w-full text-left`} href={BUCKET_URL + note.filename}>
+          {note.filename}
+        </a>
+      ))}
       <div className="border-t-[1px] w-full border-gray-700 p-4">
         <input type="file" onChange={(e) => selectFile(e)} />
         {file && (
@@ -140,7 +145,7 @@ export default function RoomViewPage() {
       <div className="lg:grid lg:grid-cols-3 items-start gap-2">
         <Participants roomId={id} />
         <RoomInfo room={room} topics={topics} router={router} />
-        <SentNotes />
+        <SentNotes roomId={room.id} />
       </div>
     </Page>
   );

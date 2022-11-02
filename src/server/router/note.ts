@@ -55,6 +55,17 @@ export const noteRouter = createRouter()
       };
     },
   })
+  .mutation("add", {
+    input: z.object({
+      filename: z.string(),
+      roomId: z.string().uuid().nullish(),
+    }),
+    async resolve({ ctx, input }) {
+      const { filename, roomId } = input;
+      const userId = ctx.session?.user?.id as string;
+      await ctx.prisma.note.create({ data: { filename, roomId, userId } });
+    },
+  })
   .query("getNote", {
     input: z.object({
       id: z.string().uuid(),
@@ -84,7 +95,6 @@ export const noteRouter = createRouter()
       if (!room) {
         throw new TRPCError({ code: "NOT_FOUND" });
       }
-      console.log(room.notes);
       return room.notes;
     },
   });
