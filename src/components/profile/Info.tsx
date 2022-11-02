@@ -40,7 +40,7 @@ export const Info = ({ user, session }: InfoProps) => {
       {/* General Info */}
       <div className="flex items-center justify-between my-4 gap-2">
         {user?.school && (
-          <div className={PROFILE}>
+          <div className={`${PROFILE} text-center`}>
             <IoSchool className="w-7 h-7" />
             {user.school.name}
           </div>

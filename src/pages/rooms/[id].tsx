@@ -5,9 +5,8 @@ import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
 import EditRoom from "components/rooms/EditRoom";
 import Messages from "components/rooms/Messages";
-import { ACTION_BUTTON, CARD } from "styles";
-import { useState } from "react";
-import axios from "axios";
+import { CARD } from "styles";
+import { useRef, useState } from "react";
 import type { Room, Topic } from "@prisma/client";
 import Link from "next/link";
 import Avatar from "components/Avatar";
@@ -44,7 +43,7 @@ const RoomInfo = ({ room, topics, router }: RoomInfoProps) => {
   const { data: session } = useSession();
 
   return (
-    <div>
+    <div className="my-4 lg:my-0">
       <h1 className="text-4xl font-extrabold">{room.title}</h1>
       <p className="my-2">{room.description}</p>
       <div className="flex items-center justify-between my-2">
@@ -58,59 +57,72 @@ const RoomInfo = ({ room, topics, router }: RoomInfoProps) => {
   );
 };
 
-const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
+type SentNotesProps = { roomId: string };
 
-const SentNotes = () => {
-  const [file, setFile] = useState<any>();
-  const [uploadingStatus, setUploadingStatus] = useState<any>();
-  const [uploadedFile, setUploadedFile] = useState<any>();
+const SentNotes = ({ roomId }: SentNotesProps) => {
+  const [file, setFile] = useState<File>();
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  const selectFile = (e: any) => {
-    setFile(e.target.files[0]);
+  const notesQuery = trpc.useQuery(["note.getNotesForRoom", { roomId }]);
+  console.log(notesQuery.data);
+
+  const { mutateAsync: createPresignedUrl } = trpc.useMutation(
+    "note.createPresignedUrl"
+  );
+
+  const onFileChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setFile(e.currentTarget.files?.[0]);
   };
 
-  const uploadFile = async () => {
-    setUploadingStatus("Uploading the file to AWS S3");
-
-    let { data } = await axios.post("/api/uploadFile", {
-      name: file.name,
-      type: file.type,
+  const uploadNote = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!file) return;
+    const { url, fields }: { url: string; fields: any } =
+      (await createPresignedUrl({ filename: file.name })) as any;
+    const data = {
+      ...fields,
+      "Content-Type": file.type,
+      file,
+    };
+    const formData = new FormData();
+    for (const name in data) {
+      formData.append(name, data[name]);
+    }
+    await fetch(url, {
+      method: "POST",
+      body: formData,
     });
-
-    console.log(data);
-
-    const url = data.url;
-    await axios.put(url, file, {
-      headers: {
-        "Content-type": file.type,
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-
-    setUploadedFile(BUCKET_URL + file.name);
-    setFile(null);
+    setFile(undefined);
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+    notesQuery.refetch();
   };
-
-  const uploadedFilename = uploadedFile && uploadedFile.split(BUCKET_URL)[1];
 
   return (
     <div className={`${CARD} my-2 lg:mx-4`}>
       <h1 className="my-2 text-2xl font-semibold text-center">
-        Notes Sent - 0
+        Notes Sent - {notesQuery.data?.length}
       </h1>
       {/* Display uploaded files specific to the chat */}
-      <a className={`${CARD} m-2`} href={uploadedFile}>
-        {uploadedFilename}
-      </a>
-      <div className="border-t-[1px] w-full border-gray-700 p-4">
-        <input type="file" onChange={(e) => selectFile(e)} />
+      {file && <a className={`${CARD} m-2`}>{file.name}</a>}
+      <form
+        className="text-white border-t-[1px] p-2 border-t-gray-700"
+        onSubmit={uploadNote}
+      >
+        <input
+          ref={fileRef}
+          id="file-upload"
+          className="ml-4 text-white"
+          onChange={onFileChange}
+          type="file"
+        />
         {file && (
-          <button onClick={uploadFile} className={`${ACTION_BUTTON} my-2`}>
-            Upload a File!
+          <button className="ml-4" type="submit">
+            Upload
           </button>
         )}
-        {uploadingStatus && <p>{uploadingStatus}</p>}
-      </div>
+      </form>
     </div>
   );
 };
@@ -137,10 +149,10 @@ export default function RoomViewPage() {
   if (!room || roomQuery.status !== "success") return "Loading...";
   return (
     <Page title={room.title}>
-      <div className="lg:grid lg:grid-cols-3 items-start">
+      <div className="lg:grid lg:grid-cols-3 items-start gap-2">
         <Participants roomId={id} />
         <RoomInfo room={room} topics={topics} router={router} />
-        <SentNotes />
+        <SentNotes roomId={id} />
       </div>
     </Page>
   );
