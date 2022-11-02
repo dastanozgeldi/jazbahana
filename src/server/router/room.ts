@@ -159,4 +159,16 @@ export const roomRouter = createRouter()
     async resolve({ ctx }) {
       return await ctx.prisma.room.count();
     },
+  })
+  .query("pinnedRooms", {
+    input: z.object({
+      authorId: z.string().cuid(),
+    }),
+    async resolve({ ctx, input }) {
+      const { authorId } = input;
+      return await ctx.prisma.room.findMany({
+        where: { authorId },
+        include: { participants: true },
+      });
+    },
   });
