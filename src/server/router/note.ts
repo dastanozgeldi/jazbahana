@@ -66,19 +66,10 @@ export const noteRouter = createRouter()
       await ctx.prisma.note.create({ data: { filename, roomId, userId } });
     },
   })
-  .query("getNote", {
-    input: z.object({
-      id: z.string().uuid(),
-    }),
-    async resolve({ ctx, input }) {
-      const { id } = input;
+  .query("getNotesForUser", {
+    async resolve({ ctx }) {
       const userId = ctx.session?.user?.id;
-
-      const note = await ctx.prisma.note.findFirst({
-        where: { id, userId },
-      });
-
-      return note;
+      return await ctx.prisma.note.findMany({ where: { userId } });
     },
   })
   .query("getNotesForRoom", {

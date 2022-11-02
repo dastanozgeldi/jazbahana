@@ -2,7 +2,10 @@ import Workspace from "components/layouts/Workspace";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ACTION_BUTTON, NOTIFICATION } from "styles";
+import { ACTION_BUTTON, CARD, NOTIFICATION } from "styles";
+import { trpc } from "utils/trpc";
+
+const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
 
 const Notes = () => {
   const { push } = useRouter();
@@ -12,6 +15,8 @@ const Notes = () => {
       push("/api/auth/signin");
     },
   });
+
+  const { data: notes } = trpc.useQuery(["note.getNotesForUser"]);
 
   if (status === "loading") return "Loading or not authenticated...";
   return (
@@ -23,6 +28,20 @@ const Notes = () => {
         <Link href="/new/note">
           <button className={`${ACTION_BUTTON} w-full`}>Add Note</button>
         </Link>
+        {notes && notes.length > 0 ? (
+          <>
+            {notes.map((note) => (
+              <div className={`${CARD} my-4`}>
+                <a className="text-xl" href={BUCKET_URL + note.filename}>
+                  {note.filename}
+                </a>
+                <p className="text-gray-500">{`${note.createdAt.toLocaleDateString()}, ${note.createdAt.toLocaleTimeString()}`}</p>
+              </div>
+            ))}
+          </>
+        ) : (
+          <p className={NOTIFICATION}>You don't have notes currently</p>
+        )}
       </div>
     </Workspace>
   );

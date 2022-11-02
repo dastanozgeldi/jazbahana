@@ -36,11 +36,6 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
       </Link>
       {session ? (
         <>
-          <Link href="/new/note">
-            <a className={HAMBURGER_ITEM}>
-              <IoAdd /> New Note
-            </a>
-          </Link>
           <Link href={`/users/${session.user?.id}`}>
             <a className={HAMBURGER_ITEM}>
               <IoPerson /> Profile
