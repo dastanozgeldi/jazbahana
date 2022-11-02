@@ -10,7 +10,7 @@ const HometaskItem = ({ item }: { item: Hometask & any }) => {
   const finishHometask = trpc.useQuery(["hometask.finish", { id: item.id }]);
 
   return (
-    <>
+    <div className={`${CARD} my-4`}>
       <div className="w-full">
         <Link href={`/workspace/hometasks/${item.id}`}>
           <a className="text-xl">{item.title}</a>
@@ -21,7 +21,7 @@ const HometaskItem = ({ item }: { item: Hometask & any }) => {
         <p className="font-semibold">{item.topic.name}</p>
         <p>{item.due?.toLocaleDateString()}</p>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -45,7 +45,7 @@ export const HometaskSection = () => {
       {hometasksQuery.data?.pages.map((page, index) => (
         <>
           {page.items.length > 0 ? (
-            <div key={page.items[0].id || index} className={`${CARD} my-4`}>
+            <div key={page.items[0].id || index}>
               {page.items.map((item) => (
                 <HometaskItem item={item} />
               ))}
