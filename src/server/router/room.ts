@@ -150,7 +150,7 @@ export const roomRouter = createRouter()
       });
       await ctx.prisma.room.delete({
         where: { id },
-        include: { messages: true, participants: true },
+        include: { participants: true },
       });
       return { id };
     },
