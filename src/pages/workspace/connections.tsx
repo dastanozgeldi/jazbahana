@@ -19,11 +19,11 @@ const ConnectionItem = ({ connection }: { connection: User }) => {
 };
 
 const Connections = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const { status, data: session } = useSession({
     required: true,
     onUnauthenticated() {
-      push("/api/auth/signin");
+      router.push("/api/auth/signin");
     },
   });
 

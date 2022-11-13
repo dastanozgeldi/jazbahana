@@ -16,7 +16,7 @@ type FormData = {
 };
 
 const EditProfile = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   // States
   const [username, setUsername] = useState<string | null | undefined>(null);
   const [bio, setBio] = useState<string | null | undefined>(null);
@@ -34,7 +34,7 @@ const EditProfile = () => {
   const editProfile = trpc.useMutation("user.edit", {
     async onSuccess() {
       await utils.invalidateQueries(["user.info", { id }]);
-      push(`/users/${id}`);
+      router.back();
     },
   });
 

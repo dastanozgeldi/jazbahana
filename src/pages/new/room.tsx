@@ -18,12 +18,12 @@ const NewRoom = () => {
   const { register, handleSubmit } = useForm<FormData>();
   const [topicId, setTopicId] = useState("");
   const { data: session } = useSession();
-  const { push } = useRouter();
+  const router = useRouter();
   const utils = trpc.useContext();
   const { data } = trpc.useQuery(["topic.all"]);
   const addRoom = trpc.useMutation("room.add", {
     async onSuccess() {
-      push("/feed");
+      router.back();
       await utils.invalidateQueries(["room.infinite"]);
     },
   });

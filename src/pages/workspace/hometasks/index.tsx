@@ -4,11 +4,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const Hometasks = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      push("/api/auth/signin");
+      router.push("/api/auth/signin");
     },
   });
 

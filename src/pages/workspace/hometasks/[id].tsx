@@ -4,13 +4,13 @@ import ReactMarkdown from "react-markdown";
 import { trpc } from "utils/trpc";
 
 const HometaskView = () => {
-  const { query, push } = useRouter();
-  const id = query.id as string;
+  const router = useRouter();
+  const id = router.query.id as string;
   const { data, status } = trpc.useQuery(["hometask.byId", { id }]);
   const { status: authStatus } = useSession({
     required: true,
     onUnauthenticated() {
-      push("/api/auth/signin");
+      router.push("/api/auth/signin");
     },
   });
 

@@ -8,11 +8,11 @@ import { trpc } from "utils/trpc";
 const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
 
 const Notes = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      push("/api/auth/signin");
+      router.push("/api/auth/signin");
     },
   });
 

@@ -17,14 +17,14 @@ type FormData = {
 
 const NewHometask = () => {
   const [topicId, setTopicId] = useState("");
-  const { push } = useRouter();
+  const router = useRouter();
   const { register, handleSubmit } = useForm<FormData>();
   const { data: session } = useSession();
   const { data: topics } = trpc.useQuery(["topic.all"]);
   const utils = trpc.useContext();
   const addHometask = trpc.useMutation("hometask.add", {
     async onSuccess() {
-      push("/workspace/hometasks");
+      router.back();
       await utils.invalidateQueries(["hometask.infinite"]);
     },
   });
