@@ -13,7 +13,7 @@ const News = () => {
       {data &&
         data.map((item) => (
           <div key={item.id} className={`${CARD} my-4`}>
-            <div>
+            <div className="w-full">
               <h2 className="text-xl">{item.title}</h2>
               <p className="text-gray-400">{item.description}</p>
             </div>
