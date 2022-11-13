@@ -14,14 +14,20 @@ export default function RoomsSection({ session }: RoomSectionProps) {
   const topicId = query.topicId as string;
 
   const roomsQuery = topicId
-    ? trpc.useInfiniteQuery(["room.infiniteByTopicId", { limit: 5, topicId }], {
-        getPreviousPageParam: (lastPage) => lastPage.nextCursor,
-      })
-    : trpc.useInfiniteQuery(["room.infinite", { limit: 5 }], {
-        getPreviousPageParam: (lastPage) => lastPage.nextCursor,
-      });
+    ? trpc.room.infiniteByTopicId.useInfiniteQuery(
+        { limit: 5, topicId },
+        {
+          getPreviousPageParam: (lastPage) => lastPage.nextCursor,
+        }
+      )
+    : trpc.room.infinite.useInfiniteQuery(
+        { limit: 5 },
+        {
+          getPreviousPageParam: (lastPage) => lastPage.nextCursor,
+        }
+      );
 
-  const { data: count } = trpc.useQuery(["room.getCount"]);
+  const { data: count } = trpc.room.getCount.useQuery();
 
   return (
     <div className="w-full">
@@ -33,10 +39,11 @@ export default function RoomsSection({ session }: RoomSectionProps) {
         </div>
 
         {session && (
-          <Link href="/new/room">
-            <a className={`${ACTION_BUTTON} flex items-center gap-2`}>
-              <IoAdd className="w-6 h-6" /> Add Room
-            </a>
+          <Link
+            href="/new/room"
+            className={`${ACTION_BUTTON} flex items-center gap-2`}
+          >
+            <IoAdd className="w-6 h-6" /> Add Room
           </Link>
         )}
       </div>

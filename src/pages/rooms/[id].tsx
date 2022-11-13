@@ -11,7 +11,7 @@ import Avatar from "components/Avatar";
 import axios from "axios";
 
 const Participants = ({ roomId }: { roomId: string }) => {
-  const { data: participants } = trpc.useQuery(["participant.all", { roomId }]);
+  const { data: participants } = trpc.participant.all.useQuery({ roomId });
 
   return (
     <div className={`${CARD} my-2`}>
@@ -22,9 +22,7 @@ const Participants = ({ roomId }: { roomId: string }) => {
         {participants &&
           participants.map((item) => (
             <Link href={`/users/${item.userId}`}>
-              <a>
-                <Avatar src={item.user.image} size={32} />
-              </a>
+              <Avatar src={item.user.image} size={32} />
             </Link>
           ))}
       </div>
@@ -39,8 +37,8 @@ const SentNotes = ({ roomId }: { roomId: string }) => {
   const [uploadingStatus, setUploadingStatus] = useState<any>();
   const [uploadedFile, setUploadedFile] = useState<any>();
 
-  const addNote = trpc.useMutation("note.add");
-  const notesQuery = trpc.useQuery(["note.getNotesForRoom", { roomId }]);
+  const addNote = trpc.note.add.useMutation();
+  const notesQuery = trpc.note.getNotesForRoom.useQuery({ roomId });
 
   const selectFile = (e: any) => {
     setFile(e.target.files[0]);
@@ -103,9 +101,9 @@ export default function RoomViewPage() {
   const router = useRouter();
   const id = router.query.id as string;
   // tRPC
-  const roomQuery = trpc.useQuery(["room.byId", { id }]);
+  const roomQuery = trpc.room.byId.useQuery({ id });
   const { data: room } = roomQuery;
-  const { data: topics } = trpc.useQuery(["topic.all"]);
+  const { data: topics } = trpc.topic.all.useQuery();
 
   // room fetch fail
   if (roomQuery.error) {

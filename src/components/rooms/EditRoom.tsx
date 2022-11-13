@@ -40,28 +40,22 @@ export default function EditRoom({
   const { register, handleSubmit } = useForm<FormData>();
   // tRPC
   const utils = trpc.useContext();
-  const { data: hasJoined } = trpc.useQuery([
-    "participant.hasJoined",
-    { roomId: id, userId },
-  ]);
-  const editRoom = trpc.useMutation("room.edit", {
+  const { data: hasJoined } = trpc.participant.hasJoined.useQuery({ roomId: id, userId });
+  const editRoom = trpc.room.edit.useMutation({
     async onSuccess() {
-      await utils.invalidateQueries(["room.byId", { id }]);
+      await utils.room.byId.invalidate({ id });
       setEditing(false);
     },
   });
-  const deleteRoom = trpc.useMutation("room.delete", {
+  const deleteRoom = trpc.room.delete.useMutation({
     async onSuccess() {
       router.push("/feed");
     },
   });
-  const joinRoom = trpc.useMutation("participant.join", {
+  const joinRoom = trpc.participant.join.useMutation({
     async onSuccess() {
-      await utils.invalidateQueries([
-        "participant.hasJoined",
-        { roomId: id, userId },
-      ]);
-      await utils.invalidateQueries("participant.all");
+      await utils.participant.hasJoined.invalidate({ roomId: id, userId });
+      await utils.participant.all.invalidate();
     },
   });
   // States

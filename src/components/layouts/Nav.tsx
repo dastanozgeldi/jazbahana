@@ -24,10 +24,12 @@ export const Nav = ({ mounted, links }: NavProps) => {
       {/* Links */}
       <div className="hidden md:flex items-center">
         {links.map((l) => (
-          <Link key={l.label} href={l.href}>
-            <a className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500">
-              {l.label}
-            </a>
+          <Link
+            key={l.label}
+            href={l.href}
+            className="text-lg rounded-xl py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500"
+          >
+            {l.label}
           </Link>
         ))}
       </div>
@@ -41,13 +43,12 @@ export const Nav = ({ mounted, links }: NavProps) => {
             <FaGithub size={32} />
           </a>
           {session ? (
-            <>
-              <Link href={`/users/${session.user?.id}`}>
-                <a className="rounded-full hover:ring-2 ring-gray-300">
-                  <Avatar src={session.user?.image} size={32} />
-                </a>
-              </Link>
-            </>
+            <Link
+              href={`/users/${session.user?.id}`}
+              className="rounded-full hover:ring-2 ring-gray-300"
+            >
+              <Avatar src={session.user?.image} size={32} />
+            </Link>
           ) : (
             <button className="text-xl" onClick={() => signIn()}>
               <BiLogInCircle size={32} />

@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
-import { createRouter } from "./context";
+import { publicProcedure, router } from "../trpc";
 
 const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
   id: true,
@@ -17,32 +17,35 @@ const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
   Room: true,
 });
 
-export const userRouter = createRouter()
-  .query("info", {
-    input: z.object({
-      id: z.string().cuid().optional(),
-      username: z.string().optional(),
-    }),
-    async resolve({ ctx, input }) {
+export const userRouter = router({
+  info: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid().optional(),
+        username: z.string().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const { id, username } = input;
       const where = username ? { username } : { id };
       return await ctx.prisma.user.findUnique({
         where,
         select: defaultUserSelect,
       });
-    },
-  })
-  .mutation("edit", {
-    input: z.object({
-      id: z.string().cuid(),
-      data: z.object({
-        username: z.string().nullish(),
-        schoolId: z.string().uuid().nullish(),
-        bio: z.string().max(128).nullish(),
-        grade: z.string().min(2).max(3).nullish(),
-      }),
     }),
-    async resolve({ ctx, input }) {
+  edit: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        data: z.object({
+          username: z.string().nullish(),
+          schoolId: z.string().uuid().nullish(),
+          bio: z.string().max(128).nullish(),
+          grade: z.string().min(2).max(3).nullish(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { id, data } = input;
       const user = await ctx.prisma.user.update({
         where: { id },
@@ -50,18 +53,19 @@ export const userRouter = createRouter()
         data,
       });
       return user;
-    },
-  })
-  .query("connections", {
-    input: z.object({
-      id: z.string().cuid(),
-      schoolId: z.string().uuid(),
     }),
-    async resolve({ ctx, input }) {
+  connections: publicProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        schoolId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const { id, schoolId } = input;
       return await ctx.prisma.user.findMany({
         where: { id: { not: id }, schoolId },
         select: defaultUserSelect,
       });
-    },
-  });
+    }),
+});

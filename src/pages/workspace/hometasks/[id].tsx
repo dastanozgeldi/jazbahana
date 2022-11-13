@@ -6,7 +6,7 @@ import { trpc } from "utils/trpc";
 const HometaskView = () => {
   const router = useRouter();
   const id = router.query.id as string;
-  const { data, status } = trpc.useQuery(["hometask.byId", { id }]);
+  const { data, status } = trpc.hometask.byId.useQuery({ id });
   const { status: authStatus } = useSession({
     required: true,
     onUnauthenticated() {

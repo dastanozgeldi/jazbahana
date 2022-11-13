@@ -5,7 +5,7 @@ import { trpc } from "utils/trpc";
 type PinnedRoomsProps = { id: string; schoolId: string };
 
 export const PinnedRooms = ({ id, schoolId }: PinnedRoomsProps) => {
-  const roomsQuery = trpc.useQuery(["room.pinnedRooms", { authorId: id }]);
+  const roomsQuery = trpc.room.pinnedRooms.useQuery({ authorId: id });
 
   return (
     <div className="my-4">

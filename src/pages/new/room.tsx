@@ -20,11 +20,11 @@ const NewRoom = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const utils = trpc.useContext();
-  const { data } = trpc.useQuery(["topic.all"]);
-  const addRoom = trpc.useMutation("room.add", {
+  const { data } = trpc.topic.all.useQuery();
+  const addRoom = trpc.room.add.useMutation({
     async onSuccess() {
       router.back();
-      await utils.invalidateQueries(["room.infinite"]);
+      await utils.room.infinite.invalidate();
     },
   });
 
@@ -46,10 +46,11 @@ const NewRoom = () => {
       <div className={`${CARD} justify-center my-4 max-w-[48ch] mx-auto`}>
         <form onSubmit={onSubmit}>
           <div className="grid grid-cols-3 items-center mb-3">
-            <Link href="/">
-              <a className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
-                <AiOutlineArrowLeft size={24} />
-              </a>
+            <Link
+              href="/"
+              className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+            >
+              <AiOutlineArrowLeft size={24} />
             </Link>
             <h2 className="text-center text-2xl">New Room</h2>
           </div>

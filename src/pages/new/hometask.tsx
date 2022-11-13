@@ -20,12 +20,12 @@ const NewHometask = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm<FormData>();
   const { data: session } = useSession();
-  const { data: topics } = trpc.useQuery(["topic.all"]);
+  const { data: topics } = trpc.topic.all.useQuery();
   const utils = trpc.useContext();
-  const addHometask = trpc.useMutation("hometask.add", {
+  const addHometask = trpc.hometask.add.useMutation({
     async onSuccess() {
       router.back();
-      await utils.invalidateQueries(["hometask.infinite"]);
+      await utils.hometask.infinite.invalidate();
     },
   });
 
@@ -44,10 +44,11 @@ const NewHometask = () => {
     <div className={`${CARD} justify-center my-4 max-w-[48ch] mx-auto`}>
       <form onSubmit={onSubmit}>
         <div className="grid grid-cols-3 items-center mb-3">
-          <Link href="/">
-            <a className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
-              <AiOutlineArrowLeft size={24} />
-            </a>
+          <Link
+            href="/"
+            className="w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+          >
+            <AiOutlineArrowLeft size={24} />
           </Link>
           <h2 className="text-center text-2xl">New Hometask</h2>
         </div>

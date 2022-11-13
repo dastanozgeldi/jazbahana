@@ -5,7 +5,7 @@ import { trpc } from "utils/trpc";
 const NewsView = () => {
   const { query } = useRouter();
   const id = query.id as string;
-  const { data, status } = trpc.useQuery(["news.byId", { id }]);
+  const { data, status } = trpc.news.byId.useQuery({ id });
 
   if (!data || status !== "success") return <>Loading...</>;
   return (

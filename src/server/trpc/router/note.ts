@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { S3 } from "aws-sdk";
 import { z } from "zod";
-import { createRouter } from "./context";
+import { publicProcedure, router } from "../trpc";
 
 export const BUCKET_NAME = "jazbahana-image-upload-test";
 
@@ -13,13 +13,15 @@ export const getObjectKey = ({ userId, noteId }: UploadProps) => {
 
 const s3 = new S3();
 
-export const noteRouter = createRouter()
-  .mutation("createPresignedUrl", {
-    input: z.object({
-      filename: z.string(),
-      roomId: z.string().uuid().nullish(),
-    }),
-    async resolve({ ctx, input }) {
+export const noteRouter = router({
+  createPresignedUrl: publicProcedure
+    .input(
+      z.object({
+        filename: z.string(),
+        roomId: z.string().uuid().nullish(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { filename, roomId } = input;
       const userId = ctx.session?.user?.id || "";
       const note = await ctx.prisma.note.create({
@@ -53,30 +55,30 @@ export const noteRouter = createRouter()
         url: string;
         fields: object;
       };
-    },
-  })
-  .mutation("add", {
-    input: z.object({
-      filename: z.string(),
-      roomId: z.string().uuid().nullish(),
     }),
-    async resolve({ ctx, input }) {
+  add: publicProcedure
+    .input(
+      z.object({
+        filename: z.string(),
+        roomId: z.string().uuid().nullish(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { filename, roomId } = input;
       const userId = ctx.session?.user?.id as string;
       await ctx.prisma.note.create({ data: { filename, roomId, userId } });
-    },
-  })
-  .query("getNotesForUser", {
-    async resolve({ ctx }) {
-      const userId = ctx.session?.user?.id;
-      return await ctx.prisma.note.findMany({ where: { userId } });
-    },
-  })
-  .query("getNotesForRoom", {
-    input: z.object({
-      roomId: z.string().uuid(),
     }),
-    async resolve({ ctx, input }) {
+  getNotesForUser: publicProcedure.query(async ({ ctx, input }) => {
+    const userId = ctx.session?.user?.id;
+    return await ctx.prisma.note.findMany({ where: { userId } });
+  }),
+  getNotesForRoom: publicProcedure
+    .input(
+      z.object({
+        roomId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const { roomId } = input;
       const room = await ctx.prisma.room.findUnique({
         where: { id: roomId },
@@ -87,5 +89,5 @@ export const noteRouter = createRouter()
         throw new TRPCError({ code: "NOT_FOUND" });
       }
       return room.notes;
-    },
-  });
+    }),
+});

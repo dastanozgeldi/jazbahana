@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createRouter } from "./context";
+import { publicProcedure, router } from "../trpc";
 
 const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   id: true,
@@ -17,13 +17,15 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   topic: true,
 });
 
-export const roomRouter = createRouter()
-  .query("infinite", {
-    input: z.object({
-      limit: z.number().min(1).max(10).nullish(),
-      cursor: z.string().nullish(),
-    }),
-    async resolve({ ctx, input }) {
+export const roomRouter = router({
+  infinite: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 5;
       const { cursor } = input;
 
@@ -40,15 +42,16 @@ export const roomRouter = createRouter()
       }
 
       return { items, nextCursor };
-    },
-  })
-  .query("infiniteByTopicId", {
-    input: z.object({
-      cursor: z.date().nullish(),
-      limit: z.number().min(1).max(10).default(5),
-      topicId: z.string().uuid(),
     }),
-    async resolve({ ctx, input }) {
+  infiniteByTopicId: publicProcedure
+    .input(
+      z.object({
+        cursor: z.date().nullish(),
+        limit: z.number().min(1).max(10).default(5),
+        topicId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const { limit, cursor, topicId } = input;
       const items = await ctx.prisma.room.findMany({
         select: defaultRoomSelect,
@@ -67,13 +70,14 @@ export const roomRouter = createRouter()
       }
 
       return { items, nextCursor };
-    },
-  })
-  .query("byTopicId", {
-    input: z.object({
-      topicId: z.string().uuid(),
     }),
-    async resolve({ ctx, input }) {
+  topicId: publicProcedure
+    .input(
+      z.object({
+        topicId: z.string().uuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
       const { topicId } = input;
       const rooms = await ctx.prisma.room.findMany({ where: { topicId } });
       if (!rooms) {
@@ -83,31 +87,29 @@ export const roomRouter = createRouter()
         });
       }
       return rooms;
-    },
-  })
-  .mutation("add", {
-    input: z.object({
-      id: z.string().uuid().optional(),
-      title: z.string().min(1).max(64),
-      description: z.string().min(1).max(128),
-      authorName: z.string().optional(),
-      authorImage: z.string().optional(),
-      authorId: z.string().cuid().optional(),
-      topicId: z.string().optional(),
     }),
-    async resolve({ ctx, input }) {
+  add: publicProcedure
+    .input(
+      z.object({
+        id: z.string().uuid().optional(),
+        title: z.string().min(1).max(64),
+        description: z.string().min(1).max(128),
+        authorName: z.string().optional(),
+        authorImage: z.string().optional(),
+        authorId: z.string().cuid().optional(),
+        topicId: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const room = await ctx.prisma.room.create({
         data: input,
         select: defaultRoomSelect,
       });
       return room;
-    },
-  })
-  .query("byId", {
-    input: z.object({
-      id: z.string(),
     }),
-    async resolve({ ctx, input }) {
+  byId: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
       const { id } = input;
       const room = await ctx.prisma.room.findUnique({
         where: { id },
@@ -120,18 +122,19 @@ export const roomRouter = createRouter()
         });
       }
       return room;
-    },
-  })
-  .mutation("edit", {
-    input: z.object({
-      id: z.string().uuid(),
-      data: z.object({
-        topicId: z.string().uuid(),
-        title: z.string().min(1).max(64),
-        description: z.string().min(1).max(128),
-      }),
     }),
-    async resolve({ ctx, input }) {
+  edit: publicProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        data: z.object({
+          topicId: z.string().uuid(),
+          title: z.string().min(1).max(64),
+          description: z.string().min(1).max(128),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { id, data } = input;
       const room = await ctx.prisma.room.update({
         where: { id },
@@ -139,11 +142,10 @@ export const roomRouter = createRouter()
         select: defaultRoomSelect,
       });
       return room;
-    },
-  })
-  .mutation("delete", {
-    input: z.object({ id: z.string() }),
-    async resolve({ ctx, input }) {
+    }),
+  delete: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
       const { id } = input;
       await ctx.prisma.participantsInRooms.deleteMany({
         where: { roomId: id },
@@ -153,22 +155,17 @@ export const roomRouter = createRouter()
         include: { participants: true },
       });
       return { id };
-    },
-  })
-  .query("getCount", {
-    async resolve({ ctx }) {
-      return await ctx.prisma.room.count();
-    },
-  })
-  .query("pinnedRooms", {
-    input: z.object({
-      authorId: z.string().cuid(),
     }),
-    async resolve({ ctx, input }) {
+  getCount: publicProcedure.query(
+    async ({ ctx }) => await ctx.prisma.room.count()
+  ),
+  pinnedRooms: publicProcedure
+    .input(z.object({ authorId: z.string().cuid() }))
+    .query(async ({ ctx, input }) => {
       const { authorId } = input;
       return await ctx.prisma.room.findMany({
         where: { authorId },
         include: { participants: true },
       });
-    },
-  });
+    }),
+});

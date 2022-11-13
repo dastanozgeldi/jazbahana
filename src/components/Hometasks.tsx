@@ -7,13 +7,13 @@ import { trpc } from "utils/trpc";
 
 const HometaskItem = ({ item }: { item: Hometask & any }) => {
   const [isFinished, setIsFinished] = useState(item.finished);
-  const finishHometask = trpc.useQuery(["hometask.finish", { id: item.id }]);
+  const finishHometask = trpc.hometask.finish.useQuery({ id: item.id });
 
   return (
     <div className={`${CARD} my-4`}>
       <div className="w-full">
-        <Link href={`/workspace/hometasks/${item.id}`}>
-          <a className="text-xl">{item.title}</a>
+        <Link href={`/workspace/hometasks/${item.id}`} className="text-xl">
+          {item.title}
         </Link>
         <p className="text-gray-400">{item.content?.slice(0, 50)}</p>
       </div>
@@ -27,8 +27,8 @@ const HometaskItem = ({ item }: { item: Hometask & any }) => {
 
 export const HometaskSection = () => {
   const { data: session } = useSession();
-  const hometasksQuery = trpc.useInfiniteQuery(
-    ["hometask.infinite", { limit: 5, userId: session?.user?.id || "" }],
+  const hometasksQuery = trpc.hometask.infinite.useInfiniteQuery(
+    { limit: 5, userId: session?.user?.id || "" },
     {
       getPreviousPageParam: (lastPage) => lastPage.nextCursor,
     }
@@ -39,8 +39,8 @@ export const HometaskSection = () => {
       <h1 className={`${NOTIFICATION} text-center`}>
         Hometasks page. Here are your most recent things to do.
       </h1>
-      <Link href="/new/hometask">
-        <button className={`${ACTION_BUTTON} w-full`}>Add Hometask</button>
+      <Link href="/new/hometask" className={`${ACTION_BUTTON} w-full`}>
+        Add Hometask
       </Link>
       {hometasksQuery.data?.pages.map((page, index) => (
         <>

@@ -19,15 +19,17 @@ export const Info = ({ user, session }: InfoProps) => {
         {/* Settings */}
         {session?.user?.id === user?.id && (
           <>
-            <Link href="/settings">
-              <a className="absolute top-5 left-2 hover:text-teal-400 duration-500">
-                <GoSettings className="w-12 h-12" />
-              </a>
+            <Link
+              href="/settings"
+              className="absolute top-5 left-2 hover:text-teal-400 duration-500"
+            >
+              <GoSettings className="w-12 h-12" />
             </Link>
-            <Link href="/api/auth/signout">
-              <a className="absolute top-5 right-2 hover:text-teal-400 duration-500">
-                <GoSignOut className="w-12 h-12" />
-              </a>
+            <Link
+              href="/api/auth/signout"
+              className="absolute top-5 right-2 hover:text-teal-400 duration-500"
+            >
+              <GoSignOut className="w-12 h-12" />
             </Link>
           </>
         )}

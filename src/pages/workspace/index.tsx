@@ -16,7 +16,7 @@ const Notes = () => {
     },
   });
 
-  const { data: notes } = trpc.useQuery(["note.getNotesForUser"]);
+  const { data: notes } = trpc.note.getNotesForUser.useQuery();
 
   if (status === "loading") return "Loading or not authenticated...";
   return (
@@ -25,8 +25,8 @@ const Notes = () => {
         <h1 className={NOTIFICATION}>
           Here are your notes sorted by topics and dates created.
         </h1>
-        <Link href="/new/note">
-          <button className={`${ACTION_BUTTON} w-full`}>Add Note</button>
+        <Link href="/new/note" className={`${ACTION_BUTTON} w-full`}>
+          Add Note
         </Link>
         {notes && notes.length > 0 ? (
           <>

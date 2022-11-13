@@ -3,7 +3,6 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { FaGithub, FaInstagram } from "react-icons/fa";
 import {
-  IoAdd,
   IoList,
   IoLogInOutline,
   IoNewspaperOutline,
@@ -19,29 +18,19 @@ const HAMBURGER_ITEM =
 const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
   return (
     <div className="flex flex-col absolute right-8 top-14 rounded bg-gray-100 dark:bg-gray-800">
-      <Link href="/feed">
-        <a className={HAMBURGER_ITEM}>
-          <IoList /> Feed
-        </a>
+      <Link href="/feed" className={HAMBURGER_ITEM}>
+        <IoList /> Feed
       </Link>
-      <Link href="/workspace">
-        <a className={HAMBURGER_ITEM}>
-          <MdWorkOutline /> Workspace
-        </a>
+      <Link href="/workspace" className={HAMBURGER_ITEM}>
+        <MdWorkOutline /> Workspace
       </Link>
-      <Link href="/news">
-        <a className={HAMBURGER_ITEM}>
-          <IoNewspaperOutline /> News
-        </a>
+      <Link href="/news" className={HAMBURGER_ITEM}>
+        <IoNewspaperOutline /> News
       </Link>
       {session ? (
-        <>
-          <Link href={`/users/${session.user?.id}`}>
-            <a className={HAMBURGER_ITEM}>
-              <IoPerson /> Profile
-            </a>
-          </Link>
-        </>
+        <Link href={`/users/${session.user?.id}`} className={HAMBURGER_ITEM}>
+          <IoPerson /> Profile
+        </Link>
       ) : (
         <button className={HAMBURGER_ITEM} onClick={() => signIn()}>
           <IoLogInOutline /> Sign In

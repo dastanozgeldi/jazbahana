@@ -5,6 +5,6 @@ import { trpc } from "utils/trpc";
 export default function ProfileByUsername() {
   const { query } = useRouter();
   const username = query.username as string;
-  const { data: user } = trpc.useQuery(["user.info", { username }]);
+  const { data: user } = trpc.user.info.useQuery({ username });
   return <UserProfile user={user} />;
 }

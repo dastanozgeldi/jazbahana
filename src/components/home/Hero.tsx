@@ -16,10 +16,11 @@ const HeroCard = ({ children, title, href }: HeroCardProps) => {
     >
       <h1 className="text-yellow-500 text-2xl font-semibold">{title}</h1>
       <p>{children}</p>
-      <Link href={href}>
-        <a className="absolute bottom-5 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
-          <AiOutlineArrowRight className="w-7 h-7" />
-        </a>
+      <Link
+        href={href}
+        className="absolute bottom-5 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+      >
+        <AiOutlineArrowRight className="w-7 h-7" />
       </Link>
     </div>
   );

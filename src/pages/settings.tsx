@@ -27,13 +27,13 @@ const EditProfile = () => {
   // tRPC
   const { data: session } = useSession();
   const id = session?.user?.id as string;
-  const { data: user } = trpc.useQuery(["user.info", { id }]);
-  const { data: schools } = trpc.useQuery(["school.all"]);
+  const { data: user } = trpc.user.info.useQuery({ id });
+  const { data: schools } = trpc.school.all.useQuery();
 
   const utils = trpc.useContext();
-  const editProfile = trpc.useMutation("user.edit", {
+  const editProfile = trpc.user.edit.useMutation({
     async onSuccess() {
-      await utils.invalidateQueries(["user.info", { id }]);
+      await utils.user.info.invalidate({ id });
       router.back();
     },
   });
@@ -59,10 +59,11 @@ const EditProfile = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className={`my-10 flex items-center justify-center ${CARD}`}>
         <form className="w-[90%] relative" onSubmit={onSubmit}>
-          <Link href="/">
-            <a className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500">
-              <AiOutlineArrowLeft size={24} />
-            </a>
+          <Link
+            href="/"
+            className="absolute w-max p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 hover:duration-500"
+          >
+            <AiOutlineArrowLeft size={24} />
           </Link>
           <h2 className="text-center text-2xl leading-normal">Settings</h2>
           {/* Username */}

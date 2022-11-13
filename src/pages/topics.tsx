@@ -3,7 +3,7 @@ import { CARD, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 
 const Topics = () => {
-  const { data } = trpc.useQuery(["topic.all"]);
+  const { data } = trpc.topic.all.useQuery();
   return (
     <div className="max-w-[60ch] mx-auto">
       <h1 className={NOTIFICATION}>
@@ -12,18 +12,17 @@ const Topics = () => {
       </h1>
       <div className={CARD}>
         {data?.map((t) => (
-          <Link href={`/feed/?topicId=${t.id}`}>
-            <a className="flex items-center justify-between px-2 w-full rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 hover:duration-300">
-              <div className="flex items-center gap-2 p-2 m-2">
-                {t.image && (
-                  <img src={t.image} alt="Topic" className="w-6 h-6" />
-                )}
-                {t.name}
-              </div>
-              <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
-                {t.rooms.length}
-              </span>
-            </a>
+          <Link
+            href={`/feed/?topicId=${t.id}`}
+            className="flex items-center justify-between px-2 w-full rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 hover:duration-300"
+          >
+            <div className="flex items-center gap-2 p-2 m-2">
+              {t.image && <img src={t.image} alt="Topic" className="w-6 h-6" />}
+              {t.name}
+            </div>
+            <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
+              {t.rooms.length}
+            </span>
           </Link>
         ))}
       </div>

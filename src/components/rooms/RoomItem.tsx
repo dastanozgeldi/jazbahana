@@ -15,16 +15,20 @@ export const RoomItem = ({ data }: RoomItemProps) => {
       key={data.id}
     >
       <div className="flex items-center justify-between">
-        <Link href={`/users/${data.authorId || "ghost"}`}>
-          <a className="flex items-center gap-2 font-medium">
-            <Avatar src={data.authorImage} size={32} />
-            <span>{data.authorName || "ghost"}</span>
-          </a>
+        <Link
+          href={`/users/${data.authorId || "ghost"}`}
+          className="flex items-center gap-2 font-medium"
+        >
+          <Avatar src={data.authorImage} size={32} />
+          <span>{data.authorName || "ghost"}</span>
         </Link>
         <p className="text-gray-500">{`${data.updatedAt.toLocaleDateString()}, ${data.updatedAt.toLocaleTimeString()}`}</p>
       </div>
-      <Link href={`/rooms/${data.id}`}>
-        <a className="max-w-max text-2xl font-semibold">{data.title}</a>
+      <Link
+        href={`/rooms/${data.id}`}
+        className="max-w-max text-2xl font-semibold"
+      >
+        {data.title}
       </Link>
       <p className="text-gray-400">{data.description}</p>
       <div className="my-2 flex justify-between">

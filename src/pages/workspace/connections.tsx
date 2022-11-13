@@ -9,11 +9,12 @@ import { trpc } from "utils/trpc";
 
 const ConnectionItem = ({ connection }: { connection: User }) => {
   return (
-    <Link href={`/users/${connection.id}`}>
-      <a className="flex items-center justify-between p-4 my-4 rounded-xl border-[1px] border-gray-700 hover:border-gray-500 duration-300">
-        <Avatar src={connection.image} size={50} />
-        <a>{connection.name}</a>
-      </a>
+    <Link
+      href={`/users/${connection.id}`}
+      className="flex items-center justify-between p-4 my-4 rounded-xl border-[1px] border-gray-700 hover:border-gray-500 duration-300"
+    >
+      <Avatar src={connection.image} size={50} />
+      <a>{connection.name}</a>
     </Link>
   );
 };
@@ -28,14 +29,11 @@ const Connections = () => {
   });
 
   const id = session?.user?.id as string;
-  const { data: user } = trpc.useQuery(["user.info", { id }]);
-  const { data: connections } = trpc.useQuery([
-    "user.connections",
-    {
-      id,
-      schoolId: user?.schoolId || "",
-    },
-  ]);
+  const { data: user } = trpc.user.info.useQuery({ id });
+  const { data: connections } = trpc.user.connections.useQuery({
+    id,
+    schoolId: user?.schoolId || "",
+  });
   if (status === "loading") {
     return "Loading or not authenticated...";
   }
