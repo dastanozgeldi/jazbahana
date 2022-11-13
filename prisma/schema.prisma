@@ -50,22 +50,6 @@ model News {
     updatedAt   DateTime @unique @default(now())
 }
 
-model Message {
-    id          String   @id @default(uuid())
-    content     String
-    // To return `Date`s intact through the API we need to add data transformers
-    // https://trpc.io/docs/data-transformers
-    createdAt   DateTime @unique @default(now())
-    updatedAt   DateTime @unique @default(now())
-    // Foreign keys
-    author      User?    @relation(fields: [authorId], references: [id])
-    authorId    String?
-    authorName  String?
-    authorImage String?
-    room        Room?    @relation(fields: [roomId], references: [id])
-    roomId      String?
-}
-
 model ParticipantsInRooms {
     room       Room     @relation(fields: [roomId], references: [id])
     roomId     String
@@ -101,7 +85,6 @@ model Room {
     authorId     String?
     topic        Topic?                @relation(fields: [topicId], references: [id])
     topicId      String?
-    messages     Message[]
     notes        Note[]
 }
 
@@ -147,7 +130,6 @@ model User {
     sessions      Session[]
     rooms         ParticipantsInRooms[]
     Room          Room[]
-    messages      Message[]
     hometasks     Hometask[]
     notes         Note[]
 }

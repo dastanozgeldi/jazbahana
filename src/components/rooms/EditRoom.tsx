@@ -40,6 +40,10 @@ export default function EditRoom({
   const { register, handleSubmit } = useForm<FormData>();
   // tRPC
   const utils = trpc.useContext();
+  const { data: hasJoined } = trpc.useQuery([
+    "participant.hasJoined",
+    { roomId: id, userId },
+  ]);
   const editRoom = trpc.useMutation("room.edit", {
     async onSuccess() {
       await utils.invalidateQueries(["room.byId", { id }]);
@@ -85,10 +89,11 @@ export default function EditRoom({
       <div className="flex gap-2 my-2">
         {session && (
           <button
+            disabled={hasJoined}
             className={ACTION_BUTTON}
             onClick={() => joinRoom.mutate({ userId, roomId: id })}
           >
-            Join
+            {hasJoined ? "Joined" : "Join"}
           </button>
         )}
         {userId === data?.authorId && (

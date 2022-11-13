@@ -15,6 +15,6 @@ module.exports = defineNextConfig({
   swcMinify: true,
   i18n: {
     locales: ["en", "kk"],
-    defaultLocale: "kk",
+    defaultLocale: "en",
   },
 });

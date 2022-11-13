@@ -4,25 +4,17 @@ import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import Page from "../../components/layouts/Page";
 import EditRoom from "components/rooms/EditRoom";
-import Messages from "components/rooms/Messages";
 import { ACTION_BUTTON, CARD } from "styles";
 import { useState } from "react";
-import type { Room, Topic } from "@prisma/client";
 import Link from "next/link";
 import Avatar from "components/Avatar";
 import axios from "axios";
-
-type RoomInfoProps = {
-  room: Room & any;
-  topics: Topic[] & any;
-  router: any;
-};
 
 const Participants = ({ roomId }: { roomId: string }) => {
   const { data: participants } = trpc.useQuery(["participant.all", { roomId }]);
 
   return (
-    <div className={`${CARD} lg:mx-4`}>
+    <div className={`${CARD} my-2`}>
       <h1 className="my-2 text-2xl font-semibold text-center">
         Participants - {participants?.length}
       </h1>
@@ -36,24 +28,6 @@ const Participants = ({ roomId }: { roomId: string }) => {
             </Link>
           ))}
       </div>
-    </div>
-  );
-};
-
-const RoomInfo = ({ room, topics, router }: RoomInfoProps) => {
-  const { data: session } = useSession();
-
-  return (
-    <div className="my-4 lg:my-0">
-      <h1 className="text-4xl font-extrabold">{room.title}</h1>
-      <p className="my-2">{room.description}</p>
-      <div className="flex items-center justify-between my-2">
-        <p className="text-gray-400">
-          Created {room.createdAt.toLocaleDateString("en-us")}
-        </p>
-      </div>
-      <EditRoom data={room} topics={topics} session={session} router={router} />
-      <Messages roomId={room.id} session={session} />
     </div>
   );
 };
@@ -98,12 +72,15 @@ const SentNotes = ({ roomId }: { roomId: string }) => {
   };
 
   return (
-    <div className={`${CARD} my-2 lg:mx-4`}>
+    <div className={`${CARD} my-2`}>
       <h1 className="my-2 text-2xl font-semibold text-center">
         Notes Sent - {notesQuery.data?.length}
       </h1>
       {notesQuery.data?.map((note) => (
-        <a className={`${CARD} m-2 w-full text-left`} href={BUCKET_URL + note.filename}>
+        <a
+          className={`${CARD} m-2 w-full text-left`}
+          href={BUCKET_URL + note.filename}
+        >
           {note.filename}
         </a>
       ))}
@@ -121,6 +98,7 @@ const SentNotes = ({ roomId }: { roomId: string }) => {
 };
 
 export default function RoomViewPage() {
+  const { data: session } = useSession();
   // Router
   const router = useRouter();
   const id = router.query.id as string;
@@ -142,9 +120,21 @@ export default function RoomViewPage() {
   if (!room || roomQuery.status !== "success") return "Loading...";
   return (
     <Page title={room.title}>
-      <div className="lg:grid lg:grid-cols-3 items-start gap-2">
-        <Participants roomId={id} />
-        <RoomInfo room={room} topics={topics} router={router} />
+      <div className="my-4 lg:my-0 max-w-[60ch] mx-auto">
+        <Participants roomId={room.id} />
+        <h1 className="text-4xl font-extrabold">{room.title}</h1>
+        <p className="my-2">{room.description}</p>
+        <div className="flex items-center justify-between my-2">
+          <p className="text-gray-400">
+            Created {room.createdAt.toLocaleDateString("en-us")}
+          </p>
+        </div>
+        <EditRoom
+          data={room}
+          topics={topics}
+          session={session}
+          router={router}
+        />
         <SentNotes roomId={room.id} />
       </div>
     </Page>

@@ -59,8 +59,7 @@ export const Authors = () => (
             However, implementing the product <H>wasn't</H> the biggest{" "}
             <H>challenge</H> we've had so far. The worst problem we had was
             deploying the <H>app to production</H> - setting up the config
-            files, environment variables, implementing websockets and bundling
-            the whole app.
+            files, environment variables and bundling the whole app.
           </Paragraph>
         </div>
       </div>
