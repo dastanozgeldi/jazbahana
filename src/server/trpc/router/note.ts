@@ -3,15 +3,21 @@ import { S3 } from "aws-sdk";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
-export const BUCKET_NAME = "jazbahana-image-upload-test";
-
-type UploadProps = { userId: string; noteId: string };
+type UploadProps = {
+  userId: string;
+  noteId: string;
+};
 
 export const getObjectKey = ({ userId, noteId }: UploadProps) => {
   return `notes/${userId}/${noteId}`;
 };
 
-const s3 = new S3();
+const s3 = new S3({
+  region: "us-east-1",
+  accessKeyId: process.env.AWS_S3_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_S3_SECRET_KEY,
+  signatureVersion: "v4",
+});
 
 export const noteRouter = router({
   createPresignedUrl: publicProcedure
@@ -23,7 +29,7 @@ export const noteRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { filename, roomId } = input;
-      const userId = ctx.session?.user?.id || "";
+      const userId = ctx.session?.user?.id as string;
       const note = await ctx.prisma.note.create({
         data: { userId, filename, roomId },
       });
@@ -33,16 +39,16 @@ export const noteRouter = router({
           {
             Fields: {
               key: getObjectKey({
-                userId: ctx.session?.user?.id || "",
+                userId,
                 noteId: note.id,
               }),
             },
             Conditions: [
               ["starts-with", "$Content-Type", ""],
-              ["content-length-range", 0, 1000000],
+              ["content-length-range", 0, 8_388_608],
             ],
             Expires: 30,
-            Bucket: BUCKET_NAME,
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
           },
           (err, signed) => {
             if (err) return reject(err);
@@ -55,18 +61,6 @@ export const noteRouter = router({
         url: string;
         fields: object;
       };
-    }),
-  add: publicProcedure
-    .input(
-      z.object({
-        filename: z.string(),
-        roomId: z.string().uuid().nullish(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { filename, roomId } = input;
-      const userId = ctx.session?.user?.id as string;
-      await ctx.prisma.note.create({ data: { filename, roomId, userId } });
     }),
   getNotesForUser: publicProcedure.query(async ({ ctx, input }) => {
     const userId = ctx.session?.user?.id;

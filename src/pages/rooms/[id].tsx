@@ -1,14 +1,13 @@
 import { useSession } from "next-auth/react";
 import NextError from "next/error";
 import { useRouter } from "next/router";
-import { trpc } from "../../utils/trpc";
-import Page from "../../components/layouts/Page";
+import { trpc } from "utils/trpc";
+import Page from "components/layouts/Page";
 import EditRoom from "components/rooms/EditRoom";
 import { ACTION_BUTTON, CARD } from "styles";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import Avatar from "components/Avatar";
-import axios from "axios";
 
 const Participants = ({ roomId }: { roomId: string }) => {
   const { data: participants } = trpc.participant.all.useQuery({ roomId });
@@ -30,42 +29,62 @@ const Participants = ({ roomId }: { roomId: string }) => {
   );
 };
 
-const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
+const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com";
 
-const SentNotes = ({ roomId }: { roomId: string }) => {
+const SentNotes = ({ roomId, userId }: { roomId: string; userId: string }) => {
   const [file, setFile] = useState<any>();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [uploadingStatus, setUploadingStatus] = useState<any>();
-  const [uploadedFile, setUploadedFile] = useState<any>();
 
-  const addNote = trpc.note.add.useMutation();
+  const { mutateAsync: createPresignedUrl } =
+    trpc.note.createPresignedUrl.useMutation();
   const notesQuery = trpc.note.getNotesForRoom.useQuery({ roomId });
 
   const selectFile = (e: any) => {
     setFile(e.target.files[0]);
   };
 
-  const uploadFile = async () => {
+  const uploadNote = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!file) return;
+    else if (file.size > 8_388_608) {
+      alert(
+        "Maximum file size is 8MB. Please compress or choose another file."
+      );
+      setFile(undefined);
+      return;
+    }
+
     setUploadingStatus("Uploading the file to AWS S3");
 
-    let { data } = await axios.post("/api/uploadFile", {
-      name: file.name,
-      type: file.type,
+    const { url, fields }: { url: string; fields: any } =
+      (await createPresignedUrl({
+        roomId,
+        filename: file.name,
+      })) as any;
+
+    const data = {
+      ...fields,
+      "Content-Type": file.type,
+      file,
+    };
+
+    const formData = new FormData();
+    for (const name in data) {
+      formData.append(name, data[name]);
+    }
+
+    await fetch(url, {
+      method: "POST",
+      body: formData,
     });
 
-    console.log(data);
+    setFile(undefined);
 
-    const url = data.url;
-    await axios.put(url, file, {
-      headers: {
-        "Content-type": file.type,
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
 
-    await addNote.mutateAsync({ roomId, filename: file.name });
-
-    setUploadedFile(BUCKET_URL + file.name);
-    setFile(null);
     notesQuery.refetch();
   };
 
@@ -77,20 +96,24 @@ const SentNotes = ({ roomId }: { roomId: string }) => {
       {notesQuery.data?.map((note) => (
         <a
           className={`${CARD} m-2 w-full text-left`}
-          href={BUCKET_URL + note.filename}
+          href={`${BUCKET_URL}/notes/${userId}/${note.id}`}
         >
           {note.filename}
         </a>
       ))}
-      <div className="border-t-[1px] w-full border-gray-700 p-4">
-        <input type="file" onChange={(e) => selectFile(e)} />
+      <form
+        hidden={!userId}
+        className="border-t-[1px] w-full border-gray-700 p-4"
+        onSubmit={uploadNote}
+      >
+        <input ref={fileRef} type="file" onChange={(e) => selectFile(e)} />
         {file && (
-          <button onClick={uploadFile} className={`${ACTION_BUTTON} my-2`}>
+          <button type="submit" className={`${ACTION_BUTTON} my-2`}>
             Upload a File!
           </button>
         )}
         {uploadingStatus && <p>{uploadingStatus}</p>}
-      </div>
+      </form>
     </div>
   );
 };
@@ -133,7 +156,7 @@ export default function RoomViewPage() {
           session={session}
           router={router}
         />
-        <SentNotes roomId={room.id} />
+        <SentNotes roomId={room.id} userId={session?.user?.id as string} />
       </div>
     </Page>
   );
