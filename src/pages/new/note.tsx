@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function IndexPage() {
+const NewNote = () => {
   const [Comp, setComp] = useState<any>(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -14,4 +14,6 @@ export default function IndexPage() {
   }, []);
 
   return <div style={{ width, height }}>{Comp && <Comp />}</div>;
-}
+};
+
+export default NewNote;

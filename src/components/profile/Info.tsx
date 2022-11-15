@@ -1,6 +1,6 @@
 import type { Session } from "next-auth";
 import type { User } from "@prisma/client";
-import Avatar from "components/Avatar";
+import { Avatar } from "components/common/Avatar";
 import Link from "next/link";
 import { GoSettings, GoSignOut } from "react-icons/go";
 import { IoPerson, IoSchool } from "react-icons/io5";
@@ -21,13 +21,13 @@ export const Info = ({ user, session }: InfoProps) => {
           <>
             <Link
               href="/settings"
-              className="absolute top-5 left-2 hover:text-teal-400 duration-500"
+              className="absolute top-5 left-2 hover:text-blue-500 duration-500"
             >
               <GoSettings className="w-12 h-12" />
             </Link>
             <Link
               href="/api/auth/signout"
-              className="absolute top-5 right-2 hover:text-teal-400 duration-500"
+              className="absolute top-5 right-2 hover:text-blue-500 duration-500"
             >
               <GoSignOut className="w-12 h-12" />
             </Link>

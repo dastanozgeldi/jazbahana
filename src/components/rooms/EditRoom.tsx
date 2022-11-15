@@ -26,12 +26,7 @@ type FormData = {
   topicId: string;
 };
 
-export default function EditRoom({
-  data,
-  topics,
-  session,
-  router,
-}: EditRoomProps) {
+const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
   const id = router.query.id as string;
   const userId = session?.user?.id as string;
   const topic = topics?.find((t: Topic) => t.id === data?.topicId);
@@ -40,7 +35,10 @@ export default function EditRoom({
   const { register, handleSubmit } = useForm<FormData>();
   // tRPC
   const utils = trpc.useContext();
-  const { data: hasJoined } = trpc.participant.hasJoined.useQuery({ roomId: id, userId });
+  const { data: hasJoined } = trpc.participant.hasJoined.useQuery({
+    roomId: id,
+    userId,
+  });
   const editRoom = trpc.room.edit.useMutation({
     async onSuccess() {
       await utils.room.byId.invalidate({ id });
@@ -183,4 +181,6 @@ export default function EditRoom({
       </div>
     </>
   );
-}
+};
+
+export default EditRoom;

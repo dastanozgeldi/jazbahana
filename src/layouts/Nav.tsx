@@ -1,13 +1,13 @@
-import { ToggleTheme } from "components/ToggleTheme";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import { FaDiscord, FaGithub } from "react-icons/fa";
-import Avatar from "../Avatar";
-import HamburgerMenu from "./HamburgerMenu";
-import Logo from "./Logo";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { BiLogInCircle } from "react-icons/bi";
+import { FaDiscord, FaGithub } from "react-icons/fa";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { HamburgerMenu } from "./HamburgerMenu";
+import { Logo } from "./Logo";
+import { Avatar } from "../components/common/Avatar";
+import { ToggleTheme } from "components/common/ToggleTheme";
 
 type NavProps = {
   mounted: boolean;

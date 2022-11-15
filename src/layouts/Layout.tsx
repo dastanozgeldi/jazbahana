@@ -5,7 +5,7 @@ import { Nav } from "./Nav";
 
 type LayoutProps = { children: React.ReactNode };
 
-export default function Layout({ children }: LayoutProps) {
+export const Layout = ({ children }: LayoutProps) => {
   const [mounted, setMounted] = useState(false);
   const links = [
     { label: "Feed", href: "/feed" },
@@ -44,9 +44,9 @@ export default function Layout({ children }: LayoutProps) {
         <title>Jazbahana - Get Notes Faster</title>
       </Head>
       <Nav mounted={mounted} links={links} />
-      <main ref={parent} className="px-4 py-20 sm:container mx-auto">
+      <main ref={parent} className="py-20 px-4 sm:container mx-auto">
         {children}
       </main>
     </>
   );
-}
+};

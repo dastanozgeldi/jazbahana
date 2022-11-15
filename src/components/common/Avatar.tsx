@@ -1,6 +1,6 @@
 type AvatarProps = { src?: string | null; size: number };
 
-const Avatar = ({ src, size }: AvatarProps) => {
+export const Avatar = ({ src, size }: AvatarProps) => {
   return (
     <img
       className="rounded-full border-[1px] border-blue-400"
@@ -10,5 +10,3 @@ const Avatar = ({ src, size }: AvatarProps) => {
     />
   );
 };
-
-export default Avatar;

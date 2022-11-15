@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AiOutlineDown } from "react-icons/ai";
 import { trpc } from "../../utils/trpc";
 
-const Topics = () => {
+export const Topics = () => {
   const { data } = trpc.topic.getSome.useQuery({ limit: 5 });
 
   return (
@@ -46,5 +46,3 @@ const Topics = () => {
     </div>
   );
 };
-
-export default Topics;

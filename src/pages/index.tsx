@@ -1,11 +1,10 @@
-import type { NextPage } from "next";
-import Page from "../components/layouts/Page";
-import { About } from "../components/home/About";
-import { Features } from "../components/home/Features";
-import { Hero } from "../components/home/Hero";
-import { Authors } from "components/home/Authors";
+import { Page } from "layouts/Page";
+import { About } from "components/landing/About";
+import { Features } from "components/landing/Features";
+import { Hero } from "components/landing/Hero";
+import { Authors } from "components/landing/Authors";
 
-const Home: NextPage = () => {
+const Home = () => {
   return (
     <Page title="Home">
       <Hero />

@@ -1,15 +1,15 @@
 import { Fragment } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
-import { ACTION_BUTTON, NOTIFICATION } from "../../styles";
-import { trpc } from "../../utils/trpc";
+import { ACTION_BUTTON, NOTIFICATION } from "styles";
+import { trpc } from "utils/trpc";
 import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
-import { RoomItem } from "../rooms/RoomItem";
+import { RoomItem } from "components/rooms/RoomItem";
 
 type RoomSectionProps = { session: Session | null };
 
-export default function RoomsSection({ session }: RoomSectionProps) {
+const RoomsSection = ({ session }: RoomSectionProps) => {
   const { query } = useRouter();
   const topicId = query.topicId as string;
 
@@ -77,4 +77,6 @@ export default function RoomsSection({ session }: RoomSectionProps) {
       </button>
     </div>
   );
-}
+};
+
+export default RoomsSection;

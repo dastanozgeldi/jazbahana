@@ -1,29 +1,8 @@
-import type { Hometask } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
-import { ACTION_BUTTON, CARD, NOTIFICATION } from "styles";
+import { ACTION_BUTTON, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
-
-const HometaskItem = ({ item }: { item: Hometask & any }) => {
-  const [isFinished, setIsFinished] = useState(item.finished);
-  const finishHometask = trpc.hometask.finish.useQuery({ id: item.id });
-
-  return (
-    <div className={`${CARD} my-4`}>
-      <div className="w-full">
-        <Link href={`/workspace/hometasks/${item.id}`} className="text-xl">
-          {item.title}
-        </Link>
-        <p className="text-gray-400">{item.content?.slice(0, 50)}</p>
-      </div>
-      <div className="w-full flex items-center justify-between">
-        <p className="font-semibold">{item.topic.name}</p>
-        <p>{item.due?.toLocaleDateString()}</p>
-      </div>
-    </div>
-  );
-};
+import { HometaskItem } from "./HometaskItem";
 
 export const HometaskSection = () => {
   const { data: session } = useSession();

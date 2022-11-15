@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
-import Avatar from "components/Avatar";
-import Workspace from "components/layouts/Workspace";
+import { Avatar } from "components/common/Avatar";
+import { Workspace } from "layouts/Workspace";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";

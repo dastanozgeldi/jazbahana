@@ -3,7 +3,7 @@ import { AiOutlineArrowRight, AiOutlineDown } from "react-icons/ai";
 import { CARD } from "styles";
 import { trpc } from "utils/trpc";
 
-const News = () => {
+export const News = () => {
   const { data } = trpc.news.getSome.useQuery({ limit: 3 });
   const addView = trpc.news.addView.useMutation();
 
@@ -38,5 +38,3 @@ const News = () => {
     </div>
   );
 };
-
-export default News;

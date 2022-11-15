@@ -15,7 +15,7 @@ type HamburgerMenuProps = { session: Session | null };
 const HAMBURGER_ITEM =
   "flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500";
 
-const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
+export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
   return (
     <div className="flex flex-col absolute right-8 top-14 rounded bg-gray-100 dark:bg-gray-800">
       <Link href="/feed" className={HAMBURGER_ITEM}>
@@ -54,5 +54,3 @@ const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
     </div>
   );
 };
-
-export default HamburgerMenu;

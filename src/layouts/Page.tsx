@@ -6,7 +6,7 @@ type PageProps = {
   title: string;
 };
 
-export default function Page({ children, className = "", title }: PageProps) {
+export const Page = ({ children, className = "", title }: PageProps) => {
   const t = `${title} | Jazbahana`;
   return (
     <>
@@ -20,4 +20,4 @@ export default function Page({ children, className = "", title }: PageProps) {
       <main className={className}>{children}</main>
     </>
   );
-}
+};

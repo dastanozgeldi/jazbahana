@@ -1,6 +1,6 @@
-import Avatar from "components/Avatar";
 import { CARD } from "styles";
-import { Paragraph, H } from "components/Text";
+import { Avatar } from "components/common/Avatar";
+import { Paragraph, H } from "components/common/Text";
 
 export const Authors = () => (
   <div id="authors">

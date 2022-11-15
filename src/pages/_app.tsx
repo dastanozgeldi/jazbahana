@@ -6,7 +6,7 @@ import { trpc } from "../utils/trpc";
 
 import "../styles/globals.css";
 import { ThemeProvider } from "next-themes";
-import Layout from "components/layouts/Layout";
+import { Layout } from "layouts/Layout";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

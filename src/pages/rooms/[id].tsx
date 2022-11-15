@@ -1,13 +1,13 @@
 import { useSession } from "next-auth/react";
 import NextError from "next/error";
 import { useRouter } from "next/router";
-import { trpc } from "utils/trpc";
-import Page from "components/layouts/Page";
-import EditRoom from "components/rooms/EditRoom";
-import { ACTION_BUTTON, CARD } from "styles";
-import { useRef, useState } from "react";
 import Link from "next/link";
-import Avatar from "components/Avatar";
+import { useRef, useState } from "react";
+import { ACTION_BUTTON, CARD } from "styles";
+import { Page } from "layouts/Page";
+import EditRoom from "components/rooms/EditRoom";
+import { Avatar } from "components/common/Avatar";
+import { trpc } from "utils/trpc";
 
 const Participants = ({ roomId }: { roomId: string }) => {
   const { data: participants } = trpc.participant.all.useQuery({ roomId });
@@ -118,7 +118,7 @@ const SentNotes = ({ roomId, userId }: { roomId: string; userId: string }) => {
   );
 };
 
-export default function RoomViewPage() {
+const ViewRoom = () => {
   const { data: session } = useSession();
   // Router
   const router = useRouter();
@@ -160,4 +160,6 @@ export default function RoomViewPage() {
       </div>
     </Page>
   );
-}
+};
+
+export default ViewRoom;

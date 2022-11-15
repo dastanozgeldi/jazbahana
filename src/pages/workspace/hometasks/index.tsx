@@ -1,5 +1,5 @@
-import { HometaskSection } from "components/Hometasks";
-import Workspace from "components/layouts/Workspace";
+import { HometaskSection } from "components/hometasks/HometaskSection";
+import { Workspace } from "layouts/Workspace";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 

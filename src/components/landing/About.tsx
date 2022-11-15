@@ -1,4 +1,4 @@
-import { H } from "components/Text";
+import { H } from "components/common/Text";
 
 export const About = () => {
   return (

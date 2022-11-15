@@ -3,7 +3,7 @@ import { IoCopy, IoHome, IoPerson } from "react-icons/io5";
 
 type WorkspaceProps = { children: React.ReactNode };
 
-const Workspace = ({ children }: WorkspaceProps) => {
+export const Workspace = ({ children }: WorkspaceProps) => {
   return (
     <div className="flex flex-col items-center justify-around w-full">
       <aside className="w-full md:max-w-max flex justify-around md:flex-col md:absolute md:top-24 md:left-5 gap-2 border-[1px] border-gray-700 p-4 rounded-xl">
@@ -41,5 +41,3 @@ const Workspace = ({ children }: WorkspaceProps) => {
     </div>
   );
 };
-
-export default Workspace;

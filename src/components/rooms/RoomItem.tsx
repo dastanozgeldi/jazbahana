@@ -2,7 +2,7 @@ import type { ParticipantsInRooms, Room, Topic } from "@prisma/client";
 import Link from "next/link";
 import { IoPeople } from "react-icons/io5";
 import { TOPIC } from "styles";
-import Avatar from "../Avatar";
+import { Avatar } from "../common/Avatar";
 
 type RoomItemProps = {
   data: Room & { participants: ParticipantsInRooms[]; topic: Topic | null };

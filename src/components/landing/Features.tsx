@@ -1,4 +1,4 @@
-import { H } from "components/Text";
+import { H } from "components/common/Text";
 
 const FEATURE =
   "bg-white dark:bg-neutral-800 py-6 px-4 opacity-80 rounded-md shadow-2xl";

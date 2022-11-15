@@ -1,6 +1,6 @@
 import type { User } from "@prisma/client";
-import { HometaskSection } from "components/Hometasks";
-import Page from "components/layouts/Page";
+import { HometaskSection } from "components/hometasks/HometaskSection";
+import { Page } from "layouts/Page";
 import { useSession } from "next-auth/react";
 import { Info } from "./Info";
 import { PinnedRooms } from "./PinnedRooms";
