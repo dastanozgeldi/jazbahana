@@ -6,7 +6,7 @@ import { FaDiscord, FaGithub } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HamburgerMenu } from "./HamburgerMenu";
 import { Logo } from "./Logo";
-import { Avatar } from "../components/common/Avatar";
+import { Avatar } from "components/common/Avatar";
 import { ToggleTheme } from "components/common/ToggleTheme";
 
 type NavProps = {
