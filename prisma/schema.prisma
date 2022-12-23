@@ -86,6 +86,8 @@ model Room {
     topic        Topic?                @relation(fields: [topicId], references: [id])
     topicId      String?
     notes        Note[]
+    PinnedRoom   PinnedRoom[]
+    isPinned     Boolean               @default(false)
 }
 
 // Necessary for Next auth
@@ -115,6 +117,14 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model PinnedRoom {
+    id     String @id @default(uuid())
+    room   Room   @relation(fields: [roomId], references: [id])
+    roomId String
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+}
+
 model User {
     id            String                @id @default(cuid())
     name          String?
@@ -132,6 +142,7 @@ model User {
     Room          Room[]
     hometasks     Hometask[]
     notes         Note[]
+    pinnedRooms   PinnedRoom[]
 }
 
 model School {

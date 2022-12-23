@@ -2,10 +2,8 @@ import { RoomItem } from "components/rooms/RoomItem";
 import { NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 
-type PinnedRoomsProps = { id: string; schoolId: string };
-
-export const PinnedRooms = ({ id, schoolId }: PinnedRoomsProps) => {
-  const roomsQuery = trpc.room.pinnedRooms.useQuery({ authorId: id });
+export const PinnedRooms = () => {
+  const { data: pinnedRooms } = trpc.user.pinnedRooms.useQuery();
 
   return (
     <div className="my-4">
@@ -16,14 +14,14 @@ export const PinnedRooms = ({ id, schoolId }: PinnedRoomsProps) => {
       </h1>
       <h1 className="text-2xl font-semibold text-center">Pinned Rooms</h1>
       <ul>
-        {roomsQuery.data ? (
+        {pinnedRooms && pinnedRooms?.length > 0 ? (
           <>
-            {roomsQuery.data.map((item: any) => (
-              <RoomItem key={item.id} data={item} />
+            {pinnedRooms.map((item) => (
+              <RoomItem key={item.room.id} room={item.room} />
             ))}
           </>
         ) : (
-          <p className={NOTIFICATION}>No rooms found for this.</p>
+          <p className={NOTIFICATION}>No pinned rooms.</p>
         )}
       </ul>
     </div>

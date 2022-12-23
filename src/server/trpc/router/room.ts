@@ -15,6 +15,7 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   authorId: true,
   topicId: true,
   topic: true,
+  isPinned: true,
 });
 
 export const roomRouter = router({
@@ -106,6 +107,27 @@ export const roomRouter = router({
         select: defaultRoomSelect,
       });
       return room;
+    }),
+  pin: publicProcedure
+    .input(
+      z.object({
+        roomId: z.string(),
+        isPinned: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { roomId, isPinned } = input;
+      const pinnedRoom = await ctx.prisma.pinnedRoom.create({
+        data: {
+          roomId,
+          userId: ctx.session?.user?.id || "",
+        },
+      });
+      await ctx.prisma.room.update({
+        where: { id: roomId },
+        data: { isPinned: !isPinned },
+      });
+      return pinnedRoom;
     }),
   byId: publicProcedure
     .input(z.object({ id: z.string() }))

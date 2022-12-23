@@ -15,6 +15,7 @@ const defaultUserSelect = Prisma.validator<Prisma.UserSelect>()({
   grade: true,
   rooms: true,
   Room: true,
+  pinnedRooms: true,
 });
 
 export const userRouter = router({
@@ -68,4 +69,10 @@ export const userRouter = router({
         select: defaultUserSelect,
       });
     }),
+  pinnedRooms: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.pinnedRoom.findMany({
+      where: { userId: ctx.session?.user?.id },
+      include: { room: true, user: true },
+    });
+  }),
 });

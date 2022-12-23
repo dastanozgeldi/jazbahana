@@ -53,7 +53,7 @@ const RoomsSection = ({ session }: RoomSectionProps) => {
           {page.items.length > 0 ? (
             <Fragment key={page.items[0].id || index}>
               {page.items.map((item) => (
-                <RoomItem key={item.id} data={item} />
+                <RoomItem key={item.id} room={item} />
               ))}
             </Fragment>
           ) : (

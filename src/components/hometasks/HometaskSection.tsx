@@ -30,7 +30,7 @@ export const HometaskSection = () => {
               ))}
             </div>
           ) : (
-            <p className="my-4">No hometasks yet.</p>
+            <p className={NOTIFICATION}>No hometasks yet.</p>
           )}
         </>
       ))}

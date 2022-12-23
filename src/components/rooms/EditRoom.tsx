@@ -39,6 +39,7 @@ const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
     roomId: id,
     userId,
   });
+  const isPinned = data?.isPinned || false;
   const editRoom = trpc.room.edit.useMutation({
     async onSuccess() {
       await utils.room.byId.invalidate({ id });
@@ -54,6 +55,11 @@ const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
     async onSuccess() {
       await utils.participant.hasJoined.invalidate({ roomId: id, userId });
       await utils.participant.all.invalidate();
+    },
+  });
+  const pinRoom = trpc.room.pin.useMutation({
+    async onSuccess() {
+      await utils.room.invalidate();
     },
   });
   // States
@@ -80,13 +86,22 @@ const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
     <>
       <div className="flex gap-2 my-2">
         {session && (
-          <button
-            disabled={hasJoined}
-            className={ACTION_BUTTON}
-            onClick={() => joinRoom.mutate({ userId, roomId: id })}
-          >
-            {hasJoined ? "Joined" : "Join"}
-          </button>
+          <>
+            <button
+              disabled={data?.isPinned}
+              className={ACTION_BUTTON}
+              onClick={() => pinRoom.mutate({ roomId: id, isPinned })}
+            >
+              {data?.isPinned ? "Pinned" : "Pin"}
+            </button>
+            <button
+              disabled={hasJoined}
+              className={ACTION_BUTTON}
+              onClick={() => joinRoom.mutate({ userId, roomId: id })}
+            >
+              {hasJoined ? "Joined" : "Join"}
+            </button>
+          </>
         )}
         {userId === data?.authorId && (
           <>
