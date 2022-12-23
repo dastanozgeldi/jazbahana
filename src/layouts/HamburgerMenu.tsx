@@ -28,7 +28,7 @@ export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
         <IoNewspaperOutline /> News
       </Link>
       {session ? (
-        <Link href={`/users/${session.user?.id}`} className={HAMBURGER_ITEM}>
+        <Link href="/dashboard" className={HAMBURGER_ITEM}>
           <IoPerson /> Profile
         </Link>
       ) : (
