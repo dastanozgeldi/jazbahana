@@ -1,3 +1,4 @@
+import { env } from "env/client.mjs";
 import { Workspace } from "layouts/Workspace";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -5,9 +6,9 @@ import { useRouter } from "next/router";
 import { ACTION_BUTTON, CARD, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 
-const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com/";
-
 const Notes = () => {
+  const { data: session } = useSession();
+  const userId = session?.user?.id as string;
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -32,7 +33,10 @@ const Notes = () => {
           <>
             {notes.map((note) => (
               <div className={`${CARD} my-4`}>
-                <a className="text-xl" href={BUCKET_URL + note.filename}>
+                <a
+                  className="text-xl"
+                  href={`${env.NEXT_PUBLIC_AWS_S3_BUCKET_URL}/notes/${userId}/${note.id}`}
+                >
                   {note.filename}
                 </a>
                 <p className="text-gray-500">{`${note.createdAt.toLocaleDateString()}, ${note.createdAt.toLocaleTimeString()}`}</p>

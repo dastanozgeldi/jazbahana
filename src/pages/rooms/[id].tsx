@@ -8,6 +8,7 @@ import { Page } from "layouts/Page";
 import EditRoom from "components/rooms/EditRoom";
 import { Avatar } from "components/common/Avatar";
 import { trpc } from "utils/trpc";
+import { env } from "env/client.mjs";
 
 const Participants = ({ roomId }: { roomId: string }) => {
   const { data: participants } = trpc.participant.all.useQuery({ roomId });
@@ -28,8 +29,6 @@ const Participants = ({ roomId }: { roomId: string }) => {
     </div>
   );
 };
-
-const BUCKET_URL = "https://jazbahana-image-upload-test.s3.amazonaws.com";
 
 const SentNotes = ({ roomId, userId }: { roomId: string; userId: string }) => {
   const [file, setFile] = useState<any>();
@@ -96,7 +95,7 @@ const SentNotes = ({ roomId, userId }: { roomId: string; userId: string }) => {
       {notesQuery.data?.map((note) => (
         <a
           className={`${CARD} m-2 w-full text-left`}
-          href={`${BUCKET_URL}/notes/${userId}/${note.id}`}
+          href={`${env.NEXT_PUBLIC_AWS_S3_BUCKET_URL}/notes/${userId}/${note.id}`}
         >
           {note.filename}
         </a>

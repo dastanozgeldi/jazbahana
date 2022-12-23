@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { S3 } from "aws-sdk";
+import { env } from "env/server.mjs";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
@@ -14,8 +15,8 @@ export const getObjectKey = ({ userId, noteId }: UploadProps) => {
 
 const s3 = new S3({
   region: "us-east-1",
-  accessKeyId: process.env.AWS_S3_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_S3_SECRET_KEY,
+  accessKeyId: env.AWS_S3_ACCESS_KEY,
+  secretAccessKey: env.AWS_S3_SECRET_KEY,
   signatureVersion: "v4",
 });
 
@@ -48,7 +49,7 @@ export const noteRouter = router({
               ["content-length-range", 0, 8_388_608],
             ],
             Expires: 30,
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Bucket: env.AWS_S3_BUCKET_NAME,
           },
           (err, signed) => {
             if (err) return reject(err);

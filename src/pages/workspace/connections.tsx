@@ -1,4 +1,4 @@
-import type { User } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { Avatar } from "components/common/Avatar";
 import { Workspace } from "layouts/Workspace";
 import { useSession } from "next-auth/react";
