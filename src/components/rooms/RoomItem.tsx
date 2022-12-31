@@ -5,7 +5,11 @@ import { TOPIC } from "styles";
 import { Avatar } from "../common/Avatar";
 
 type RoomItemProps = {
-  room: Room & { participants?: any; topic?: any };
+  room: Room & {
+    author: any;
+    participants?: any;
+    topic?: any;
+  };
 };
 
 export const RoomItem = ({ room }: RoomItemProps) => {
@@ -19,8 +23,8 @@ export const RoomItem = ({ room }: RoomItemProps) => {
           href={`/users/${room.authorId || "ghost"}`}
           className="flex items-center gap-2 font-medium"
         >
-          <Avatar src={room.authorImage} size={32} />
-          <span>{room.authorName || "ghost"}</span>
+          <Avatar src={room.author.image} size={32} />
+          <span>{room.author.name || "ghost"}</span>
         </Link>
         <p className="text-gray-500">{`${room.updatedAt.toLocaleDateString()}, ${room.updatedAt.toLocaleTimeString()}`}</p>
       </div>

@@ -15,9 +15,10 @@ type FormData = {
 };
 
 const NewRoom = () => {
-  const { register, handleSubmit } = useForm<FormData>();
-  const [topicId, setTopicId] = useState("");
   const { data: session } = useSession();
+  const { register, handleSubmit } = useForm<FormData>();
+  const authorId = session?.user?.id as string;
+  const [topicId, setTopicId] = useState("");
   const router = useRouter();
   const utils = trpc.useContext();
   const { data } = trpc.topic.all.useQuery();
@@ -32,9 +33,7 @@ const NewRoom = () => {
     try {
       await addRoom.mutateAsync({
         ...data,
-        authorName: session?.user?.name || "unknown",
-        authorImage: session?.user?.image || "/default-avatar.png",
-        authorId: session?.user?.id || "",
+        authorId,
         topicId,
       });
     } catch {}

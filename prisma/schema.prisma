@@ -1,16 +1,9 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
     provider = "postgresql"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.text annotations in model Account below
-    // Further reading: 
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
 
@@ -42,10 +35,7 @@ model News {
     title       String
     description String
     views       Int      @default(0)
-    // Render w/ Markdown
     content     String
-    // To return `Date`s intact through the API we need to add data transformers
-    // https://trpc.io/docs/data-transformers
     createdAt   DateTime @unique @default(now())
     updatedAt   DateTime @unique @default(now())
 }
@@ -66,31 +56,41 @@ model Topic {
     image     String?
     createdAt DateTime   @unique @default(now())
     rooms     Room[]
-    Hometask  Hometask[]
+    hometasks Hometask[]
+}
+
+model PinnedRoom {
+    id     String @id @default(uuid())
+    room   Room   @relation(fields: [roomId], references: [id])
+    roomId String
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
 }
 
 model Room {
     id           String                @id @default(uuid())
     title        String
     description  String
-    authorName   String?
-    authorImage  String?
-    // To return `Date`s intact through the API we need to add data transformers
-    // https://trpc.io/docs/data-transformers
     createdAt    DateTime              @unique @default(now())
     updatedAt    DateTime              @unique @default(now()) @updatedAt
-    // Foreign keys
     participants ParticipantsInRooms[]
     author       User?                 @relation(fields: [authorId], references: [id])
     authorId     String?
     topic        Topic?                @relation(fields: [topicId], references: [id])
     topicId      String?
     notes        Note[]
-    PinnedRoom   PinnedRoom[]
+    pinnedRooms  PinnedRoom[]
     isPinned     Boolean               @default(false)
 }
 
-// Necessary for Next auth
+model School {
+    id        String   @id @default(uuid())
+    name      String
+    students  User[]
+    createdAt DateTime @unique @default(now())
+    updatedAt DateTime @unique @default(now()) @updatedAt
+}
+
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -117,14 +117,6 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model PinnedRoom {
-    id     String @id @default(uuid())
-    room   Room   @relation(fields: [roomId], references: [id])
-    roomId String
-    user   User   @relation(fields: [userId], references: [id])
-    userId String
-}
-
 model User {
     id            String                @id @default(cuid())
     name          String?
@@ -143,16 +135,6 @@ model User {
     hometasks     Hometask[]
     notes         Note[]
     pinnedRooms   PinnedRoom[]
-}
-
-model School {
-    id        String   @id @default(uuid())
-    name      String
-    students  User[]
-    // To return `Date`s intact through the API we need to add data transformers
-    // https://trpc.io/docs/data-transformers
-    createdAt DateTime @unique @default(now())
-    updatedAt DateTime @unique @default(now()) @updatedAt
 }
 
 model VerificationToken {
