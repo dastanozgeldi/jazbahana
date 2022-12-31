@@ -1,6 +1,5 @@
 import { CARD } from "styles";
 import { Avatar } from "components/common/Avatar";
-import { Paragraph, H } from "components/common/Text";
 
 export const Authors = () => (
   <div id="authors">
@@ -10,19 +9,19 @@ export const Authors = () => (
       </h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-around my-6">
         <div className="max-w-[48ch] mx-auto md:mx-0">
-          <Paragraph>
+          <p className="text-xl">
             Jazbahana initially started as an idea where you can{" "}
-            <H>host a temporary room</H>, send the <H>invite link</H> to a
-            person and make <H>trade with your notes.</H>
-          </Paragraph>
-          <Paragraph>
+            <b>host a temporary room</b>, send the <b>invite link</b> to a
+            person and make <b>trade with your notes.</b>
+          </p>
+          <p className="text-xl">
             It eventually grew up to something you see today - a full-fledged
-            platform with <H>chats, workspaces and notes</H> support.
-          </Paragraph>
-          <Paragraph>
+            platform with <b>chats, workspaces and notes</b> support.
+          </p>
+          <p className="text-xl">
             But the main point of that all is that Jazbahana is focused on{" "}
-            <H>individual, offline studying</H>.
-          </Paragraph>
+            <b>individual, offline studying</b>.
+          </p>
         </div>
         <div className={`${CARD} w-[260px] mx-auto md:mx-0 p-4 my-4`}>
           <Avatar
@@ -50,17 +49,17 @@ export const Authors = () => (
           </a>
         </div>
         <div className="max-w-[48ch] mx-auto md:text-right md:mx-0">
-          <Paragraph>
-            These are the <H>creators</H> of Jazbahana. A lot of{" "}
-            <H>design, decisions, brainstorming, reviewing, research</H> and
-            finally <H>coding</H> was put into this product.
-          </Paragraph>
-          <Paragraph>
-            However, implementing the product <H>wasn't</H> the biggest{" "}
-            <H>challenge</H> we've had so far. The worst problem we had was
-            deploying the <H>app to production</H> - setting up the config
+          <p className="text-xl">
+            These are the <b>creators</b> of Jazbahana. A lot of{" "}
+            <b>design, decisions, brainstorming, reviewing, research</b> and
+            finally <b>coding</b> was put into this product.
+          </p>
+          <p className="text-xl">
+            However, implementing the product <b>wasn't</b> the biggest{" "}
+            <b>challenge</b> we've had so far. The worst problem we had was
+            deploying the <b>app to production</b> - setting up the config
             files, environment variables and bundling the whole app.
-          </Paragraph>
+          </p>
         </div>
       </div>
     </div>

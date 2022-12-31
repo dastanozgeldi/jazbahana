@@ -48,19 +48,17 @@ const RoomsSection = ({ session }: RoomSectionProps) => {
         )}
       </div>
       {/* Displaying Rooms */}
-      {roomsQuery.data?.pages.map((page, index) => (
-        <>
-          {page.items.length > 0 ? (
-            <Fragment key={page.items[0].id || index}>
-              {page.items.map((item) => (
-                <RoomItem key={item.id} room={item} />
-              ))}
-            </Fragment>
-          ) : (
-            <p className={NOTIFICATION}>No rooms found for this.</p>
-          )}
-        </>
-      ))}
+      {roomsQuery.data?.pages.map((page, index) =>
+        page.items.length > 0 ? (
+          <Fragment key={page.items[0].id || index}>
+            {page.items.map((item) => (
+              <RoomItem key={item.id} room={item} />
+            ))}
+          </Fragment>
+        ) : (
+          <p className={NOTIFICATION}>No rooms found for this.</p>
+        )
+      )}
       {/* Pagination */}
       <button
         className={ACTION_BUTTON}

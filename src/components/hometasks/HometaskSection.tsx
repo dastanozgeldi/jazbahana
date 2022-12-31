@@ -15,25 +15,23 @@ export const HometaskSection = () => {
 
   return (
     <div className="lg:mx-4">
-      <h1 className={`${NOTIFICATION} text-center`}>
+      <h1 className={NOTIFICATION}>
         Hometasks page. Here are your most recent things to do.
       </h1>
       <Link href="/new/hometask" className={`${ACTION_BUTTON} w-full`}>
         Add Hometask
       </Link>
-      {hometasksQuery.data?.pages.map((page, index) => (
-        <>
-          {page.items.length > 0 ? (
-            <div key={page.items[0].id || index}>
-              {page.items.map((item) => (
-                <HometaskItem item={item} />
-              ))}
-            </div>
-          ) : (
-            <p className={NOTIFICATION}>No hometasks yet.</p>
-          )}
-        </>
-      ))}
+      {hometasksQuery.data?.pages.map((page, index) =>
+        page.items.length > 0 ? (
+          <div key={page.items[0].id || index}>
+            {page.items.map((item) => (
+              <HometaskItem item={item} />
+            ))}
+          </div>
+        ) : (
+          <p className={NOTIFICATION}>No hometasks yet.</p>
+        )
+      )}
       {/* Pagination */}
       <button
         className={ACTION_BUTTON}

@@ -7,3 +7,11 @@
 #__next {
   @apply bg-gray-50 dark:bg-[#111] flex flex-col min-h-screen;
 }
+
+b {
+  @apply text-yellow-500;
+}
+
+p {
+  @apply my-2;
+}
