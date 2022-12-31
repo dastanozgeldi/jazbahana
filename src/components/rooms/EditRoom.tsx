@@ -26,7 +26,7 @@ type FormData = {
   topicId: string;
 };
 
-const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
+export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
   const id = router.query.id as string;
   const userId = session?.user?.id as string;
   const topic = topics?.find((t: Topic) => t.id === data?.topicId);
@@ -197,5 +197,3 @@ const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
     </>
   );
 };
-
-export default EditRoom;

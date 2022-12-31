@@ -7,6 +7,7 @@ const ProfileByUsername = () => {
   const username = query.username as string;
   const { data: user } = trpc.user.info.useQuery({ username });
 
+  if (!user) return <>User was not found.</>
   return <UserProfile user={user} />;
 };
 

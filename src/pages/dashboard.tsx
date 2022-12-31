@@ -14,10 +14,10 @@ const Dashboard = () => {
       title="Profile"
       className="xl:grid xl:grid-cols-3 xl:justify-items-center"
     >
-      <div className="w-full px-4">
+      <div className="w-full xl:px-4">
         <Info user={user} session={session} />
       </div>
-      <PinnedRooms id={id} schoolId={user?.schoolId || ""} />
+      <PinnedRooms />
       <HometaskSection />
     </Page>
   );

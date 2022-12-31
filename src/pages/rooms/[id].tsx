@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { ACTION_BUTTON, CARD } from "styles";
 import { Page } from "layouts/Page";
-import EditRoom from "components/rooms/EditRoom";
+import { EditRoom } from "components/rooms/EditRoom";
 import { Avatar } from "components/common/Avatar";
 import { trpc } from "utils/trpc";
 import { env } from "env/client.mjs";
