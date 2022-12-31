@@ -4,7 +4,7 @@ import { useState } from "react";
 import { BiLogInCircle } from "react-icons/bi";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { HamburgerMenu } from "./HamburgerMenu";
+import { HamburgerMenu } from "./MobileMenu";
 import { Logo } from "./Logo";
 import { Avatar } from "components/common/Avatar";
 import { ToggleTheme } from "components/common/ToggleTheme";
