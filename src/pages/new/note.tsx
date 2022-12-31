@@ -1,3 +1,4 @@
+import { UploadNote } from "components/common/UploadNote";
 import { useState, useEffect } from "react";
 
 const NewNote = () => {
@@ -13,7 +14,12 @@ const NewNote = () => {
     setHeight(window.innerHeight * 0.85);
   }, []);
 
-  return <div style={{ width, height }}>{Comp && <Comp />}</div>;
+  return (
+    <div className="flex items-start gap-3">
+      <div style={{ width, height }}>{Comp && <Comp />}</div>
+      <UploadNote />
+    </div>
+  );
 };
 
 export default NewNote;

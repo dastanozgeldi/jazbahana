@@ -43,7 +43,7 @@ const Connections = () => {
   }
   return (
     <Workspace>
-      <div>
+      <div className="w-full">
         <h1 className={NOTIFICATION}>
           Here are people you are connected with.
         </h1>
