@@ -15,11 +15,9 @@ export const PinnedRooms = () => {
       <h1 className="text-2xl font-semibold text-center">Pinned Rooms</h1>
       <ul>
         {pinnedRooms && pinnedRooms?.length > 0 ? (
-          <>
-            {pinnedRooms.map((item) => (
-              <RoomItem key={item.room.id} room={item.room} />
-            ))}
-          </>
+          pinnedRooms.map((item) => (
+            <RoomItem key={item.room.id} room={item.room} />
+          ))
         ) : (
           <p className={NOTIFICATION}>No pinned rooms.</p>
         )}

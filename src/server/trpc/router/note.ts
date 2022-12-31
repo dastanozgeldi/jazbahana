@@ -63,9 +63,12 @@ export const noteRouter = router({
         fields: object;
       };
     }),
-  getNotesForUser: publicProcedure.query(async ({ ctx, input }) => {
+  getNotesForUser: publicProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id;
-    return await ctx.prisma.note.findMany({ where: { userId } });
+    return await ctx.prisma.note.findMany({
+      where: { userId },
+      orderBy: { createdAt: "desc" },
+    });
   }),
   getNotesForRoom: publicProcedure
     .input(

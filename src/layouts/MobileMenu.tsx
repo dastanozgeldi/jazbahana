@@ -13,7 +13,7 @@ import { MdWorkOutline } from "react-icons/md";
 type HamburgerMenuProps = { session: Session | null };
 
 const HAMBURGER_ITEM =
-  "flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500";
+  "text-lg flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500";
 
 export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
   return (
@@ -29,7 +29,7 @@ export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
       </Link>
       {session ? (
         <Link href="/dashboard" className={HAMBURGER_ITEM}>
-          <IoPerson /> Profile
+          <IoPerson /> Dashboard
         </Link>
       ) : (
         <button className={HAMBURGER_ITEM} onClick={() => signIn()}>

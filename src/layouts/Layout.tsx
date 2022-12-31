@@ -1,11 +1,9 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Nav } from "./Nav";
 
-type LayoutProps = { children: React.ReactNode };
-
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
   const links = [
     { label: "Feed", href: "/feed" },
