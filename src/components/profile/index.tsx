@@ -8,7 +8,7 @@ export const UserProfile = ({ user }: { user: User }) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (user.id === session?.user?.id) router.push("/dashboard");
+  if (user?.id === session?.user?.id) router.push("/dashboard");
   return (
     <Page title="Profile" className="max-w-[48ch] w-full mx-auto">
       <Info user={user} session={session} />

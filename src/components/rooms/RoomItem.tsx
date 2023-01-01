@@ -6,7 +6,7 @@ import { Avatar } from "../common/Avatar";
 
 type RoomItemProps = {
   room: Room & {
-    author: any;
+    author?: any;
     participants?: any;
     topic?: any;
   };
