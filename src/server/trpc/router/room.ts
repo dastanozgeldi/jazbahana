@@ -46,7 +46,7 @@ export const roomRouter = router({
   infiniteByTopicId: publicProcedure
     .input(
       z.object({
-        cursor: z.date().nullish(),
+        cursor: z.string().nullish(),
         limit: z.number().min(1).max(10).default(5),
         topicId: z.string().uuid(),
       })
@@ -55,18 +55,20 @@ export const roomRouter = router({
       const { limit, cursor, topicId } = input;
       const items = await ctx.prisma.room.findMany({
         select: defaultRoomSelect,
+        where: {
+          topicId,
+        },
+        cursor: cursor ? { id: cursor } : undefined,
+        take: limit + 1,
         orderBy: {
           updatedAt: "desc",
         },
-        cursor: cursor ? { updatedAt: cursor } : undefined,
-        take: limit + 1,
-        where: { topicId },
       });
       // let prevCursor: typeof cursor | undefined = undefined;
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {
         const nextItem = items.pop();
-        nextCursor = nextItem!.updatedAt;
+        nextCursor = nextItem!.id;
       }
 
       return { items, nextCursor };
