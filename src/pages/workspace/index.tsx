@@ -1,3 +1,4 @@
+import { type Note } from "@prisma/client";
 import { UploadNote } from "components/common/UploadNote";
 import { env } from "env/client.mjs";
 import { Workspace } from "layouts/Workspace";
@@ -6,6 +7,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ACTION_BUTTON, CARD, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
+
+type NoteItemProps = {
+  userId: string;
+  note: Note;
+};
+
+const NoteItem = ({ userId, note }: NoteItemProps) => (
+  <div className={`${CARD} my-4 space-y-4`}>
+    <a
+      className="text-xl text-center"
+      href={`${env.NEXT_PUBLIC_AWS_S3_BUCKET_URL}/notes/${userId}/${note.id}`}
+    >
+      {note.filename}
+    </a>
+    <p className="text-gray-500">{`${note.createdAt.toLocaleDateString()}, ${note.createdAt.toLocaleTimeString()}`}</p>
+  </div>
+);
 
 const Notes = () => {
   const { data: session } = useSession();
@@ -18,7 +36,12 @@ const Notes = () => {
     },
   });
 
-  const { data: notes } = trpc.note.getNotesForUser.useQuery();
+  const notesQuery = trpc.note.infinite.useInfiniteQuery(
+    { limit: 5 },
+    {
+      getPreviousPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
 
   if (status === "loading") return "Loading or not authenticated...";
   return (
@@ -33,21 +56,32 @@ const Notes = () => {
           </Link>
           <UploadNote className="w-full" />
         </div>
-        {notes && notes.length > 0 ? (
-          notes.map((note) => (
-            <div className={`${CARD} my-4 space-y-4`}>
-              <a
-                className="text-xl text-center"
-                href={`${env.NEXT_PUBLIC_AWS_S3_BUCKET_URL}/notes/${userId}/${note.id}`}
-              >
-                {note.filename}
-              </a>
-              <p className="text-gray-500">{`${note.createdAt.toLocaleDateString()}, ${note.createdAt.toLocaleTimeString()}`}</p>
+
+        {notesQuery.data?.pages.map((page, index) =>
+          page.items.length > 0 ? (
+            <div key={page.items[0].id || index}>
+              {page.items.map((note) => (
+                <NoteItem userId={userId} note={note} />
+              ))}
             </div>
-          ))
-        ) : (
-          <p className={NOTIFICATION}>You don't have notes currently</p>
+          ) : (
+            <p className={NOTIFICATION}>No hometasks yet.</p>
+          )
         )}
+        {/* Pagination */}
+        <button
+          className={ACTION_BUTTON}
+          onClick={() => notesQuery.fetchPreviousPage()}
+          disabled={
+            !notesQuery.hasPreviousPage || notesQuery.isFetchingPreviousPage
+          }
+        >
+          {notesQuery.isFetchingPreviousPage
+            ? "Loading more..."
+            : notesQuery.hasPreviousPage
+            ? "Load More"
+            : "Nothing more to load"}
+        </button>
       </div>
     </Workspace>
   );

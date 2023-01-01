@@ -45,7 +45,7 @@ const Connections = () => {
     <Workspace>
       <div className="w-full">
         <h1 className={NOTIFICATION}>
-          Here are people you are connected with.
+          Here are people from your school.
         </h1>
         <div className="w-full">
           {connections?.map((connection) => (

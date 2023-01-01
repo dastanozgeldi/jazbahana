@@ -63,6 +63,35 @@ export const noteRouter = router({
         fields: object;
       };
     }),
+  infinite: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(10).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input.limit ?? 5;
+      const { cursor } = input;
+
+      const items = await ctx.prisma.note.findMany({
+        where: {
+          userId: ctx.session?.user?.id,
+        },
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (items.length > limit) {
+        const nextItem = items.pop()!;
+        nextCursor = nextItem.id;
+      }
+
+      return { items, nextCursor };
+    }),
   getNotesForUser: publicProcedure.query(async ({ ctx }) => {
     const userId = ctx.session?.user?.id;
     return await ctx.prisma.note.findMany({

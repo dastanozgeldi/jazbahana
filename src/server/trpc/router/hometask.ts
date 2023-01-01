@@ -19,19 +19,22 @@ export const hometaskRouter = router({
       z.object({
         limit: z.number().min(1).max(10).nullish(),
         cursor: z.string().nullish(),
-        userId: z.string().cuid(),
       })
     )
     .query(async ({ ctx, input }) => {
       const limit = input.limit ?? 5;
-      const { cursor, userId } = input;
+      const { cursor } = input;
 
       const items = await ctx.prisma.hometask.findMany({
         select: defaultHometaskSelect,
+        where: {
+          userId: ctx.session?.user?.id,
+        },
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
-        orderBy: { createdAt: "desc" },
-        where: { userId },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       let nextCursor: typeof cursor | undefined = undefined;
       if (items.length > limit) {

@@ -1,20 +1,18 @@
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { ACTION_BUTTON, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 import { HometaskItem } from "./HometaskItem";
 
 export const HometaskSection = () => {
-  const { data: session } = useSession();
   const hometasksQuery = trpc.hometask.infinite.useInfiniteQuery(
-    { limit: 5, userId: session?.user?.id || "" },
+    { limit: 5 },
     {
       getPreviousPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
   return (
-    <div className="lg:mx-4">
+    <div>
       <h1 className={NOTIFICATION}>
         Hometasks page. Here are your most recent things to do.
       </h1>
