@@ -1,4 +1,4 @@
-import { type Room } from "@prisma/client";
+import type { User, Room, Topic } from "@prisma/client";
 import Link from "next/link";
 import { IoPeople } from "react-icons/io5";
 import { TOPIC } from "styles";
@@ -6,9 +6,9 @@ import { Avatar } from "../common/Avatar";
 
 type RoomItemProps = {
   room: Room & {
-    author?: any;
+    user?: User;
     participants?: any;
-    topic?: any;
+    topic?: Topic;
   };
 };
 
@@ -20,11 +20,11 @@ export const RoomItem = ({ room }: RoomItemProps) => {
     >
       <div className="flex items-center justify-between">
         <Link
-          href={`/users/${room.authorId || "ghost"}`}
+          href={`/users/${room.user?.id || "ghost"}`}
           className="flex items-center gap-2 font-medium"
         >
-          <Avatar src={room.author.image} size={32} />
-          <span>{room.author.name || "ghost"}</span>
+          <Avatar src={room.user?.image} size={32} />
+          <span>{room.user?.name || "ghost"}</span>
         </Link>
         <p className="text-gray-500">{`${room.updatedAt.toLocaleDateString()}, ${room.updatedAt.toLocaleTimeString()}`}</p>
       </div>

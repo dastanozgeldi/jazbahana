@@ -103,7 +103,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
             </button>
           </>
         )}
-        {userId === data?.authorId && (
+        {userId === data?.userId && (
           <>
             <button
               className={ACTION_BUTTON}

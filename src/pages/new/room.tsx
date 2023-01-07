@@ -17,7 +17,7 @@ type FormData = {
 const NewRoom = () => {
   const { data: session } = useSession();
   const { register, handleSubmit } = useForm<FormData>();
-  const authorId = session?.user?.id as string;
+  const userId = session?.user?.id as string;
   const [topicId, setTopicId] = useState("");
   const router = useRouter();
   const utils = trpc.useContext();
@@ -33,7 +33,7 @@ const NewRoom = () => {
     try {
       await addRoom.mutateAsync({
         ...data,
-        authorId,
+        userId,
         topicId,
       });
     } catch {}

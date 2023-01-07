@@ -10,8 +10,8 @@ const defaultRoomSelect = Prisma.validator<Prisma.RoomSelect>()({
   createdAt: true,
   updatedAt: true,
   participants: true,
-  authorId: true,
-  author: true,
+  userId: true,
+  user: true,
   topicId: true,
   topic: true,
   isPinned: true,
@@ -96,7 +96,7 @@ export const roomRouter = router({
         id: z.string().uuid().optional(),
         title: z.string().min(1).max(64),
         description: z.string().min(1).max(128),
-        authorId: z.string().cuid().optional(),
+        userId: z.string().cuid().optional(),
         topicId: z.string().optional(),
       })
     )
@@ -181,11 +181,11 @@ export const roomRouter = router({
     async ({ ctx }) => await ctx.prisma.room.count()
   ),
   pinnedRooms: publicProcedure
-    .input(z.object({ authorId: z.string().cuid() }))
+    .input(z.object({ userId: z.string().cuid() }))
     .query(async ({ ctx, input }) => {
-      const { authorId } = input;
+      const { userId } = input;
       return await ctx.prisma.room.findMany({
-        where: { authorId },
+        where: { userId },
         include: { participants: true },
       });
     }),

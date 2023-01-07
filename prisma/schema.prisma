@@ -74,8 +74,8 @@ model Room {
     createdAt    DateTime              @default(now())
     updatedAt    DateTime              @default(now()) @updatedAt
     participants ParticipantsInRooms[]
-    author       User?                 @relation(fields: [authorId], references: [id])
-    authorId     String?
+    user         User?                 @relation(fields: [userId], references: [id])
+    userId       String?
     topic        Topic?                @relation(fields: [topicId], references: [id])
     topicId      String?
     notes        Note[]

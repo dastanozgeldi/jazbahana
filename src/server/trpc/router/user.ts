@@ -65,14 +65,22 @@ export const userRouter = router({
     .query(async ({ ctx, input }) => {
       const { id, schoolId } = input;
       return await ctx.prisma.user.findMany({
-        where: { id: { not: id }, schoolId },
+        where: {
+          id: { not: id },
+          schoolId,
+        },
         select: defaultUserSelect,
       });
     }),
   pinnedRooms: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.pinnedRoom.findMany({
-      where: { userId: ctx.session?.user?.id },
-      include: { room: true, user: true },
+      where: {
+        userId: ctx.session?.user?.id,
+      },
+      include: {
+        room: true,
+        user: true,
+      },
     });
   }),
 });

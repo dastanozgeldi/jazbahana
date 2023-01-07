@@ -74,7 +74,7 @@ async function main() {
       id: firstPostId,
       title: "CMS vs WYSIWYG",
       description: "what's the difference? :/",
-      authorId: testUserId,
+      userId: testUserId,
     },
     update: {},
   });
