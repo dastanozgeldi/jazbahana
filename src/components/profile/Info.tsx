@@ -6,25 +6,33 @@ import { GoSettings, GoSignOut } from "react-icons/go";
 import { IoPerson, IoSchool } from "react-icons/io5";
 import { MdForum } from "react-icons/md";
 import ReactMarkdown from "react-markdown";
+import { useState } from "react";
+import { EditProfile } from "./EditProfile";
 
-type InfoProps = { user?: (User & any) | null; session: Session | null };
+type InfoProps = {
+  user?: (User & any) | null;
+  session: Session | null;
+};
 
 export const PROFILE =
   "border-[1px] border-gray-700 gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";
 
 export const Info = ({ user, session }: InfoProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="my-4 border-[1px] rounded-[10px] border-gray-700 p-4 h-max">
       <div className="relative flex justify-around items-center">
         {/* Settings */}
         {session?.user?.id === user?.id && (
           <>
-            <Link
-              href="/settings"
+            <button
               className="absolute top-5 left-2 hover:text-blue-500 duration-500"
+              onClick={() => setIsOpen(true)}
             >
               <GoSettings className="w-12 h-12" />
-            </Link>
+            </button>
+            <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />
             <Link
               href="/api/auth/signout"
               className="absolute top-5 right-2 hover:text-blue-500 duration-500"

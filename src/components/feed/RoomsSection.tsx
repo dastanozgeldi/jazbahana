@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import type { Session } from "next-auth";
 import Link from "next/link";
 import { ACTION_BUTTON, NOTIFICATION } from "styles";
@@ -6,10 +6,12 @@ import { trpc } from "utils/trpc";
 import { IoAdd } from "react-icons/io5";
 import { useRouter } from "next/router";
 import { RoomItem } from "components/rooms/RoomItem";
+import { NewRoom } from "./NewRoom";
 
 type RoomSectionProps = { session: Session | null };
 
 const RoomsSection = ({ session }: RoomSectionProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { query } = useRouter();
   const topicId = query.topicId as string;
 
@@ -39,12 +41,15 @@ const RoomsSection = ({ session }: RoomSectionProps) => {
         </div>
 
         {session && (
-          <Link
-            href="/new/room"
-            className={`${ACTION_BUTTON} flex items-center gap-2`}
-          >
-            <IoAdd className="w-6 h-6" /> Add Room
-          </Link>
+          <>
+            <button
+              className={`${ACTION_BUTTON} flex items-center gap-2`}
+              onClick={() => setIsOpen(true)}
+            >
+              <IoAdd className="w-6 h-6" /> Add Room
+            </button>
+            <NewRoom isOpen={isOpen} setIsOpen={setIsOpen} />
+          </>
         )}
       </div>
       {/* Displaying Rooms */}

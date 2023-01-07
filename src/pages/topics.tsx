@@ -4,6 +4,7 @@ import { trpc } from "utils/trpc";
 
 const Topics = () => {
   const { data } = trpc.topic.all.useQuery();
+
   return (
     <div className="max-w-[60ch] mx-auto">
       <h1 className={NOTIFICATION}>

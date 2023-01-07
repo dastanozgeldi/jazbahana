@@ -1,9 +1,11 @@
-import Link from "next/link";
+import { useState } from "react";
 import { ACTION_BUTTON, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 import { HometaskItem } from "./HometaskItem";
+import { NewHometask } from "./NewHometask";
 
 export const HometaskSection = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const hometasksQuery = trpc.hometask.infinite.useInfiniteQuery(
     { limit: 5 },
     {
@@ -16,9 +18,13 @@ export const HometaskSection = () => {
       <h1 className={NOTIFICATION}>
         Hometasks. Here are your most recent things to do.
       </h1>
-      <Link href="/new/hometask" className={`${ACTION_BUTTON} w-full`}>
+      <button
+        onClick={() => setIsOpen(true)}
+        className={`${ACTION_BUTTON} w-full`}
+      >
         Add Hometask
-      </Link>
+      </button>
+      <NewHometask isOpen={isOpen} setIsOpen={setIsOpen} />
       {hometasksQuery.data?.pages.map((page, index) =>
         page.items.length > 0 ? (
           <div key={page.items[0].id || index}>
