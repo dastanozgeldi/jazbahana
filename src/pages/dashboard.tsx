@@ -1,14 +1,15 @@
+import { useSession } from "next-auth/react";
 import { HometaskSection } from "components/hometasks/HometaskSection";
 import { Info } from "components/profile/Info";
 import { PinnedRooms } from "components/profile/PinnedRooms";
 import { Page } from "layouts/Page";
-import { useSession } from "next-auth/react";
 import { trpc } from "utils/trpc";
 
 const Dashboard = () => {
   const { data: session } = useSession();
   const id = session?.user?.id as string;
   const { data: user } = trpc.user.info.useQuery({ id });
+
   return (
     <Page
       title="Profile"
@@ -18,7 +19,9 @@ const Dashboard = () => {
         <Info user={user} session={session} />
       </div>
       <PinnedRooms />
-      <HometaskSection />
+      <div className="w-full xl:px-4">
+        <HometaskSection />
+      </div>
     </Page>
   );
 };

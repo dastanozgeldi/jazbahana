@@ -27,7 +27,7 @@ export const Workspace: FC<PropsWithChildren> = ({ children }) => {
           <IoPerson className="text-gray-400 w-5 h-5" />
         </Link>
       </aside>
-      {children}
+      <main className="mx-4 w-full">{children}</main>
     </div>
   );
 };

@@ -14,7 +14,7 @@ export const HometaskSection = () => {
   return (
     <div>
       <h1 className={NOTIFICATION}>
-        Hometasks page. Here are your most recent things to do.
+        Hometasks. Here are your most recent things to do.
       </h1>
       <Link href="/new/hometask" className={`${ACTION_BUTTON} w-full`}>
         Add Hometask
