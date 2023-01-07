@@ -168,12 +168,14 @@ export const roomRouter = router({
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
+      await ctx.prisma.pinnedRoom.deleteMany({
+        where: { roomId: id },
+      });
       await ctx.prisma.participantsInRooms.deleteMany({
         where: { roomId: id },
       });
       await ctx.prisma.room.delete({
         where: { id },
-        include: { participants: true },
       });
       return { id };
     }),
