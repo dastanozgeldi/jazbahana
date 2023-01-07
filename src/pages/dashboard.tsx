@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { HometaskSection } from "components/hometasks/HometaskSection";
-import { Info } from "components/profile/Info";
+import { UserInfo } from "components/profile/UserInfo";
 import { PinnedRooms } from "components/profile/PinnedRooms";
 import { Page } from "layouts/Page";
 import { trpc } from "utils/trpc";
@@ -16,7 +16,7 @@ const Dashboard = () => {
       className="xl:grid xl:grid-cols-3 xl:justify-items-center"
     >
       <div className="w-full xl:px-4">
-        <Info user={user} session={session} />
+        <UserInfo user={user} session={session} />
       </div>
       <PinnedRooms />
       <div className="w-full xl:px-4">

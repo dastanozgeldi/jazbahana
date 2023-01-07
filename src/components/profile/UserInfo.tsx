@@ -17,7 +17,7 @@ type InfoProps = {
 export const PROFILE =
   "border-[1px] border-gray-700 gap-2 w-[100px] h-[100px] flex flex-col items-center justify-center rounded-[10px] text-xl";
 
-export const Info = ({ user, session }: InfoProps) => {
+export const UserInfo = ({ user, session }: InfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
