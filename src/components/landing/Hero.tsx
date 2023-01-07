@@ -2,10 +2,10 @@ import Link from "next/link";
 import Typewriter from "typewriter-effect";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { CARD } from "styles";
+import { PropsWithChildren } from "react";
 
-type HeroCardProps = {
+type HeroCardProps = PropsWithChildren & {
   title: string;
-  children: React.ReactNode;
   href: string;
 };
 
@@ -46,15 +46,12 @@ export const Hero = () => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-8">
         <HeroCard href="#about" title="About Jazbahana">
           what is Jazbahana, its importance and purposes.
         </HeroCard>
         <HeroCard href="#features" title="Features">
           what Jazbahana offers, the benefits of using it and many more.
-        </HeroCard>
-        <HeroCard href="#authors" title="Authors">
-          info about the authors of the project, ways to connect.
         </HeroCard>
       </div>
     </div>

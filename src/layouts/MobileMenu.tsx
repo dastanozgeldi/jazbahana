@@ -39,7 +39,7 @@ export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
       {/* Social Links */}
       <div className="border-t-2 border-gray-400">
         <a
-          href="https://github.com/Dositan/jazbahana/"
+          href="https://github.com/dastanozgeldi/jazbahana/"
           className={HAMBURGER_ITEM}
         >
           <FaGithub /> Github

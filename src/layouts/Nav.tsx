@@ -39,7 +39,7 @@ export const Nav = ({ mounted, links }: NavProps) => {
           <a href="https://discord.gg/jgE2m4cnFj">
             <FaDiscord size={32} />
           </a>
-          <a href="https://github.com/Dositan/jazbahana">
+          <a href="https://github.com/dastanozgeldi/jazbahana">
             <FaGithub size={32} />
           </a>
           {session ? (

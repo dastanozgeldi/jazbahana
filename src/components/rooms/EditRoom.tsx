@@ -1,7 +1,7 @@
-import { Dialog, Transition } from "@headlessui/react";
 import type { Room, Topic } from "@prisma/client";
+import { Modal } from "components/common/Modal";
 import type { Session } from "next-auth";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ACTION_BUTTON, DELETE_BUTTON, INPUT_SELECT, INPUT_TEXT } from "styles";
 import { trpc } from "utils/trpc";
@@ -119,117 +119,73 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
         )}
       </div>
 
-      <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          onClose={() => setIsOpen(false)}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-50" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-50 dark:bg-[#111] p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h2"
-                    className="text-xl font-medium leading-6 text-gray-900 dark:text-gray-100"
-                  >
-                    Edit Room
-                  </Dialog.Title>
-                  <form
-                    hidden={!isOpen}
-                    className="w-[90%]"
-                    onSubmit={onSubmit}
-                  >
-                    <div className="my-4">
-                      <label className="text-xl" htmlFor="title">
-                        Title:
-                      </label>
-                      <input
-                        id="title"
-                        {...register("title")}
-                        className={INPUT_TEXT}
-                        value={title}
-                        onChange={(e) => setTitle(e.currentTarget.value)}
-                        disabled={editRoom.isLoading}
-                      />
-                    </div>
-                    {/* Description */}
-                    <div className="my-4">
-                      <label className="text-xl" htmlFor="description">
-                        Description:
-                      </label>
-                      <input
-                        id="description"
-                        {...register("description")}
-                        className={INPUT_TEXT}
-                        value={description}
-                        onChange={(e) => setDescription(e.currentTarget.value)}
-                        disabled={editRoom.isLoading}
-                      />
-                    </div>
-                    {/* Topic */}
-                    <div className="my-4">
-                      <label className="text-xl" htmlFor="topicId">
-                        Topic:
-                      </label>
-                      <select
-                        {...register("topicId")}
-                        id="topicId"
-                        className={INPUT_SELECT}
-                        onChange={(e) => setTopicId(e.currentTarget.value)}
-                      >
-                        {topic ? (
-                          <option value={topic.id}>{topic.name}</option>
-                        ) : (
-                          <option selected>Choose a topic</option>
-                        )}
-                        {topics &&
-                          topics.map((t: Topic) => (
-                            <option key={t.id} value={t.id}>
-                              {t.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-                    {/* Save */}
-                    <button
-                      className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
-                      onClick={() => console.log(topic)}
-                      disabled={editRoom.isLoading}
-                    >
-                      Save
-                    </button>
-                    {/* Error occurred */}
-                    {editRoom.error && (
-                      <p className="text-red-500">{editRoom.error.message}</p>
-                    )}
-                  </form>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
+      <Modal title="Edit Room" isOpen={isOpen} setIsOpen={setIsOpen}>
+        <form hidden={!isOpen} className="w-[90%]" onSubmit={onSubmit}>
+          <div className="my-4">
+            <label className="text-xl" htmlFor="title">
+              Title:
+            </label>
+            <input
+              id="title"
+              {...register("title")}
+              className={INPUT_TEXT}
+              value={title}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+              disabled={editRoom.isLoading}
+            />
           </div>
-        </Dialog>
-      </Transition>
+          {/* Description */}
+          <div className="my-4">
+            <label className="text-xl" htmlFor="description">
+              Description:
+            </label>
+            <input
+              id="description"
+              {...register("description")}
+              className={INPUT_TEXT}
+              value={description}
+              onChange={(e) => setDescription(e.currentTarget.value)}
+              disabled={editRoom.isLoading}
+            />
+          </div>
+          {/* Topic */}
+          <div className="my-4">
+            <label className="text-xl" htmlFor="topicId">
+              Topic:
+            </label>
+            <select
+              {...register("topicId")}
+              id="topicId"
+              className={INPUT_SELECT}
+              onChange={(e) => setTopicId(e.currentTarget.value)}
+            >
+              {topic ? (
+                <option value={topic.id}>{topic.name}</option>
+              ) : (
+                <option selected>Choose a topic</option>
+              )}
+              {topics &&
+                topics.map((t: Topic) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+          {/* Save */}
+          <button
+            className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
+            onClick={() => console.log(topic)}
+            disabled={editRoom.isLoading}
+          >
+            Save
+          </button>
+          {/* Error occurred */}
+          {editRoom.error && (
+            <p className="text-red-500">{editRoom.error.message}</p>
+          )}
+        </form>
+      </Modal>
     </>
   );
 };
