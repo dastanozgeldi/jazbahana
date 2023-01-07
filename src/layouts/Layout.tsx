@@ -23,26 +23,26 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
           name="description"
           content="Jazbahana is a note-trader app created to help students all around the world."
         />
-        <meta name="author" content="Jolshylar" />
+        <meta name="author" content="Dastan Özgeldi" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-        <meta name="twitter:title" content="Jazbahana - Get Notes Faster" />
+        <meta name="twitter:title" content="Jazbahana - Study Efficiently" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:creator" content="@jolshylar" />
+        <meta name="twitter:creator" content="@dastanozgeldi" />
         <meta
           name="twitter:image"
-          content="https://jazbahana.vercel.app/card.png"
+          content="https://jazbahana.dosek.xyz/card.png"
         />
         <meta property="og:site_name" content="Jazbahana" />
-        <meta name="og:title" content="Jazbahana - Get Notes Faster" />
+        <meta name="og:title" content="Jazbahana - Study Efficiently" />
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://jazbahana.vercel.app/card.png"
+          content="https://jazbahana.dosek.xyz/card.png"
         />
-        <title>Jazbahana - Get Notes Faster</title>
+        <title>Jazbahana - Study Efficiently</title>
       </Head>
       <Nav mounted={mounted} links={links} />
-      <main ref={parent} className="py-20 px-4 sm:container mx-auto">
+      <main ref={parent} className="p-4 sm:container mx-auto">
         {children}
       </main>
     </>

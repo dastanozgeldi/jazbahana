@@ -19,7 +19,7 @@ export const Nav = ({ mounted, links }: NavProps) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed transition border-b border-gray-500 bg-opacity-80 w-full z-10 backdrop-blur flex items-center justify-between px-4 py-2">
+    <nav className="transition border-b border-gray-500 bg-opacity-80 w-full z-10 backdrop-blur flex items-center justify-between px-4 py-2">
       <Logo />
       {/* Links */}
       <div className="hidden md:flex items-center">
