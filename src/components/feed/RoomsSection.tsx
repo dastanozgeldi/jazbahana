@@ -1,6 +1,5 @@
 import { Fragment, useState } from "react";
 import type { Session } from "next-auth";
-import Link from "next/link";
 import { ACTION_BUTTON, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 import { IoAdd } from "react-icons/io5";
