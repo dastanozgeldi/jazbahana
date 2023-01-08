@@ -103,10 +103,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
         )}
         {userId === data?.userId && (
           <>
-            <button
-              className={ACTION_BUTTON}
-              onClick={() => setIsOpen(!isOpen)}
-            >
+            <button className={ACTION_BUTTON} onClick={() => setIsOpen(true)}>
               Edit
             </button>
             <button

@@ -89,10 +89,7 @@ export const EditHometask = ({
             >
               Finish
             </button>
-            <button
-              className={ACTION_BUTTON}
-              onClick={() => setIsOpen(!isOpen)}
-            >
+            <button className={ACTION_BUTTON} onClick={() => setIsOpen(true)}>
               Edit
             </button>
             <button
