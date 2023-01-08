@@ -17,4 +17,7 @@ module.exports = defineNextConfig({
     locales: ["en", "kk"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["lh3.googleusercontent.com", "cdn-icons-png.flaticon.com"],
+  },
 });

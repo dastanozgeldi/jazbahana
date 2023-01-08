@@ -1,4 +1,5 @@
-import type { User, Room, Topic } from "@prisma/client";
+import { type Room } from "@prisma/client";
+import Image from "next/image";
 import Link from "next/link";
 import { IoPeople } from "react-icons/io5";
 import { TOPIC } from "styles";
@@ -48,7 +49,12 @@ export const RoomItem = ({ room }: RoomItemProps) => {
             key={room.topicId}
           >
             {room.topic.image && (
-              <img src={room.topic.image} className="w-4 h-4" />
+              <Image
+                alt="Topic"
+                src={room.topic.image}
+                width={16}
+                height={16}
+              />
             )}
             {room.topic.name}
           </span>

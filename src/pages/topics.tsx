@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CARD, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
@@ -18,7 +19,9 @@ const Topics = () => {
             className="flex items-center justify-between px-2 w-full rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 hover:duration-300"
           >
             <div className="flex items-center gap-2 p-2 m-2">
-              {t.image && <img src={t.image} alt="Topic" className="w-6 h-6" />}
+              {t.image && (
+                <Image src={t.image} alt="Topic" width={24} height={24} />
+              )}
               {t.name}
             </div>
             <span className="text-xl px-2 rounded bg-gray-100 dark:bg-gray-800">
