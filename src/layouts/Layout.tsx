@@ -2,6 +2,9 @@ import Head from "next/head";
 import { type FC, type PropsWithChildren, useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Nav } from "./Nav";
+import { Inter } from "@next/font/google";
+
+const inter = Inter({ variable: "--font-inter" });
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [mounted, setMounted] = useState(false);
@@ -41,10 +44,12 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
         />
         <title>Jazbahana - Study Efficiently</title>
       </Head>
-      <Nav mounted={mounted} links={links} />
-      <main ref={parent} className="p-4 sm:container mx-auto">
-        {children}
-      </main>
+      <div className={inter.variable}>
+        <Nav mounted={mounted} links={links} />
+        <main ref={parent} className="p-4 sm:container mx-auto">
+          {children}
+        </main>
+      </div>
     </>
   );
 };

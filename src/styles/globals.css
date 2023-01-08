@@ -1,15 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 #__next {
-  @apply bg-gray-50 dark:bg-[#111] flex flex-col min-h-screen;
+  @apply bg-bg dark:bg-darkBg flex flex-col min-h-screen;
+}
+
+* {
+  @apply font-sans;
 }
 
 b {
-  @apply text-yellow-500;
+  @apply text-secondary;
 }
 
 p {

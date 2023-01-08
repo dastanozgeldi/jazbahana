@@ -174,7 +174,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
           </div>
           {/* Save */}
           <button
-            className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
+            className="py-2 px-4 rounded-md text-white bg-primary hover:bg-blue-600 hover:duration-500"
             onClick={() => console.log(topic)}
             disabled={editRoom.isLoading}
           >

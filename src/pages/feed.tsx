@@ -16,13 +16,13 @@ const Feed = () => {
       <div className="md:hidden flex items-center justify-center gap-2 my-4">
         <Link
           href="/topics"
-          className="text-sm rounded-full border border-blue-500 py-2 px-4 text-blue-500 hover:text-gray-100 hover:bg-blue-500 hover:duration-500"
+          className="text-sm rounded-full border border-primary py-2 px-4 text-primary hover:text-gray-100 hover:bg-primary hover:duration-500"
         >
           Browse Topics
         </Link>
         <Link
           href="/news"
-          className="text-sm rounded-full border border-blue-500 py-2 px-4 text-blue-500 hover:text-gray-100 hover:bg-blue-500 hover:duration-500"
+          className="text-sm rounded-full border border-primary py-2 px-4 text-primary hover:text-gray-100 hover:bg-primary hover:duration-500"
         >
           Read News
         </Link>

@@ -14,7 +14,7 @@ const HeroCard = ({ children, title, href }: HeroCardProps) => {
     <div
       className={`${CARD} relative w-[320px] h-[180px] text-center shadow shadow-red-500`}
     >
-      <h1 className="text-yellow-500 text-2xl font-semibold">{title}</h1>
+      <h1 className="text-secondary text-2xl font-semibold">{title}</h1>
       <p>{children}</p>
       <Link
         href={href}
@@ -30,12 +30,12 @@ export const Hero = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
       <div className="my-8">
-        <h1 className="font-extrabold text-center text-4xl md:text-5xl text-blue-500">
+        <h1 className="font-extrabold text-center text-4xl md:text-5xl text-primary">
           Jazbahana
         </h1>
-        <div className="md:flex md:gap-2 font-extrabold text-center text-3xl md:text-4xl">
+        <div className="md:flex md:gap-2 font-bold text-center text-3xl md:text-4xl">
           the way students{" "}
-          <span className="text-blue-500">
+          <span className="text-primary">
             <Typewriter
               options={{
                 autoStart: true,

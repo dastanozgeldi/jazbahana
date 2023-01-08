@@ -15,42 +15,37 @@ type HamburgerMenuProps = { session: Session | null };
 const HAMBURGER_ITEM =
   "text-lg flex items-center gap-2 p-4 hover:bg-gray-200 dark:hover:bg-gray-700 hover:duration-500";
 
-export const HamburgerMenu = ({ session }: HamburgerMenuProps) => {
-  return (
-    <div className="flex flex-col absolute right-8 top-14 rounded bg-gray-100 dark:bg-gray-800">
-      <Link href="/feed" className={HAMBURGER_ITEM}>
-        <IoList /> Feed
+export const HamburgerMenu = ({ session }: HamburgerMenuProps) => (
+  <div className="flex flex-col absolute right-8 top-14 rounded bg-gray-100 dark:bg-gray-800">
+    <Link href="/feed" className={HAMBURGER_ITEM}>
+      <IoList /> Feed
+    </Link>
+    <Link href="/workspace" className={HAMBURGER_ITEM}>
+      <MdWorkOutline /> Workspace
+    </Link>
+    <Link href="/news" className={HAMBURGER_ITEM}>
+      <IoNewspaperOutline /> News
+    </Link>
+    {session ? (
+      <Link href="/dashboard" className={HAMBURGER_ITEM}>
+        <IoPerson /> Dashboard
       </Link>
-      <Link href="/workspace" className={HAMBURGER_ITEM}>
-        <MdWorkOutline /> Workspace
-      </Link>
-      <Link href="/news" className={HAMBURGER_ITEM}>
-        <IoNewspaperOutline /> News
-      </Link>
-      {session ? (
-        <Link href="/dashboard" className={HAMBURGER_ITEM}>
-          <IoPerson /> Dashboard
-        </Link>
-      ) : (
-        <button className={HAMBURGER_ITEM} onClick={() => signIn()}>
-          <IoLogInOutline /> Sign In
-        </button>
-      )}
-      {/* Social Links */}
-      <div className="border-t-2 border-gray-400">
-        <a
-          href="https://github.com/dastanozgeldi/jazbahana/"
-          className={HAMBURGER_ITEM}
-        >
-          <FaGithub /> Github
-        </a>
-        <a
-          href="https://instagram.com/dastanozgeldi/"
-          className={HAMBURGER_ITEM}
-        >
-          <FaInstagram /> Instagram
-        </a>
-      </div>
+    ) : (
+      <button className={HAMBURGER_ITEM} onClick={() => signIn()}>
+        <IoLogInOutline /> Sign In
+      </button>
+    )}
+    {/* Social Links */}
+    <div className="border-t-2 border-gray-400">
+      <a
+        href="https://github.com/dastanozgeldi/jazbahana/"
+        className={HAMBURGER_ITEM}
+      >
+        <FaGithub /> Github
+      </a>
+      <a href="https://instagram.com/dastanozgeldi/" className={HAMBURGER_ITEM}>
+        <FaInstagram /> Instagram
+      </a>
     </div>
-  );
-};
+  </div>
+);

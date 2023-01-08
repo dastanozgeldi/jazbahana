@@ -8,7 +8,7 @@ export const Features = () => {
       className="min-h-screen flex justify-center items-center py-10"
     >
       <div>
-        <h1 className="text-blue-500 text-4xl md:text-5xl font-extrabold text-center">
+        <h1 className="text-primary text-4xl md:text-5xl font-extrabold text-center">
           Features
         </h1>
         <div className="flex flex-col items-center justify-between mt-20 gap-y-5">

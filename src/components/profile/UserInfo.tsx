@@ -27,7 +27,7 @@ export const UserInfo = ({ user, session }: InfoProps) => {
         {session?.user?.id === user?.id && (
           <>
             <button
-              className="absolute top-5 left-2 hover:text-blue-500 duration-500"
+              className="absolute top-5 left-2 hover:text-primary duration-500"
               onClick={() => setIsOpen(true)}
             >
               <GoSettings className="w-12 h-12" />
@@ -35,7 +35,7 @@ export const UserInfo = ({ user, session }: InfoProps) => {
             <EditProfile isOpen={isOpen} setIsOpen={setIsOpen} />
             <Link
               href="/api/auth/signout"
-              className="absolute top-5 right-2 hover:text-blue-500 duration-500"
+              className="absolute top-5 right-2 hover:text-primary duration-500"
             >
               <GoSignOut className="w-12 h-12" />
             </Link>

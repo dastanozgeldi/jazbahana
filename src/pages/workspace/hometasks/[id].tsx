@@ -21,7 +21,8 @@ const HometaskView = () => {
       {/* Header */}
       <div className="border-b py-2 mb-4">
         <h1 className="text-2xl md:text-4xl font-bold">{data.title}</h1>
-        <h2>{data.topic.name}</h2>
+        <h2 className="text-secondary">{data.topic.name}</h2>
+        <p>{data.due?.toLocaleDateString()}</p>
       </div>
       <ReactMarkdown className="markdown">
         {data.content || "no data"}
