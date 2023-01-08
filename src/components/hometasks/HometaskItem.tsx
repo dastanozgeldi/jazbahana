@@ -1,25 +1,25 @@
-import { type Hometask } from "@prisma/client";
+import type { Topic, Hometask, User } from "@prisma/client";
 import Link from "next/link";
-import { useState } from "react";
 import { CARD } from "styles";
-import { trpc } from "utils/trpc";
 
-export const HometaskItem = ({ item }: { item: Hometask & any }) => {
-  const [isFinished, setIsFinished] = useState(item.finished);
-  const finishHometask = trpc.hometask.finish.useQuery({ id: item.id });
-
-  return (
-    <div className={`${CARD} my-4`}>
-      <div className="w-full">
-        <Link href={`/workspace/hometasks/${item.id}`} className="text-xl">
-          {item.title}
-        </Link>
-        <p className="text-gray-400">{item.content?.slice(0, 50)}</p>
-      </div>
-      <div className="w-full flex items-center justify-between">
-        <p className="font-semibold">{item.topic.name}</p>
-        <p>{item.due?.toLocaleDateString()}</p>
-      </div>
-    </div>
-  );
+type HometaskItemProps = {
+  hometask: Hometask & { user: User; topic: Topic };
 };
+
+export const HometaskItem = ({ hometask }: HometaskItemProps) => (
+  <div className={`${CARD} my-4`}>
+    <div className="w-full">
+      <Link
+        href={`/workspace/hometasks/${hometask.id}`}
+        className={`text-xl ${hometask.finished && "line-through"}`}
+      >
+        {hometask.title}
+      </Link>
+      <p className="text-gray-400">{hometask.content?.slice(0, 50)}</p>
+    </div>
+    <div className="w-full flex items-center justify-between">
+      <p className="font-semibold">{hometask.topic.name}</p>
+      <p className="font-semibold">{hometask.due?.toLocaleDateString()}</p>
+    </div>
+  </div>
+);

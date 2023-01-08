@@ -83,13 +83,9 @@ export const UploadNote = ({ className = "" }: UploadNoteProps) => {
         Upload Note
       </button>
 
-      <Modal
-        title="Upload a file you've just exported!"
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      >
+      <Modal title="Upload Note" isOpen={isOpen} setIsOpen={setIsOpen}>
         <form
-          className="w-full border-gray-700 p-4 space-y-4"
+          className="font-sans w-full border-gray-700 p-4 space-y-4"
           onSubmit={uploadNote}
         >
           <input ref={fileRef} type="file" onChange={(e) => selectFile(e)} />

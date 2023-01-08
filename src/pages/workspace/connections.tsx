@@ -11,17 +11,15 @@ type ConnectionItemProps = {
   connection: User;
 };
 
-const ConnectionItem = ({ connection }: ConnectionItemProps) => {
-  return (
-    <Link
-      href={`/users/${connection.id}`}
-      className="flex items-center gap-4 p-4 my-4 rounded-xl border-[1px] border-gray-700 hover:border-gray-500 duration-300"
-    >
-      <Avatar src={connection.image} size={50} />
-      <a>{connection.name}</a>
-    </Link>
-  );
-};
+const ConnectionItem = ({ connection }: ConnectionItemProps) => (
+  <Link
+    href={`/users/${connection.id}`}
+    className="flex items-center gap-4 p-4 my-4 rounded-xl border-[1px] border-gray-700 hover:border-gray-500 duration-300"
+  >
+    <Avatar src={connection.image} size={50} />
+    <a>{connection.name}</a>
+  </Link>
+);
 
 const Connections = () => {
   const router = useRouter();
@@ -38,15 +36,14 @@ const Connections = () => {
     id,
     schoolId: user?.schoolId || "",
   });
+
   if (status === "loading") {
     return "Loading or not authenticated...";
   }
   return (
     <Workspace>
       <div className="w-full">
-        <h1 className={NOTIFICATION}>
-          Here are people from your school.
-        </h1>
+        <h1 className={NOTIFICATION}>Here are people from your school.</h1>
         <div className="w-full">
           {connections?.map((connection) => (
             <ConnectionItem connection={connection} />

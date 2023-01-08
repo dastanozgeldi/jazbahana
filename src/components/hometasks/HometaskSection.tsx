@@ -25,13 +25,9 @@ export const HometaskSection = () => {
         Add Hometask
       </button>
       <NewHometask isOpen={isOpen} setIsOpen={setIsOpen} />
-      {hometasksQuery.data?.pages.map((page, index) =>
+      {hometasksQuery.data?.pages.map((page, _) =>
         page.items.length > 0 ? (
-          <div key={page.items[0].id || index}>
-            {page.items.map((item) => (
-              <HometaskItem item={item} />
-            ))}
-          </div>
+          page.items.map((hometask) => <HometaskItem hometask={hometask} />)
         ) : (
           <p className={NOTIFICATION}>No hometasks yet.</p>
         )
