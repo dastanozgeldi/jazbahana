@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react";
-import type { Session } from "next-auth";
+import { useState } from "react";
+import { type Session } from "next-auth";
 import { ACTION_BUTTON, NOTIFICATION } from "styles";
 import { trpc } from "utils/trpc";
 import { IoAdd } from "react-icons/io5";
@@ -52,13 +52,9 @@ const RoomsSection = ({ session }: RoomSectionProps) => {
         )}
       </div>
       {/* Displaying Rooms */}
-      {roomsQuery.data?.pages.map((page, index) =>
+      {roomsQuery.data?.pages.map((page, _) =>
         page.items.length > 0 ? (
-          <Fragment key={page.items[0].id || index}>
-            {page.items.map((item) => (
-              <RoomItem key={item.id} room={item} />
-            ))}
-          </Fragment>
+          page.items.map((item) => <RoomItem key={item.id} room={item} />)
         ) : (
           <p className={NOTIFICATION}>No rooms found for this.</p>
         )

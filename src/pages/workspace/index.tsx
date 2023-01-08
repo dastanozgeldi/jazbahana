@@ -57,13 +57,9 @@ const Notes = () => {
           <UploadNote className="w-full" />
         </div>
 
-        {notesQuery.data?.pages.map((page, index) =>
+        {notesQuery.data?.pages.map((page, _) =>
           page.items.length > 0 ? (
-            <div key={page.items[0].id || index}>
-              {page.items.map((note) => (
-                <NoteItem userId={userId} note={note} />
-              ))}
-            </div>
+            page.items.map((note) => <NoteItem userId={userId} note={note} />)
           ) : (
             <p className={NOTIFICATION}>No hometasks yet.</p>
           )

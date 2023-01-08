@@ -1,4 +1,4 @@
-import type { Room, Topic } from "@prisma/client";
+import type { Hometask, Topic } from "@prisma/client";
 import { Modal } from "components/common/Modal";
 import type { Session } from "next-auth";
 import { useEffect, useState } from "react";
@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { ACTION_BUTTON, DELETE_BUTTON, INPUT_SELECT, INPUT_TEXT } from "styles";
 import { trpc } from "utils/trpc";
 
-type EditRoomProps = {
-  data?: Room | null;
+type EditHometaskProps = {
+  hometask?: Hometask | null;
   topics?: Topic[] | null;
   session?: Session | null;
   router: any;
@@ -16,58 +16,56 @@ type EditRoomProps = {
 type FormData = {
   id: string;
   title: string;
-  description: string;
+  content: string;
   topicId: string;
 };
 
-export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
+export const EditHometask = ({
+  hometask,
+  topics,
+  session,
+  router,
+}: EditHometaskProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const id = router.query.id as string;
   const userId = session?.user?.id as string;
-  const topic = topics?.find((t: Topic) => t.id === data?.topicId);
+  const topic = topics?.find((t: Topic) => t.id === hometask?.topicId);
   // Form
   const { register, handleSubmit } = useForm<FormData>();
   // tRPC
   const utils = trpc.useContext();
-  const { data: hasJoined } = trpc.participant.hasJoined.useQuery({
-    roomId: id,
-    userId,
-  });
-  const isPinned = data?.isPinned || false;
-  const editRoom = trpc.room.edit.useMutation({
+
+  const finishHometask = trpc.hometask.finish.useMutation({
     async onSuccess() {
-      await utils.room.byId.invalidate({ id });
+      await utils.hometask.byId.invalidate({ id });
+    },
+  });
+
+  const editHometask = trpc.hometask.edit.useMutation({
+    async onSuccess() {
+      await utils.hometask.byId.invalidate({ id });
       setIsOpen(false);
     },
   });
-  const deleteRoom = trpc.room.delete.useMutation({
+
+  const deleteHometask = trpc.hometask.delete.useMutation({
     async onSuccess() {
-      router.push("/feed");
+      router.push("/workspace/hometasks");
     },
   });
-  const joinRoom = trpc.participant.join.useMutation({
-    async onSuccess() {
-      await utils.participant.hasJoined.invalidate({ roomId: id, userId });
-      await utils.participant.all.invalidate();
-    },
-  });
-  const pinRoom = trpc.room.pin.useMutation({
-    async onSuccess() {
-      await utils.room.invalidate();
-    },
-  });
+
   // States
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setDescription] = useState("");
   const [topicId, setTopicId] = useState("");
 
   const onSubmit = handleSubmit(async () => {
     try {
-      await editRoom.mutateAsync({
+      await editHometask.mutateAsync({
         id,
         data: {
           title,
-          description,
+          content,
           topicId,
         },
       });
@@ -75,40 +73,28 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
   });
 
   useEffect(() => {
-    setTitle(data?.title || "");
-    setDescription(data?.description || "");
-    setTopicId(data?.topicId || "");
+    setTitle(hometask?.title || "");
+    setDescription(hometask?.content || "");
+    setTopicId(hometask?.topicId || "");
   }, []);
 
   return (
     <>
       <div className="flex gap-2 my-2">
-        {session && (
+        {userId === hometask?.userId && (
           <>
             <button
-              disabled={data?.isPinned}
               className={ACTION_BUTTON}
-              onClick={() => pinRoom.mutate({ roomId: id, isPinned })}
+              onClick={() => finishHometask.mutate({ id })}
             >
-              {data?.isPinned ? "Pinned" : "Pin"}
+              Finish
             </button>
-            <button
-              disabled={hasJoined}
-              className={ACTION_BUTTON}
-              onClick={() => joinRoom.mutate({ userId, roomId: id })}
-            >
-              {hasJoined ? "Joined" : "Join"}
-            </button>
-          </>
-        )}
-        {userId === data?.userId && (
-          <>
             <button className={ACTION_BUTTON} onClick={() => setIsOpen(true)}>
               Edit
             </button>
             <button
               className={DELETE_BUTTON}
-              onClick={() => deleteRoom.mutate({ id })}
+              onClick={() => deleteHometask.mutate({ id })}
             >
               Delete
             </button>
@@ -116,7 +102,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
         )}
       </div>
 
-      <Modal title="Edit Room" isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Modal title="Edit Hometask" isOpen={isOpen} setIsOpen={setIsOpen}>
         <form hidden={!isOpen} className="w-[90%]" onSubmit={onSubmit}>
           <div className="my-4">
             <label className="text-xl" htmlFor="title">
@@ -128,21 +114,21 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
               className={INPUT_TEXT}
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
-              disabled={editRoom.isLoading}
+              disabled={editHometask.isLoading}
             />
           </div>
-          {/* Description */}
+          {/* Content */}
           <div className="my-4">
-            <label className="text-xl" htmlFor="description">
-              Description:
+            <label className="text-xl" htmlFor="content">
+              Content:
             </label>
             <input
-              id="description"
-              {...register("description")}
+              id="content"
+              {...register("content")}
               className={INPUT_TEXT}
-              value={description}
+              value={content}
               onChange={(e) => setDescription(e.currentTarget.value)}
-              disabled={editRoom.isLoading}
+              disabled={editHometask.isLoading}
             />
           </div>
           {/* Topic */}
@@ -171,15 +157,15 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
           </div>
           {/* Save */}
           <button
-            className="py-2 px-4 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:duration-500"
+            className="py-2 px-4 rounded-md text-white bg-primary hover:bg-blue-600 hover:duration-500"
             onClick={() => console.log(topic)}
-            disabled={editRoom.isLoading}
+            disabled={editHometask.isLoading}
           >
             Save
           </button>
           {/* Error occurred */}
-          {editRoom.error && (
-            <p className="text-red-500">{editRoom.error.message}</p>
+          {editHometask.error && (
+            <p className="text-red-500">{editHometask.error.message}</p>
           )}
         </form>
       </Modal>

@@ -8,9 +8,12 @@ const defaultHometaskSelect = Prisma.validator<Prisma.HometaskSelect>()({
   title: true,
   content: true,
   topic: true,
-  user: true,
+  topicId: true,
   due: true,
   createdAt: true,
+  user: true,
+  userId: true,
+  finished: true,
 });
 
 export const hometaskRouter = router({
@@ -106,7 +109,11 @@ export const hometaskRouter = router({
       });
     }),
   byId: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       const { id } = input;
       const hometask = await ctx.prisma.hometask.findUnique({
@@ -122,8 +129,12 @@ export const hometaskRouter = router({
       return hometask;
     }),
   finish: publicProcedure
-    .input(z.object({ id: z.string().uuid() }))
-    .query(async ({ ctx, input }) => {
+    .input(
+      z.object({
+        id: z.string().uuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { id } = input;
       await ctx.prisma.hometask.update({
         where: { id },
