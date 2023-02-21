@@ -48,7 +48,7 @@ export const NewHometask = ({ isOpen, setIsOpen }: NewHometaskProps) => {
         <div className="grid grid-cols-3 items-center mb-3"></div>
         {/* Title */}
         <div className="my-2">
-          <label className="text-xl" htmlFor="title">
+          <label className="text-lg" htmlFor="title">
             Title:
           </label>
           <input
@@ -61,7 +61,7 @@ export const NewHometask = ({ isOpen, setIsOpen }: NewHometaskProps) => {
         </div>
         {/* Content */}
         <div className="my-2">
-          <label className="text-xl" htmlFor="content">
+          <label className="text-lg" htmlFor="content">
             Content:
           </label>
           <textarea
@@ -73,7 +73,7 @@ export const NewHometask = ({ isOpen, setIsOpen }: NewHometaskProps) => {
         </div>
         {/* Topic */}
         <div className="my-2">
-          <label className="text-xl" htmlFor="topic">
+          <label className="text-lg" htmlFor="topic">
             Topic:
           </label>
           <select

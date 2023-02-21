@@ -105,7 +105,7 @@ export const EditHometask = ({
       <Modal title="Edit Hometask" isOpen={isOpen} setIsOpen={setIsOpen}>
         <form hidden={!isOpen} className="w-[90%]" onSubmit={onSubmit}>
           <div className="my-4">
-            <label className="text-xl" htmlFor="title">
+            <label className="text-lg" htmlFor="title">
               Title:
             </label>
             <input
@@ -119,7 +119,7 @@ export const EditHometask = ({
           </div>
           {/* Content */}
           <div className="my-4">
-            <label className="text-xl" htmlFor="content">
+            <label className="text-lg" htmlFor="content">
               Content:
             </label>
             <input
@@ -133,7 +133,7 @@ export const EditHometask = ({
           </div>
           {/* Topic */}
           <div className="my-4">
-            <label className="text-xl" htmlFor="topicId">
+            <label className="text-lg" htmlFor="topicId">
               Topic:
             </label>
             <select

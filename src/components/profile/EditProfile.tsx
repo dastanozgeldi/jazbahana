@@ -62,7 +62,7 @@ export const EditProfile = ({ isOpen, setIsOpen }: EditProfileProps) => {
       <form className="space-y-4 py-4" onSubmit={onSubmit}>
         {/* Username */}
         <div>
-          <label className="text-xl" htmlFor="username">
+          <label className="text-lg" htmlFor="username">
             Username:
           </label>
           <input
@@ -76,7 +76,7 @@ export const EditProfile = ({ isOpen, setIsOpen }: EditProfileProps) => {
         </div>
         {/* School */}
         <div>
-          <label className="text-xl" htmlFor="schoolId">
+          <label className="text-lg" htmlFor="schoolId">
             School:
           </label>
           <select
@@ -96,7 +96,7 @@ export const EditProfile = ({ isOpen, setIsOpen }: EditProfileProps) => {
         </div>
         {/* Grade */}
         <div>
-          <label className="text-xl" htmlFor="grade">
+          <label className="text-lg" htmlFor="grade">
             Grade:
           </label>
           <input
@@ -111,7 +111,7 @@ export const EditProfile = ({ isOpen, setIsOpen }: EditProfileProps) => {
 
         {/* Bio */}
         <div>
-          <label className="text-xl" htmlFor="bio">
+          <label className="text-lg" htmlFor="bio">
             Bio:
           </label>
           <textarea
