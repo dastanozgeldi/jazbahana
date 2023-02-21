@@ -4,7 +4,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Nav } from "./Nav";
 import { Inter } from "@next/font/google";
 
-const inter = Inter({ variable: "--font-inter" });
+export const inter = Inter({ variable: "--font-inter" });
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const [mounted, setMounted] = useState(false);

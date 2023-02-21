@@ -46,7 +46,7 @@ export const NewRoom = ({ isOpen, setIsOpen }: NewRoomProps) => {
     <Modal title="Create Room" isOpen={isOpen} setIsOpen={setIsOpen}>
       <form className="py-4 space-y-4" onSubmit={onSubmit}>
         <div>
-          <label className="text-xl" htmlFor="title">
+          <label className="text-lg" htmlFor="title">
             Title:
           </label>
           <input
@@ -59,7 +59,7 @@ export const NewRoom = ({ isOpen, setIsOpen }: NewRoomProps) => {
         </div>
         {/* Description */}
         <div>
-          <label className="text-xl" htmlFor="description">
+          <label className="text-lg" htmlFor="description">
             Description:
           </label>
           <input
@@ -72,7 +72,7 @@ export const NewRoom = ({ isOpen, setIsOpen }: NewRoomProps) => {
         </div>
         {/* Topic */}
         <div>
-          <label className="text-xl" htmlFor="topic">
+          <label className="text-lg" htmlFor="topic">
             Topic:
           </label>
           <select

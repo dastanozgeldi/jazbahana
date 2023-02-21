@@ -119,7 +119,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
       <Modal title="Edit Room" isOpen={isOpen} setIsOpen={setIsOpen}>
         <form hidden={!isOpen} className="w-[90%]" onSubmit={onSubmit}>
           <div className="my-4">
-            <label className="text-xl" htmlFor="title">
+            <label className="text-lg" htmlFor="title">
               Title:
             </label>
             <input
@@ -133,7 +133,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
           </div>
           {/* Description */}
           <div className="my-4">
-            <label className="text-xl" htmlFor="description">
+            <label className="text-lg" htmlFor="description">
               Description:
             </label>
             <input
@@ -147,7 +147,7 @@ export const EditRoom = ({ data, topics, session, router }: EditRoomProps) => {
           </div>
           {/* Topic */}
           <div className="my-4">
-            <label className="text-xl" htmlFor="topicId">
+            <label className="text-lg" htmlFor="topicId">
               Topic:
             </label>
             <select
